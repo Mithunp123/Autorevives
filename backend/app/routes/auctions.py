@@ -24,8 +24,7 @@ def get_auctions():
         query = """
             SELECT p.*, u.username as office_name,
                    COALESCE(MAX(b.amount), 0) as current_bid,
-                   COUNT(b.id) as total_bids,
-                   p.starting_price
+                   COUNT(b.id) as total_bids
             FROM products p
             JOIN users u ON p.office_id = u.id
             LEFT JOIN bids b ON p.id = b.product_id

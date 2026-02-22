@@ -44,3 +44,6 @@ Thumbs.db
 
 # Backups
 *.bak*
+
+test_api.py
+test_frontend.py

@@ -122,10 +122,10 @@ def get_profile():
             stats["total_bids"] = float(bid_stats["total_bids"] or 0)
 
             cursor.execute(
-                """SELECT DISTINCT p.*, MAX(b.amount) as my_bid
+                """SELECT p.*, MAX(b.amount) as my_bid, MAX(b.bid_time) as last_bid_time
                    FROM products p JOIN bids b ON p.id = b.product_id
                    WHERE b.user_id = %s GROUP BY p.id
-                   ORDER BY b.bid_time DESC LIMIT 5""",
+                   ORDER BY last_bid_time DESC LIMIT 5""",
                 (user["id"],),
             )
             from ..utils import serialize_rows
