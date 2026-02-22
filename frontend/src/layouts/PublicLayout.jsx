@@ -1,0 +1,331 @@
+﻿import { useState } from 'react';
+import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { publicService } from '@/services';
+import toast from 'react-hot-toast';
+
+const navLinks = [
+  { to: '/', label: 'Home', icon: 'fa-house' },
+  { to: '/public/auctions', label: 'Auctions', icon: 'fa-gavel' },
+  { to: '/about', label: 'About', icon: 'fa-info-circle' },
+  { to: '/faq', label: 'FAQ', icon: 'fa-circle-question' },
+  { to: '/contact', label: 'Contact', icon: 'fa-envelope' },
+];
+
+export default function PublicLayout() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [footerForm, setFooterForm] = useState({ fullName: '', email: '', mobile: '', state: '', city: '', subject: '' });
+  const [footerSubmitting, setFooterSubmitting] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleFooterContact = async (e) => {
+    e.preventDefault();
+    if (!footerForm.fullName || !footerForm.email) {
+      toast.error('Name and email are required');
+      return;
+    }
+    setFooterSubmitting(true);
+    try {
+      await publicService.submitContact(footerForm);
+      toast.success('Thank you! We will get back to you soon.');
+      setFooterForm({ fullName: '', email: '', mobile: '', state: '', city: '', subject: '' });
+    } catch {
+      toast.error('Failed to submit. Please try again.');
+    } finally {
+      setFooterSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 glass border-b border-slate-200/60 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-[72px]">
+          {/* Brand */}
+          <Link to="/" className="flex items-center gap-3 no-underline group">
+            <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary-400 rounded-xl flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-glow transition-shadow duration-300">
+              <i className="fas fa-bolt text-white text-sm"></i>
+            </div>
+            <span className="font-display text-xl font-extrabold text-slate-900 tracking-tight">
+              Auto<span className="text-gradient">Revive</span>
+            </span>
+          </Link>
+
+          {/* Mobile toggle */}
+          <button
+            className="lg:hidden p-2.5 text-slate-700 hover:text-accent rounded-xl hover:bg-accent/5 transition-all"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <i className={`fas ${mobileOpen ? 'fa-xmark' : 'fa-bars-staggered'} text-xl`}></i>
+          </button>
+
+          {/* Desktop nav */}
+          <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
+            {navLinks.map((l) => (
+              <li key={l.to}>
+                <NavLink
+                  to={l.to}
+                  end={l.to === '/'}
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                      isActive
+                        ? 'text-accent bg-accent/[0.06]'
+                        : 'text-slate-600 hover:text-accent hover:bg-accent/[0.04]'
+                    }`
+                  }
+                >
+                  <i className={`fas ${l.icon} text-[11px]`}></i>
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop actions */}
+          <div className="hidden lg:flex items-center gap-3">
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center gap-2.5 bg-surface-alt border border-slate-200 px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:border-slate-300 transition-all"
+                >
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-primary-400 flex items-center justify-center text-white text-xs font-bold">
+                    {user?.username?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                  <span>{user?.username || 'User'}</span>
+                  <i className={`fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}></i>
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-elevated border border-slate-100 py-2 z-50 animate-scale-in">
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate('/dashboard'); }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-accent/5 hover:text-accent transition-colors"
+                    >
+                      <i className="fas fa-gauge-high w-4 text-center text-slate-400"></i> Dashboard
+                    </button>
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate('/profile'); }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-accent/5 hover:text-accent transition-colors"
+                    >
+                      <i className="fas fa-circle-user w-4 text-center text-slate-400"></i> Profile
+                    </button>
+                    <hr className="my-1.5 border-slate-100" />
+                    <button
+                      onClick={() => { setDropdownOpen(false); logout(); }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <i className="fas fa-arrow-right-from-bracket w-4 text-center"></i> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-5 py-2.5 text-sm font-bold text-slate-700 hover:text-accent transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="btn-primary text-sm"
+                >
+                  <i className="fas fa-rocket text-xs"></i>Get Started
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="lg:hidden bg-white border-t border-slate-100 shadow-lg animate-fade-in">
+            <ul className="list-none m-0 p-3 space-y-1">
+              {navLinks.map((l) => (
+                <li key={l.to}>
+                  <NavLink
+                    to={l.to}
+                    end={l.to === '/'}
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                        isActive
+                          ? 'text-accent bg-accent/[0.06]'
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`
+                    }
+                  >
+                    <i className={`fas ${l.icon} w-4 text-center text-xs`}></i>
+                    {l.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+            <div className="flex gap-3 p-4 pt-2 border-t border-slate-100">
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center py-3 border-2 border-accent text-accent rounded-xl text-sm font-bold hover:bg-accent hover:text-white transition-all"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => { setMobileOpen(false); logout(); }}
+                    className="flex-1 py-3 bg-red-500 text-white rounded-xl text-sm font-bold hover:bg-red-600 transition-colors"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center py-3 border-2 border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:border-slate-300"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center py-3 btn-primary rounded-xl text-sm"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Main Content */}
+      <main className="flex-1">
+        <Outlet />
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-charcoal text-white relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg-dark opacity-50" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 pb-10">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary-400 rounded-xl flex items-center justify-center shadow-lg shadow-accent/20">
+                  <i className="fas fa-bolt text-white text-sm"></i>
+                </div>
+                <span className="font-display text-xl font-extrabold tracking-tight">
+                  Auto<span className="text-gradient">Revive</span>
+                </span>
+              </div>
+              <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-xs">
+                India's most trusted platform for vehicle auctions. Connecting buyers and sellers
+                with transparency, security, and unbeatable deals.
+              </p>
+              <div className="flex gap-2.5">
+                {['facebook-f', 'x-twitter', 'instagram', 'linkedin-in', 'youtube'].map((s) => (
+                  <a
+                    key={s}
+                    href="#"
+                    className="w-9 h-9 bg-white/[0.06] rounded-lg flex items-center justify-center text-white/50 hover:bg-accent hover:text-white hover:scale-110 transition-all duration-200 border border-white/[0.06]"
+                  >
+                    <i className={`fab fa-${s} text-xs`}></i>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h4 className="text-sm font-bold font-display mb-5 flex items-center gap-2 tracking-wide">
+                <div className="w-1.5 h-1.5 bg-accent rounded-full" /> Quick Links
+              </h4>
+              <ul className="space-y-2.5 list-none m-0 p-0">
+                {[
+                  { to: '/', label: 'Home' },
+                  { to: '/public/auctions', label: 'Auctions' },
+                  { to: '/about', label: 'About Us' },
+                  { to: '/faq', label: 'FAQ' },
+                  { to: '/contact', label: 'Contact Us' },
+                  { to: '/privacy-policy', label: 'Privacy Policy' },
+                  { to: '/investors', label: 'Investors' },
+                ].map((l) => (
+                  <li key={l.to}>
+                    <Link
+                      to={l.to}
+                      className="text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group"
+                    >
+                      <i className="fas fa-chevron-right text-[8px] text-accent/60 group-hover:text-accent transition-colors"></i>
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact Form */}
+            <div>
+              <h4 className="text-sm font-bold font-display mb-5 flex items-center gap-2 tracking-wide">
+                <div className="w-1.5 h-1.5 bg-accent rounded-full" /> Quick Contact
+              </h4>
+              <form onSubmit={handleFooterContact} className="space-y-2.5">
+                <input
+                  type="text"
+                  placeholder="Full Name *"
+                  value={footerForm.fullName}
+                  onChange={(e) => setFooterForm({ ...footerForm, fullName: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address *"
+                  value={footerForm.email}
+                  onChange={(e) => setFooterForm({ ...footerForm, email: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
+                />
+                <div className="grid grid-cols-2 gap-2.5">
+                  <input type="tel" placeholder="Mobile" value={footerForm.mobile} onChange={(e) => setFooterForm({ ...footerForm, mobile: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                  <input type="text" placeholder="State" value={footerForm.state} onChange={(e) => setFooterForm({ ...footerForm, state: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <input type="text" placeholder="City" value={footerForm.city} onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                  <input type="text" placeholder="Subject" value={footerForm.subject} onChange={(e) => setFooterForm({ ...footerForm, subject: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                </div>
+                <button type="submit" disabled={footerSubmitting} className="w-full py-3 bg-gradient-to-r from-accent to-primary-400 hover:from-accent-hover hover:to-primary-500 text-white rounded-xl text-sm font-bold transition-all duration-300 disabled:opacity-50 shadow-button hover:shadow-glow">
+                  <i className={`fas ${footerSubmitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'} mr-2`}></i>
+                  {footerSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="border-t border-white/[0.06] py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
+            <p className="font-medium"><i className="far fa-copyright mr-1"></i>{new Date().getFullYear()} AutoRevive. All Rights Reserved.</p>
+            <div className="flex gap-6">
+              <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <Link to="/contact" className="hover:text-white transition-colors">Support</Link>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* WhatsApp float */}
+      <a
+        href="https://wa.me/+918828820306"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:rounded-xl"
+      >
+        <i className="fab fa-whatsapp text-2xl"></i>
+      </a>
+    </div>
+  );
+}
