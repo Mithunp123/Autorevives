@@ -14,6 +14,13 @@ import { formatDate } from '@/utils';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+const INDIAN_STATES = [
+  'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat',
+  'Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra',
+  'Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim',
+  'Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal',
+];
+
 export default function Offices() {
   const [offices, setOffices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +62,7 @@ export default function Offices() {
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
   const totalPages = Math.ceil(filtered.length / perPage);
 
-  const openAdd = () => { setEditing(null); reset({ finance_name: '', owner_name: '', username: '', email: '', mobile_number: '', password: '', location: '' }); setShowForm(true); };
+  const openAdd = () => { setEditing(null); reset({ finance_name: '', owner_name: '', username: '', email: '', mobile_number: '', password: '', location: '', state: '' }); setShowForm(true); };
   const openEdit = (office) => { setEditing(office); reset(office); setShowForm(true); };
 
   const onSubmit = async (formData) => {
@@ -103,12 +110,12 @@ export default function Offices() {
       label: 'Office',
       render: (_, row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center text-accent flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#4285F4]/10 flex items-center justify-center text-[#4285F4] flex-shrink-0 border border-[#4285F4]/20">
             <i className="fas fa-building text-sm"></i>
           </div>
           <div>
-            <p className="font-medium text-slate-900">{row.finance_name}</p>
-            <p className="text-xs text-slate-400">{row.owner_name}</p>
+            <p className="font-bold text-slate-900">{row.finance_name}</p>
+            <p className="text-xs font-medium text-slate-500">{row.owner_name}</p>
           </div>
         </div>
       ),
@@ -116,9 +123,10 @@ export default function Offices() {
     {
       key: 'location',
       label: 'Location',
-      render: (val) => (
-        <span className="flex items-center gap-1.5 text-slate-500">
-          <i className="fas fa-location-dot text-xs text-slate-300"></i> {val || '—'}
+      render: (val, row) => (
+        <span className="flex items-center gap-1.5 text-slate-600 font-medium">
+          <i className="fas fa-location-dot text-slate-400"></i>
+          {row.state ? `${row.state}${val ? `, ${val}` : ''}` : (val || '—')}
         </span>
       ),
     },
@@ -126,15 +134,15 @@ export default function Offices() {
       key: 'manager',
       label: 'Manager',
       render: (val) => (
-        <span className="flex items-center gap-1.5">
-          <i className="fas fa-user-gear text-xs text-slate-300"></i> {val || '—'}
+        <span className="flex items-center gap-1.5 text-slate-600 font-medium">
+          <i className="fas fa-user-gear text-slate-400"></i> {val || '—'}
         </span>
       ),
     },
     {
       key: 'product_count',
       label: 'Vehicles',
-      render: (val) => <span className="font-medium">{val}</span>,
+      render: (val) => <span className="font-bold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">{val}</span>,
     },
     {
       key: 'status',
@@ -145,20 +153,20 @@ export default function Offices() {
       key: 'actions',
       label: 'Actions',
       render: (_, row) => (
-        <div className="flex items-center gap-1">
-          <button onClick={(e) => { e.stopPropagation(); openEdit(row); }} className="btn-icon w-8 h-8" title="Edit">
+        <div className="flex items-center gap-2">
+          <button onClick={(e) => { e.stopPropagation(); openEdit(row); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-[#4285F4] hover:bg-blue-50 transition-colors" title="Edit">
             <i className="fas fa-pen-to-square text-sm"></i>
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); toggleStatus(row); }}
-            className="btn-icon w-8 h-8"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors"
             title={row.status === 'active' ? 'Disable' : 'Enable'}
           >
             {row.status === 'active'
-              ? <i className="fas fa-toggle-on text-base text-success"></i>
-              : <i className="fas fa-toggle-off text-base text-slate-300"></i>}
+              ? <i className="fas fa-toggle-on text-lg text-emerald-500"></i>
+              : <i className="fas fa-toggle-off text-lg text-slate-300"></i>}
           </button>
-          <button onClick={(e) => { e.stopPropagation(); setConfirmAction(row); }} className="btn-icon w-8 h-8 text-danger hover:bg-red-50" title="Delete">
+          <button onClick={(e) => { e.stopPropagation(); setConfirmAction(row); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Delete">
             <i className="fas fa-trash text-sm"></i>
           </button>
         </div>
@@ -169,11 +177,11 @@ export default function Offices() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="page-header">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="page-title">Offices</h1>
-          <p className="page-subtitle">{filtered.length} finance offices</p>
+          <h1 className="text-2xl font-bold text-slate-900">Offices</h1>
+          <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} finance offices</p>
         </div>
         <Button icon="fa-plus" onClick={openAdd}>Add Office</Button>
       </div>
@@ -217,11 +225,18 @@ export default function Offices() {
               <input {...register('username', { required: 'Required' })} className="input-field" placeholder="login_username" />
             </div>
             <div>
-              <label className="label">Location</label>
-              <input {...register('location')} className="input-field" placeholder="City, State" />
+              <label className="label">State</label>
+              <select {...register('state')} className="input-field">
+                <option value="">Select State</option>
+                {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Location / City</label>
+              <input {...register('location')} className="input-field" placeholder="City name" />
+            </div>
             <div>
               <label className="label">Email</label>
               <input {...register('email', { required: 'Required' })} type="email" className="input-field" placeholder="email@company.com" />

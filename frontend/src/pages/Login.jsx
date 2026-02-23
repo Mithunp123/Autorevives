@@ -1,16 +1,24 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/context';
-import { Button } from '@/components/ui';
 import { ROLES } from '@/utils';
+import { publicService } from '@/services';
 
 export default function Login() {
   const { login, loading } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [siteStats, setSiteStats] = useState({ total_users: 0, live_auctions: 0, total_auction_value: 0 });
 
   const { register, handleSubmit, formState: { errors } } = useForm();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    publicService.getHomeData()
+      .then(({ data }) => { if (data?.stats) setSiteStats(data.stats); })
+      .catch(() => {});
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -22,142 +30,157 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
-      {/* Brand panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-charcoal relative overflow-hidden">
-        <div className="absolute inset-0 mesh-bg-dark" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-accent/20 to-primary-400/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-primary-600/15 to-accent/10 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/4" />
-
-        <div className="relative z-10 flex flex-col justify-center px-16 space-y-12 w-full">
-          <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-primary-400 flex items-center justify-center shadow-glow-lg">
-              <i className="fas fa-bolt text-white text-2xl"></i>
-            </div>
-            <div>
-              <h1 className="text-3xl font-extrabold text-white font-display tracking-tight">
-                Auto<span className="text-gradient">Revive</span>
-              </h1>
-              <p className="text-white/30 text-sm font-medium">Premium Auction Platform</p>
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            <FeatureItem icon="fa-shield-halved" title="Secure Platform" description="Enterprise-grade security for all transactions and data" />
-            <FeatureItem icon="fa-gauge-high" title="1,000+ Vehicles" description="Access to a wide range of verified vehicles across India" />
-            <FeatureItem icon="fa-indian-rupee-sign" title="Best Prices" description="Transparent bidding ensures the best value for buyers" />
-          </div>
-
-          <div className="grid grid-cols-3 gap-6 pt-10 border-t border-white/[0.06]">
-            {[
-              { val: '1,456', lbl: 'Active Users' },
-              { val: '248', lbl: 'Vehicles Listed' },
-              { val: '\u20B94.5Cr', lbl: 'Total Volume' },
-            ].map((s) => (
-              <div key={s.lbl}>
-                <p className="text-2xl font-extrabold text-white font-display tracking-tight">{s.val}</p>
-                <p className="text-white/30 text-xs font-medium mt-1">{s.lbl}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="min-h-[calc(100vh-5rem)] relative flex flex-col items-center justify-center py-12 sm:py-16">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#4285F4]/10 rounded-full blur-3xl animate-pulse-soft" />
+        <div className="absolute top-1/2 -right-20 w-80 h-80 bg-[#4285F4]/[0.08] rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute -bottom-20 left-1/3 w-72 h-72 bg-white/[0.03] rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: '3s' }} />
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+        }} />
       </div>
 
-      {/* Form panel */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 bg-surface mesh-bg">
-        <div className="w-full max-w-md space-y-8">
-          <div className="lg:hidden flex items-center gap-3 justify-center mb-6">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-accent to-primary-400 flex items-center justify-center shadow-glow">
-              <i className="fas fa-bolt text-white text-lg"></i>
-            </div>
-            <h1 className="text-xl font-extrabold font-display text-slate-900 tracking-tight">
-              Auto<span className="text-gradient">Revive</span>
+      <div className="relative z-10 w-full max-w-[460px] mx-4 sm:mx-6">
+        {/* Logo + Branding */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="flex items-center gap-3 mb-3">
+            <img
+              src="/images/Logo.png"
+              alt="AutoRevive"
+              className="h-12 w-auto drop-shadow-lg"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+            <h1 className="text-3xl font-extrabold text-slate-900 font-display tracking-tight">
+              Auto<span className="text-accent">Revive</span>
             </h1>
           </div>
+          <p className="text-slate-500 text-sm font-medium">India's Premium Vehicle Auction Platform</p>
+        </div>
 
-          <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-extrabold text-slate-900 font-display tracking-tight">Welcome back</h2>
-            <p className="text-slate-400 text-sm mt-2 font-medium">Sign in to access your dashboard</p>
+        {/* Login Card */}
+        <div className="bg-white rounded-2xl shadow-2xl shadow-black/20 p-8 sm:p-10">
+          <div className="mb-7">
+            <h2 className="text-2xl font-extrabold text-slate-900 font-display tracking-tight">Welcome back</h2>
+            <p className="text-slate-400 text-sm mt-1.5">Sign in to your account to continue</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Username Field */}
             <div>
-              <label className="label">Username</label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-user text-slate-400 text-xs"></i>
-                </div>
+              <label className="text-xs font-bold text-slate-500 mb-1.5 block uppercase tracking-wider">Username</label>
+              <div className="relative group">
+                <i className="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm group-focus-within:text-[#4285F4] transition-colors"></i>
                 <input
                   {...register('username', { required: 'Username is required' })}
-                  className="input-field pl-14"
+                  className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 border rounded-xl text-sm font-medium outline-none transition-all ${
+                    errors.username
+                      ? 'border-red-300 focus:bg-white focus:ring-2 focus:ring-red-100 focus:border-red-400'
+                      : 'border-slate-200 focus:bg-white focus:ring-2 focus:ring-[#4285F4]/15 focus:border-[#4285F4] hover:border-slate-300'
+                  }`}
                   placeholder="Enter your username"
                   autoComplete="username"
                 />
               </div>
-              {errors.username && <p className="text-xs text-danger mt-1.5 font-medium">{errors.username.message}</p>}
+              {errors.username && (
+                <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1 font-medium">
+                  <i className="fas fa-circle-exclamation"></i>{errors.username.message}
+                </p>
+              )}
             </div>
 
+            {/* Password Field */}
             <div>
-              <label className="label">Password</label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-lock text-slate-400 text-xs"></i>
-                </div>
+              <label className="text-xs font-bold text-slate-500 mb-1.5 block uppercase tracking-wider">Password</label>
+              <div className="relative group">
+                <i className="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm group-focus-within:text-[#4285F4] transition-colors"></i>
                 <input
                   {...register('password', { required: 'Password is required' })}
                   type={showPassword ? 'text' : 'password'}
-                  className="input-field pl-14 pr-12"
+                  className={`w-full pl-11 pr-12 py-3.5 bg-slate-50 border rounded-xl text-sm font-medium outline-none transition-all ${
+                    errors.password
+                      ? 'border-red-300 focus:bg-white focus:ring-2 focus:ring-red-100 focus:border-red-400'
+                      : 'border-slate-200 focus:bg-white focus:ring-2 focus:ring-[#4285F4]/15 focus:border-[#4285F4] hover:border-slate-300'
+                  }`}
                   placeholder="Enter your password"
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((s) => !s)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#4285F4] transition-colors focus:outline-none"
                 >
-                  <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-sm`}></i>
+                  <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                 </button>
               </div>
-              {errors.password && <p className="text-xs text-danger mt-1.5 font-medium">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1 font-medium">
+                  <i className="fas fa-circle-exclamation"></i>{errors.password.message}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2.5 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-accent focus:ring-accent/20" />
-                <span className="text-sm text-slate-500 font-medium">Remember me</span>
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-[#4285F4] focus:ring-[#4285F4]/20 cursor-pointer" />
+                <span className="text-sm font-medium text-slate-500 group-hover:text-slate-700 transition-colors">Remember me</span>
               </label>
-              <a href="#" className="text-sm text-accent hover:text-accent-hover font-semibold transition-colors">
-                Forgot password?
-              </a>
+              <Link to="/forgot-password" className="text-sm font-bold text-[#4285F4] hover:text-[#3367D6] hover:underline transition-colors">
+                Forgot Password?
+              </Link>
             </div>
 
-            <Button type="submit" className="w-full h-12 text-base" loading={loading}>
-              <i className="fas fa-arrow-right-to-bracket mr-2"></i>Sign In
-            </Button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#4285F4] hover:bg-[#3367D6] text-white py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 transform hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <i className="fas fa-circle-notch fa-spin"></i> Signing in...
+                </>
+              ) : (
+                <>Sign In <i className="fas fa-arrow-right"></i></>
+              )}
+            </button>
           </form>
 
-          <p className="text-center text-sm text-slate-400 font-medium">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-accent font-bold hover:text-accent-hover transition-colors">
-              Create Account
-            </Link>
-          </p>
+          {/* Divider */}
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-slate-100"></div>
+            <span className="text-xs text-slate-300 font-medium uppercase tracking-wider">or</span>
+            <div className="flex-1 h-px bg-slate-100"></div>
+          </div>
+
+          {/* Create Account */}
+          <Link
+            to="/register"
+            className="w-full h-12 border-2 border-[#202124] text-[#202124] rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 hover:bg-[#202124] hover:text-white active:scale-[0.98]"
+          >
+            <i className="fas fa-user-plus text-xs"></i>Create New Account
+          </Link>
+        </div>
+
+        {/* Stats Row */}
+        <div className="mt-8 grid grid-cols-3 gap-4">
+          {[
+            { val: siteStats.total_users?.toLocaleString('en-IN') || '0', label: 'Active Users', icon: 'fa-users' },
+            { val: siteStats.live_auctions?.toLocaleString('en-IN') || '0', label: 'Live Auctions', icon: 'fa-gavel' },
+            { val: `₹${((siteStats.total_auction_value || 0) / 10000000).toFixed(1)}Cr`, label: 'Total Volume', icon: 'fa-indian-rupee-sign' },
+          ].map((s) => (
+            <div key={s.label} className="text-center">
+              <div className="w-9 h-9 mx-auto mb-2 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center">
+                <i className={`fas ${s.icon} text-[#4285F4] text-xs`}></i>
+              </div>
+              <p className="text-lg font-extrabold text-slate-900 font-display">{s.val}</p>
+              <p className="text-slate-400 text-[11px] font-medium mt-0.5">{s.label}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-function FeatureItem({ icon, title, description }) {
-  return (
-    <div className="flex items-start gap-4">
-      <div className="w-11 h-11 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
-        <i className={`fas ${icon} text-accent-light`}></i>
-      </div>
-      <div>
-        <h3 className="text-white font-semibold text-sm">{title}</h3>
-        <p className="text-white/40 text-sm mt-0.5">{description}</p>
-      </div>
-    </div>
-  );
-}

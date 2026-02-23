@@ -33,22 +33,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       {/* Public routes */}
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
+      {/* Login & Register are now nested inside PublicLayout so <Outlet /> renders them */}
 
       {/* Protected dashboard routes */}
       <Route
@@ -134,6 +119,8 @@ export default function AppRoutes() {
       {/* Public pages wrapped in PublicLayout */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/faq" element={<FAQ />} />

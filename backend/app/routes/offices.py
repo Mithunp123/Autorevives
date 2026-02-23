@@ -71,6 +71,8 @@ def create_office():
     finance_name = data.get("finance_name", "")
     owner_name = data.get("owner_name", "")
     mobile_number = data.get("mobile_number", "")
+    state = data.get("state", "")
+    location = data.get("location", "")
 
     if not username or not email or not password:
         return jsonify({"error": "Username, email and password are required"}), 400
@@ -80,9 +82,9 @@ def create_office():
     cursor = conn.cursor()
     try:
         cursor.execute(
-            """INSERT INTO users (username, email, mobile_number, finance_name, owner_name, password_hash, role, status)
-               VALUES (%s, %s, %s, %s, %s, %s, 'office', 'active')""",
-            (username, email, mobile_number, finance_name, owner_name, hashed),
+            """INSERT INTO users (username, email, mobile_number, finance_name, owner_name, state, location, password_hash, role, status)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'office', 'active')""",
+            (username, email, mobile_number, finance_name, owner_name, state, location, hashed),
         )
         conn.commit()
         return jsonify({"message": "Office created successfully", "id": cursor.lastrowid}), 201
@@ -112,11 +114,13 @@ def update_office(office_id):
         finance_name = data.get("finance_name", office["finance_name"])
         owner_name = data.get("owner_name", office["owner_name"])
         mobile_number = data.get("mobile_number", office["mobile_number"])
+        state = data.get("state", office.get("state", ""))
+        location = data.get("location", office.get("location", ""))
 
         cursor.execute(
-            """UPDATE users SET email = %s, finance_name = %s, owner_name = %s, mobile_number = %s
+            """UPDATE users SET email = %s, finance_name = %s, owner_name = %s, mobile_number = %s, state = %s, location = %s
                WHERE id = %s""",
-            (email, finance_name, owner_name, mobile_number, office_id),
+            (email, finance_name, owner_name, mobile_number, state, location, office_id),
         )
         conn.commit()
         return jsonify({"message": "Office updated successfully"})

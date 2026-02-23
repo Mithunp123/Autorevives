@@ -12,6 +12,7 @@ export const dashboardService = {
   getStats: () => api.get('/dashboard/stats'),
   getRecentActivity: () => api.get('/dashboard/recent-activity'),
   getOfficeStats: () => api.get('/dashboard/office-stats'),
+  getVehiclesByState: (state) => api.get('/dashboard/vehicles-by-state', { params: { state } }),
 };
 
 export const userService = {
@@ -86,4 +87,12 @@ export const officeDetailsService = {
 export const publicService = {
   getHomeData: () => api.get('/public/home'),
   submitContact: (data) => api.post('/public/contact', data),
+};
+
+export const planService = {
+  getAll: () => api.get('/plans/all'),
+  getActive: () => api.get('/plans'),
+  create: (data) => api.post('/plans', data),
+  update: (id, data) => api.put(`/plans/${id}`, data),
+  delete: (id) => api.delete(`/plans/${id}`),
 };

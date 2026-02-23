@@ -13,8 +13,8 @@ import { formatDate, cn } from '@/utils';
 import toast from 'react-hot-toast';
 
 const typeConfig = {
-  vehicle: { icon: 'fa-car', color: 'bg-accent/10 text-accent', label: 'Vehicle Upload' },
-  office: { icon: 'fa-building', color: 'bg-purple-50 text-purple-600', label: 'Office Request' },
+  vehicle: { icon: 'fa-car', color: 'bg-[#4285F4]/10 text-[#4285F4] border-[#4285F4]/20', label: 'Vehicle Upload' },
+  office: { icon: 'fa-building', color: 'bg-purple-50 text-purple-600 border-purple-200', label: 'Office Request' },
 };
 
 const tabs = [
@@ -119,11 +119,11 @@ export default function Approvals() {
       render: (val) => {
         const cfg = typeConfig[val] || typeConfig.user;
         return (
-          <div className="flex items-center gap-2.5">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${cfg.color}`}>
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${cfg.color}`}>
               <i className={`fas ${cfg.icon} text-sm`}></i>
             </div>
-            <span className="text-xs font-medium text-slate-400">{cfg.label}</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{cfg.label}</span>
           </div>
         );
       },
@@ -133,42 +133,38 @@ export default function Approvals() {
       label: 'Name',
       render: (val, row) => (
         <div>
-          <p className="font-medium text-slate-900">{val}</p>
-          <p className="text-xs text-slate-400">{row.email}</p>
+          <p className="font-bold text-slate-900">{val}</p>
+          <p className="text-xs font-medium text-slate-500">{row.email}</p>
         </div>
       ),
     },
     {
       key: 'details',
       label: 'Details',
-      render: (val) => <span className="text-sm text-slate-500">{val}</span>,
+      render: (val) => <span className="text-sm font-medium text-slate-600">{val}</span>,
     },
     {
       key: 'created_at',
       label: 'Requested',
-      render: (val) => <span className="text-slate-400">{formatDate(val)}</span>,
+      render: (val) => <span className="text-sm font-medium text-slate-500">{formatDate(val)}</span>,
     },
     {
       key: 'actions',
       label: 'Actions',
       render: (_, row) => (
         <div className="flex items-center gap-2">
-          <Button
-            variant="success"
-            size="sm"
-            icon="fa-check"
+          <button
             onClick={(e) => { e.stopPropagation(); handleApprove(row); }}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-200 rounded-lg text-xs font-bold transition-colors"
           >
-            Approve
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            icon="fa-xmark"
+            <i className="fas fa-check"></i> Approve
+          </button>
+          <button
             onClick={(e) => { e.stopPropagation(); setRejectModal(row); }}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 rounded-lg text-xs font-bold transition-colors"
           >
-            Reject
-          </Button>
+            <i className="fas fa-xmark"></i> Reject
+          </button>
         </div>
       ),
     },
@@ -177,25 +173,25 @@ export default function Approvals() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="page-header">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="page-title">Approvals</h1>
-          <p className="page-subtitle">{filtered.length} items pending review</p>
+          <h1 className="text-2xl font-bold text-slate-900">Approvals</h1>
+          <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} items pending review</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl overflow-x-auto">
+      <div className="flex items-center gap-2 bg-slate-100/50 p-1.5 rounded-2xl overflow-x-auto border border-slate-200 w-fit">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => { setTab(t.key); setCurrentPage(1); }}
             className={cn(
-              'px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap',
+              'px-5 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap',
               tab === t.key
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-400 hover:text-slate-700'
+                ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
             )}
           >
             {t.label}

@@ -55,7 +55,7 @@ function PageBtn({ page, current, onClick }) {
       className={cn(
         'w-9 h-9 rounded-xl text-sm font-bold transition-all',
         page === current
-          ? 'bg-gradient-to-r from-accent to-primary-500 text-white shadow-button'
+          ? 'bg-accent text-white shadow-button'
           : 'text-slate-500 hover:bg-slate-100'
       )}
     >

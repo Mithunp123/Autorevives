@@ -1,12 +1,12 @@
 ﻿import { useState } from 'react';
-import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { publicService } from '@/services';
 import toast from 'react-hot-toast';
 
 const navLinks = [
   { to: '/', label: 'Home', icon: 'fa-house' },
-  { to: '/public/auctions', label: 'Auctions', icon: 'fa-gavel' },
+  { to: '/#auctions', label: 'Auctions', icon: 'fa-gavel', isHash: true },
   { to: '/about', label: 'About', icon: 'fa-info-circle' },
   { to: '/faq', label: 'FAQ', icon: 'fa-circle-question' },
   { to: '/contact', label: 'Contact', icon: 'fa-envelope' },
@@ -19,6 +19,21 @@ export default function PublicLayout() {
   const [footerSubmitting, setFooterSubmitting] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  /* Handle hash-link navigation (e.g. /#auctions) */
+  const handleHashClick = (e, to) => {
+    e.preventDefault();
+    const [path, hash] = to.split('#');
+    if (location.pathname === (path || '/')) {
+      // Already on home page, just scroll
+      const el = document.getElementById(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Navigate to home, then scroll via Home's useEffect
+      navigate(to);
+    }
+  };
 
   const handleFooterContact = async (e) => {
     e.preventDefault();
@@ -42,14 +57,12 @@ export default function PublicLayout() {
     <div className="min-h-screen flex flex-col bg-white">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 glass border-b border-slate-200/60 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-[72px]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-[80px]">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
-            <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary-400 rounded-xl flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-glow transition-shadow duration-300">
-              <i className="fas fa-bolt text-white text-sm"></i>
-            </div>
-            <span className="font-display text-xl font-extrabold text-slate-900 tracking-tight">
-              Auto<span className="text-gradient">Revive</span>
+            <img src="/images/Logo.png" alt="AutoRevive" className="h-[70px] w-auto object-contain" onError={(e) => { e.target.style.display='none'; }} />
+            <span className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
+              Auto<span className="text-accent">Revive</span>
             </span>
           </Link>
 
@@ -65,20 +78,31 @@ export default function PublicLayout() {
           <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
             {navLinks.map((l) => (
               <li key={l.to}>
-                <NavLink
-                  to={l.to}
-                  end={l.to === '/'}
-                  className={({ isActive }) =>
-                    `px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
-                      isActive
-                        ? 'text-accent bg-accent/[0.06]'
-                        : 'text-slate-600 hover:text-accent hover:bg-accent/[0.04]'
-                    }`
-                  }
-                >
-                  <i className={`fas ${l.icon} text-[11px]`}></i>
-                  {l.label}
-                </NavLink>
+                {l.isHash ? (
+                  <a
+                    href={l.to}
+                    onClick={(e) => handleHashClick(e, l.to)}
+                    className="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-slate-600 hover:text-accent hover:bg-accent/[0.04]"
+                  >
+                    <i className={`fas ${l.icon} text-[11px]`}></i>
+                    {l.label}
+                  </a>
+                ) : (
+                  <NavLink
+                    to={l.to}
+                    end={l.to === '/'}
+                    className={({ isActive }) =>
+                      `px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                        isActive
+                          ? 'text-accent bg-accent/[0.06]'
+                          : 'text-slate-600 hover:text-accent hover:bg-accent/[0.04]'
+                      }`
+                    }
+                  >
+                    <i className={`fas ${l.icon} text-[11px]`}></i>
+                    {l.label}
+                  </NavLink>
+                )}
               </li>
             ))}
           </ul>
@@ -91,7 +115,7 @@ export default function PublicLayout() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2.5 bg-surface-alt border border-slate-200 px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:border-slate-300 transition-all"
                 >
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-primary-400 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-7 h-7 rounded-lg bg-[#202124] flex items-center justify-center text-white text-xs font-bold">
                     {user?.username?.charAt(0).toUpperCase() || 'U'}
                   </div>
                   <span>{user?.username || 'User'}</span>
@@ -122,20 +146,13 @@ export default function PublicLayout() {
                 )}
               </div>
             ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="px-5 py-2.5 text-sm font-bold text-slate-700 hover:text-accent transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="btn-primary text-sm"
-                >
-                  <i className="fas fa-rocket text-xs"></i>Get Started
-                </Link>
-              </>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:border-[#4285F4]/40 hover:shadow-md transition-all shadow-sm"
+              >
+                <i className="fas fa-user text-[#4285F4] text-xs"></i>
+                Login / Sign Up
+              </Link>
             )}
           </div>
         </div>
@@ -146,21 +163,32 @@ export default function PublicLayout() {
             <ul className="list-none m-0 p-3 space-y-1">
               {navLinks.map((l) => (
                 <li key={l.to}>
-                  <NavLink
-                    to={l.to}
-                    end={l.to === '/'}
-                    onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                        isActive
-                          ? 'text-accent bg-accent/[0.06]'
-                          : 'text-slate-700 hover:bg-slate-50'
-                      }`
-                    }
-                  >
-                    <i className={`fas ${l.icon} w-4 text-center text-xs`}></i>
-                    {l.label}
-                  </NavLink>
+                  {l.isHash ? (
+                    <a
+                      href={l.to}
+                      onClick={(e) => { setMobileOpen(false); handleHashClick(e, l.to); }}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-slate-700 hover:bg-slate-50"
+                    >
+                      <i className={`fas ${l.icon} w-4 text-center text-xs`}></i>
+                      {l.label}
+                    </a>
+                  ) : (
+                    <NavLink
+                      to={l.to}
+                      end={l.to === '/'}
+                      onClick={() => setMobileOpen(false)}
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                          isActive
+                            ? 'text-accent bg-accent/[0.06]'
+                            : 'text-slate-700 hover:bg-slate-50'
+                        }`
+                      }
+                    >
+                      <i className={`fas ${l.icon} w-4 text-center text-xs`}></i>
+                      {l.label}
+                    </NavLink>
+                  )}
                 </li>
               ))}
             </ul>
@@ -182,22 +210,14 @@ export default function PublicLayout() {
                   </button>
                 </>
               ) : (
-                <>
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex-1 text-center py-3 border-2 border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:border-slate-300"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex-1 text-center py-3 btn-primary rounded-xl text-sm"
-                  >
-                    Get Started
-                  </Link>
-                </>
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 text-slate-800 rounded-xl text-sm font-bold hover:border-[#4285F4]/40 transition-all"
+                >
+                  <i className="fas fa-user text-[#4285F4] text-xs"></i>
+                  Login / Sign Up
+                </Link>
               )}
             </div>
           </div>
@@ -217,11 +237,11 @@ export default function PublicLayout() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary-400 rounded-xl flex items-center justify-center shadow-lg shadow-accent/20">
-                  <i className="fas fa-bolt text-white text-sm"></i>
+                <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <img src="/images/Logo.png" alt="" className="w-full h-full object-contain" onError={(e) => { e.target.style.display='none'; }} />
                 </div>
                 <span className="font-display text-xl font-extrabold tracking-tight">
-                  Auto<span className="text-gradient">Revive</span>
+                  Auto<span className="text-accent">Revive</span>
                 </span>
               </div>
               <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-xs">
@@ -249,7 +269,7 @@ export default function PublicLayout() {
               <ul className="space-y-2.5 list-none m-0 p-0">
                 {[
                   { to: '/', label: 'Home' },
-                  { to: '/public/auctions', label: 'Auctions' },
+                  { to: '/#auctions', label: 'Auctions' },
                   { to: '/about', label: 'About Us' },
                   { to: '/faq', label: 'FAQ' },
                   { to: '/contact', label: 'Contact Us' },
@@ -297,7 +317,7 @@ export default function PublicLayout() {
                   <input type="text" placeholder="City" value={footerForm.city} onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
                   <input type="text" placeholder="Subject" value={footerForm.subject} onChange={(e) => setFooterForm({ ...footerForm, subject: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
                 </div>
-                <button type="submit" disabled={footerSubmitting} className="w-full py-3 bg-gradient-to-r from-accent to-primary-400 hover:from-accent-hover hover:to-primary-500 text-white rounded-xl text-sm font-bold transition-all duration-300 disabled:opacity-50 shadow-button hover:shadow-glow">
+                <button type="submit" disabled={footerSubmitting} className="w-full py-3 bg-accent hover:bg-accent-hover text-white rounded-xl text-sm font-bold transition-all duration-300 disabled:opacity-50 shadow-button hover:shadow-glow">
                   <i className={`fas ${footerSubmitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'} mr-2`}></i>
                   {footerSubmitting ? 'Sending...' : 'Send Message'}
                 </button>

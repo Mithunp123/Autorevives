@@ -86,61 +86,88 @@ export default function Reports() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="page-header">
+    <div className="space-y-8 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="page-title">Reports</h1>
-          <p className="page-subtitle">Analytics and insights for your platform</p>
+          <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
+          <p className="text-sm font-medium text-slate-500 mt-1">Analytics and insights for your platform</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="secondary" icon="fa-download" onClick={() => handleExport('excel')} loading={exporting} size="sm">
-            Excel
+        <div className="flex gap-3">
+          <Button variant="secondary" icon="fa-file-excel" onClick={() => handleExport('excel')} loading={exporting} size="sm" className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
+            Export Excel
           </Button>
-          <Button icon="fa-download" onClick={() => handleExport('pdf')} loading={exporting} size="sm">
-            PDF
+          <Button icon="fa-file-pdf" onClick={() => handleExport('pdf')} loading={exporting} size="sm" className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
+            Export PDF
+
           </Button>
         </div>
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon="fa-gavel" label="Total Auctions" value={stats.live_auctions || 0} color="accent" />
-        <StatCard icon="fa-car" label="Total Vehicles" value={stats.total_products || 0} color="success" />
-        <StatCard icon="fa-users" label="Active Users" value={stats.total_users || 0} color="purple" />
-        <StatCard icon="fa-indian-rupee-sign" label="Total Volume" value={formatCurrency(stats.total_volume || 0)} color="warning" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard 
+          icon="fa-gavel" 
+          title="Total Auctions" 
+          value={stats.live_auctions || 0} 
+          trend="+12% from last month"
+          color="bg-[#4285F4]"
+          iconColor="text-white"
+        />
+        <StatCard 
+          icon="fa-car" 
+          title="Total Vehicles" 
+          value={stats.total_products || 0} 
+          trend="+8% from last month"
+          color="bg-emerald-500"
+          iconColor="text-white"
+        />
+        <StatCard 
+          icon="fa-users" 
+          title="Active Users" 
+          value={stats.total_users || 0} 
+          trend="+24% from last month"
+          color="bg-purple-500"
+          iconColor="text-white"
+        />
+        <StatCard 
+          icon="fa-indian-rupee-sign" 
+          title="Total Volume" 
+          value={formatCurrency(stats.total_volume || 0)} 
+          trend="+15% from last month"
+          color="bg-amber-500"
+          iconColor="text-white"
+        />
       </div>
 
       {/* Tabs + Date range */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="flex p-1 bg-slate-100 rounded-xl">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setActiveTab(t.key)}
-              className={cn(
-                'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all',
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${
                 activeTab === t.key
                   ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-700'
-              )}
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+              }`}
             >
-              <i className={`fas ${t.icon} text-sm`}></i>
+              <i className={`fas ${t.icon}`}></i>
               {t.label}
             </button>
           ))}
         </div>
 
-        <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+        <div className="flex p-1 bg-slate-100 rounded-xl">
           {['3m', '6m', '12m'].map((r) => (
             <button
               key={r}
               onClick={() => setDateRange(r)}
-              className={cn(
-                'px-3 py-1.5 rounded-md text-xs font-medium transition-all',
+              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
                 dateRange === r
                   ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-700'
-              )}
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+              }`}
             >
               {r}
             </button>

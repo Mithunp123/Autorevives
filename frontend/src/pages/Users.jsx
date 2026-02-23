@@ -90,12 +90,12 @@ export default function UsersPage() {
       label: 'User',
       render: (_, row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center text-accent text-sm font-bold flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4285F4]/20 to-[#4285F4]/5 flex items-center justify-center text-[#4285F4] text-sm font-bold flex-shrink-0 border border-[#4285F4]/10">
             {row.username?.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="font-medium text-slate-900">{row.username}</p>
-            <p className="text-xs text-slate-400">{row.email}</p>
+            <p className="font-bold text-slate-900">{row.username}</p>
+            <p className="text-xs font-medium text-slate-500">{row.email}</p>
           </div>
         </div>
       ),
@@ -123,10 +123,10 @@ export default function UsersPage() {
       key: 'actions',
       label: 'Actions',
       render: (_, row) => (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <button
             onClick={(e) => { e.stopPropagation(); navigate(`/users/${row.id}`); }}
-            className="btn-icon w-8 h-8"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-[#4285F4] hover:bg-blue-50 transition-colors"
             title="View details"
           >
             <i className="fas fa-eye text-sm"></i>
@@ -134,7 +134,7 @@ export default function UsersPage() {
           {row.status === 'active' ? (
             <button
               onClick={(e) => { e.stopPropagation(); handleBlock(row); }}
-              className="btn-icon w-8 h-8 text-warning hover:bg-amber-50"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
               title="Block user"
             >
               <i className="fas fa-ban text-sm"></i>
@@ -142,7 +142,7 @@ export default function UsersPage() {
           ) : row.status === 'blocked' ? (
             <button
               onClick={(e) => { e.stopPropagation(); handleUnblock(row); }}
-              className="btn-icon w-8 h-8 text-success hover:bg-green-50"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
               title="Unblock user"
             >
               <i className="fas fa-circle-check text-sm"></i>
@@ -150,7 +150,7 @@ export default function UsersPage() {
           ) : null}
           <button
             onClick={(e) => { e.stopPropagation(); setConfirmAction({ type: 'delete', user: row }); }}
-            className="btn-icon w-8 h-8 text-danger hover:bg-red-50"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
             title="Delete user"
           >
             <i className="fas fa-trash text-sm"></i>
@@ -163,11 +163,11 @@ export default function UsersPage() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="page-header">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="page-title">Users</h1>
-          <p className="page-subtitle">{filtered.length} total users</p>
+          <h1 className="text-2xl font-bold text-slate-900">Users</h1>
+          <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} total users</p>
         </div>
       </div>
 

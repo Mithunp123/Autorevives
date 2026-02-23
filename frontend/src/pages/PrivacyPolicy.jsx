@@ -133,7 +133,7 @@ export default function PrivacyPolicy() {
                 </ul>
               )}
               {s.highlight && (
-                <div className="flex items-start gap-3 bg-primary-50 border border-primary-100 rounded-xl p-4 mt-4">
+                <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4 mt-4">
                   <i className="fas fa-shield-halved text-lg text-accent flex-shrink-0 mt-0.5"></i>
                   <p className="text-sm text-slate-700 font-medium">{s.highlight}</p>
                 </div>

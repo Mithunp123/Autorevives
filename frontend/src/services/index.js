@@ -12,4 +12,5 @@ export {
   settingsService,
   officeDetailsService,
   publicService,
+  planService,
 } from './endpoints';

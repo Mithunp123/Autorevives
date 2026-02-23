@@ -45,7 +45,7 @@ export default function MobileNav() {
                 )}
               >
                 {isActive && (
-                  <div className="absolute -top-0.5 w-8 h-1 bg-gradient-to-r from-accent to-primary-400 rounded-full" />
+                  <div className="absolute -top-0.5 w-8 h-1 bg-accent rounded-full" />
                 )}
                 <div className={cn(
                   'w-8 h-8 flex items-center justify-center rounded-lg transition-all',

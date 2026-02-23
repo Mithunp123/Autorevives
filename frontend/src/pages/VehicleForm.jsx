@@ -7,6 +7,13 @@ import { vehicleService } from '@/services';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
 
+const INDIAN_STATES = [
+  'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat',
+  'Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra',
+  'Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim',
+  'Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal',
+];
+
 export default function VehicleForm() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -42,6 +49,7 @@ export default function VehicleForm() {
         const v = data.vehicle || data;
         setValue('name', v.name || '');
         setValue('category', v.category || '');
+        setValue('state', v.state || '');
         setValue('starting_price', v.starting_price || '');
         setValue('quoted_price', v.quoted_price || '');
         setValue('description', v.description || '');
@@ -65,6 +73,7 @@ export default function VehicleForm() {
       const formData = new FormData();
       formData.append('name', data.name);
       formData.append('category', data.category || '');
+      formData.append('state', data.state || '');
       formData.append('starting_price', data.starting_price);
       if (data.quoted_price) formData.append('quoted_price', data.quoted_price);
       formData.append('description', data.description);
@@ -117,7 +126,7 @@ export default function VehicleForm() {
             {errors.name && <p className="text-xs text-danger mt-1.5 font-medium">{errors.name.message}</p>}
           </div>
 
-          {/* Category & Starting Price */}
+          {/* Category & State */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Category</label>
@@ -130,6 +139,18 @@ export default function VehicleForm() {
               </select>
               {errors.category && <p className="text-xs text-danger mt-1.5 font-medium">{errors.category.message}</p>}
             </div>
+            <div>
+              <label className="label">State</label>
+              <select {...register('state', { required: 'State is required' })} className="select-field">
+                <option value="">Select state</option>
+                {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+              {errors.state && <p className="text-xs text-danger mt-1.5 font-medium">{errors.state.message}</p>}
+            </div>
+          </div>
+
+          {/* Starting Price & Quoted Price */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Bid Starting Price (₹)</label>
               <div className="relative">
@@ -147,24 +168,22 @@ export default function VehicleForm() {
               {errors.starting_price && <p className="text-xs text-danger mt-1.5 font-medium">{errors.starting_price.message}</p>}
               <p className="text-xs text-slate-400 mt-1">The price at which bidding will start</p>
             </div>
-          </div>
-
-          {/* Quoted Price */}
-          <div>
-            <label className="label">Quoted Amount (₹) <span className="text-slate-400 font-normal">— optional</span></label>
-            <div className="relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                <span className="text-slate-400 text-sm font-bold">₹</span>
+            <div>
+              <label className="label">Quoted Amount (₹) <span className="text-slate-400 font-normal">— optional</span></label>
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                  <span className="text-slate-400 text-sm font-bold">₹</span>
+                </div>
+                <input
+                  {...register('quoted_price', { min: { value: 0, message: 'Must be positive' } })}
+                  type="number"
+                  step="1"
+                  className="input-field pl-14"
+                  placeholder="350000"
+                />
               </div>
-              <input
-                {...register('quoted_price', { min: { value: 0, message: 'Must be positive' } })}
-                type="number"
-                step="1"
-                className="input-field pl-14"
-                placeholder="350000"
-              />
+              <p className="text-xs text-slate-400 mt-1">Your expected/quoted price for this vehicle</p>
             </div>
-            <p className="text-xs text-slate-400 mt-1">Your expected/quoted price for this vehicle. Bidding starts from the Starting Price above.</p>
           </div>
 
           {/* Admin: Status */}
@@ -227,7 +246,7 @@ export default function VehicleForm() {
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center mb-1">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center mb-1">
                     <i className="fas fa-upload text-xl text-accent"></i>
                   </div>
                   <p className="text-sm text-slate-500">

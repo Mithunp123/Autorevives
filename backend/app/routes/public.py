@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+import json
 
 from ..utils import serialize_rows
 
@@ -19,10 +20,14 @@ def home_data():
         # Approved products with bids
         cursor.execute("""
             SELECT p.*,
+                   u.username as office_name,
+                   COALESCE(p.state, u.state) as state,
+                   COALESCE(u.location, '') as location,
                    COALESCE(bi.current_bid, 0) as current_bid,
                    COALESCE(bi.total_bids, 0) as total_bids,
                    p.starting_price
             FROM products p
+            JOIN users u ON p.office_id = u.id
             LEFT JOIN (
                 SELECT product_id, MAX(amount) as current_bid, COUNT(*) as total_bids
                 FROM bids GROUP BY product_id
@@ -102,6 +107,21 @@ def home_data():
         """)
         recent_activity = serialize_rows(cursor.fetchall())
 
+        # Active plans for pricing section (graceful fallback if table missing)
+        plans = []
+        try:
+            cursor.execute("SELECT * FROM plans WHERE is_active = TRUE ORDER BY sort_order ASC")
+            plans_raw = serialize_rows(cursor.fetchall())
+            for p in plans_raw:
+                if p.get("features") and isinstance(p["features"], str):
+                    try:
+                        p["features"] = json.loads(p["features"])
+                    except (json.JSONDecodeError, TypeError):
+                        p["features"] = []
+                plans.append(p)
+        except Exception:
+            plans = []
+
         return jsonify({
             "products": products,
             "stats": {
@@ -116,6 +136,7 @@ def home_data():
                 "total_auction_value": total_auction_value,
             },
             "recent_activity": recent_activity,
+            "plans": plans,
         })
     finally:
         cursor.close()

@@ -21,8 +21,22 @@ def get_auctions():
     conn = _get_db()
     cursor = conn.cursor()
     try:
+        # We select specific columns to avoid 'Duplicate column name' error in subquery
+        # p.* includes 'state', so we can't use p.* if we also select COALESCE(...) as state
+        # Instead, we'll alias the coalesced state or just rely on the fact that we need a unique name for the subquery
+        # But for simplicity, let's just use specific columns if possible, or alias the coalesced one.
+        # However, the frontend expects 'state'.
+        # A better approach for the count query is to NOT include the select list that causes duplicates.
+        # But the count query wraps the *entire* constructed query string.
+
+        # Let's use a CTE or just fix the column alias.
+        # Actually, simpler: distinct alias for the coalesced column, and handle mapping in frontend or just use 'state' from p if available.
+        # But the logic COALESCE(p.state, u.state) implies p.state might be null.
+        # If we alias it to `display_state`, we avoid the collision.
         query = """
             SELECT p.*, u.username as office_name,
+                   COALESCE(p.state, u.state) as display_state,
+                   COALESCE(u.location, '') as location,
                    COALESCE(MAX(b.amount), 0) as current_bid,
                    COUNT(b.id) as total_bids
             FROM products p

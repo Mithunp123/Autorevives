@@ -57,49 +57,51 @@ export default function DataTable({
   }
 
   return (
-    <div className={cn('table-container overflow-x-auto', className)}>
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-slate-100">
-            {columns
-              .filter((c) => !c.hideOnMobile)
-              .map((col) => (
-                <th
-                  key={col.key}
-                  className={cn(
-                    'text-left text-[11px] font-bold text-slate-400 uppercase tracking-wider px-5 py-4 bg-surface-alt/50',
-                    col.className
-                  )}
-                >
-                  {col.label}
-                </th>
-              ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-50">
-          {data.map((row, idx) => (
-            <tr
-              key={row.id || idx}
-              className={cn(
-                'hover:bg-accent/[0.02] transition-colors',
-                onRowClick && 'cursor-pointer'
-              )}
-              onClick={() => onRowClick?.(row)}
-            >
+    <div className={cn('bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm', className)}>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-slate-50/80 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+            <tr>
               {columns
                 .filter((c) => !c.hideOnMobile)
                 .map((col) => (
-                  <td
+                  <th
                     key={col.key}
-                    className={cn('px-5 py-4 text-sm text-slate-600', col.className)}
+                    className={cn(
+                      'font-bold px-6 py-4',
+                      col.className
+                    )}
                   >
-                    {col.render ? col.render(row[col.key], row) : row[col.key] ?? '\u2014'}
-                  </td>
+                    {col.label}
+                  </th>
                 ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {data.map((row, idx) => (
+              <tr
+                key={row.id || idx}
+                className={cn(
+                  'hover:bg-slate-50/80 transition-colors group',
+                  onRowClick && 'cursor-pointer'
+                )}
+                onClick={() => onRowClick?.(row)}
+              >
+                {columns
+                  .filter((c) => !c.hideOnMobile)
+                  .map((col) => (
+                    <td
+                      key={col.key}
+                      className={cn('px-6 py-4 text-slate-600', col.className)}
+                    >
+                      {col.render ? col.render(row[col.key], row) : row[col.key] ?? '\u2014'}
+                    </td>
+                  ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

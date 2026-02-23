@@ -60,13 +60,13 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
           collapsed ? 'lg:justify-center lg:px-0' : 'justify-between'
         )}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-primary-400 flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/25">
-              <i className="fas fa-bolt text-white text-base"></i>
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
+              <img src="/images/Logo.png" alt="" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#202124]'); }} />
             </div>
             {!collapsed && (
               <div className="lg:block">
                 <h1 className="text-white font-display font-extrabold text-lg tracking-tight leading-none">
-                  Auto<span className="text-gradient">Revive</span>
+                  Auto<span className="text-accent">Revive</span>
                 </h1>
                 <p className="text-[10px] text-white/30 font-medium tracking-widest uppercase mt-0.5">Premium Auctions</p>
               </div>

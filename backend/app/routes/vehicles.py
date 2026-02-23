@@ -116,6 +116,7 @@ def create_vehicle():
     name = request.form.get("name", "").strip()
     description = request.form.get("description", "").strip()
     category = request.form.get("category", "").strip()
+    state = request.form.get("state", "").strip()
     starting_price = request.form.get("starting_price", 0)
     quoted_price = request.form.get("quoted_price", "").strip() or None
 
@@ -138,9 +139,9 @@ def create_vehicle():
     cursor = conn.cursor()
     try:
         cursor.execute(
-            """INSERT INTO products (office_id, name, description, category, image_path, starting_price, quoted_price, status)
-               VALUES (%s, %s, %s, %s, %s, %s, %s, 'pending')""",
-            (office_id, name, description, category or None, image_path, starting_price, quoted_price),
+            """INSERT INTO products (office_id, name, description, category, state, image_path, starting_price, quoted_price, status)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'pending')""",
+            (office_id, name, description, category or None, state or None, image_path, starting_price, quoted_price),
         )
         conn.commit()
         return jsonify({"message": "Vehicle added! Waiting for admin approval.", "id": cursor.lastrowid}), 201
@@ -167,6 +168,7 @@ def update_vehicle(vehicle_id):
         name = request.form.get("name", vehicle["name"])
         description = request.form.get("description", vehicle["description"])
         category = request.form.get("category", vehicle.get("category", ""))
+        state = request.form.get("state", vehicle.get("state", ""))
         starting_price = request.form.get("starting_price", vehicle["starting_price"])
         quoted_price = request.form.get("quoted_price", vehicle.get("quoted_price"))
         if quoted_price == '':
@@ -190,10 +192,10 @@ def update_vehicle(vehicle_id):
                 image_path = f"uploads/{filename}"
 
         cursor.execute(
-            """UPDATE products SET name = %s, description = %s, category = %s,
+            """UPDATE products SET name = %s, description = %s, category = %s, state = %s,
                starting_price = %s, quoted_price = %s, image_path = %s, status = %s
                WHERE id = %s""",
-            (name, description, category or None, starting_price, quoted_price, image_path, status, vehicle_id),
+            (name, description, category or None, state or None, starting_price, quoted_price, image_path, status, vehicle_id),
         )
         conn.commit()
         return jsonify({"message": "Vehicle updated successfully"})

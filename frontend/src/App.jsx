@@ -1,11 +1,22 @@
-﻿import { BrowserRouter } from 'react-router-dom';
+﻿import { BrowserRouter, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/context/AuthContext';
 import { AppRoutes } from '@/routes';
 
+// Scroll to top component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AuthProvider>
         <AppRoutes />
         <Toaster
@@ -15,21 +26,21 @@ export default function App() {
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#020617',
+              background: '#1e293b',
               color: '#F8FAFC',
               fontSize: '0.875rem',
-              borderRadius: '1rem',
+              borderRadius: '0.75rem',
               padding: '14px 18px',
               maxWidth: '420px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.35)',
-              border: '1px solid rgba(79,70,229,0.2)',
-              fontFamily: '"Plus Jakarta Sans", Inter, sans-serif',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+              border: '1px solid rgba(66, 133, 244, 0.2)',
+              fontFamily: 'inherit',
             },
             success: {
-              iconTheme: { primary: '#16A34A', secondary: '#F8FAFC' },
+              iconTheme: { primary: '#34A853', secondary: '#F8FAFC' },
             },
             error: {
-              iconTheme: { primary: '#DC2626', secondary: '#F8FAFC' },
+              iconTheme: { primary: '#EA4335', secondary: '#F8FAFC' },
               duration: 5000,
             },
           }}

@@ -58,9 +58,21 @@ class Database:
                 password_hash VARCHAR(255) NOT NULL,
                 role ENUM('admin', 'office', 'user') NOT NULL,
                 status ENUM('pending', 'active', 'blocked') DEFAULT 'active',
+                state VARCHAR(100) DEFAULT NULL,
+                location VARCHAR(255) DEFAULT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # Add state/location columns if missing (for existing databases)
+        for col, definition in [
+            ('state', 'VARCHAR(100) DEFAULT NULL'),
+            ('location', 'VARCHAR(255) DEFAULT NULL'),
+        ]:
+            try:
+                cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {definition}")
+            except Exception:
+                pass  # Column already exists
 
         # Products table
         cursor.execute("""
@@ -70,6 +82,7 @@ class Database:
                 name VARCHAR(255) NOT NULL,
                 description TEXT,
                 category VARCHAR(50) DEFAULT NULL,
+                state VARCHAR(100) DEFAULT NULL,
                 image_path VARCHAR(255),
                 starting_price DECIMAL(12, 2) NOT NULL,
                 quoted_price DECIMAL(12, 2) DEFAULT NULL,
@@ -82,6 +95,7 @@ class Database:
         # Add columns if they don't exist (for existing databases)
         for col, definition in [
             ('category', 'VARCHAR(50) DEFAULT NULL AFTER description'),
+            ('state', 'VARCHAR(100) DEFAULT NULL AFTER category'),
             ('quoted_price', 'DECIMAL(12, 2) DEFAULT NULL AFTER starting_price'),
         ]:
             try:
@@ -186,6 +200,33 @@ class Database:
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # Subscription plans table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS plans (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                price DECIMAL(10, 2) NOT NULL,
+                duration VARCHAR(50) NOT NULL,
+                period VARCHAR(50) NOT NULL,
+                features TEXT,
+                popular BOOLEAN DEFAULT FALSE,
+                is_active BOOLEAN DEFAULT TRUE,
+                sort_order INT DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            )
+        """)
+
+        # Insert default plans if table is empty
+        cursor.execute("SELECT COUNT(*) FROM plans")
+        if cursor.fetchone()[0] == 0:
+            cursor.execute("""
+                INSERT INTO plans (name, price, duration, period, features, popular, sort_order) VALUES
+                ('Basic', 499, '30 Days', '30 Days', '["Access all auctions","Real-time bidding","Email notifications","Standard support"]', FALSE, 1),
+                ('Professional', 2799, '180 Days', '180 Days', '["Everything in Basic","Priority bidding queue","SMS & WhatsApp alerts","Dedicated manager","Early access"]', TRUE, 2),
+                ('Enterprise', 4999, '365 Days', '365 Days', '["Everything in Pro","Unlimited bids","Analytics dashboard","24/7 priority support","API access"]', FALSE, 3)
+            """)
 
         # Create default admin if not exists
         cursor.execute("SELECT * FROM users WHERE role = 'admin'")

@@ -71,7 +71,7 @@
               customer delight.
             </p>
             <div className="text-center md:order-first lg:order-last">
-              <div className="w-48 h-48 bg-gradient-to-br from-accent to-primary-400 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-48 h-48 bg-[#202124] rounded-full flex items-center justify-center mx-auto">
                 <i className="fas fa-user text-7xl text-white/80"></i>
               </div>
             </div>

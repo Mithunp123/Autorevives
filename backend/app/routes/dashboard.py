@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 from ..utils import role_required, serialize_rows
 
@@ -118,6 +118,51 @@ def get_recent_activity():
         """)
         activity = serialize_rows(cursor.fetchall())
         return jsonify(activity)
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@dashboard_bp.route("/vehicles-by-state", methods=["GET"])
+@role_required("admin")
+def get_vehicles_by_state():
+    """Get vehicle counts grouped by office state, with optional state filter."""
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        state_filter = request.args.get("state", "").strip()
+
+        # Get distinct states with vehicle counts
+        cursor.execute("""
+            SELECT COALESCE(u.state, 'Unknown') as state, COUNT(p.id) as vehicle_count
+            FROM products p
+            JOIN users u ON p.office_id = u.id
+            GROUP BY u.state
+            ORDER BY vehicle_count DESC
+        """)
+        states = serialize_rows(cursor.fetchall())
+
+        # If state filter provided, get vehicles for that state
+        vehicles = []
+        if state_filter:
+            cursor.execute("""
+                SELECT p.id, p.name, p.image_path, p.starting_price, p.status, p.created_at,
+                       u.finance_name as office_name,
+                       COALESCE(p.state, u.state) as state,
+                       COALESCE(u.location, '') as location,
+                       (SELECT MAX(b.amount) FROM bids b WHERE b.product_id = p.id) as current_bid,
+                       (SELECT COUNT(b.id) FROM bids b WHERE b.product_id = p.id) as bid_count
+                FROM products p
+                JOIN users u ON p.office_id = u.id
+                WHERE COALESCE(p.state, u.state) = %s
+                ORDER BY p.created_at DESC
+            """, (state_filter,))
+            vehicles = serialize_rows(cursor.fetchall())
+
+        return jsonify({
+            "states": states,
+            "vehicles": vehicles,
+        })
     finally:
         cursor.close()
         conn.close()

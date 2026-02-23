@@ -80,7 +80,7 @@ export default function Profile() {
         {/* Avatar + name strip */}
         <div className="card p-6 flex items-center gap-5">
           <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-br from-accent to-primary-400 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+            <div className="w-20 h-20 bg-[#202124] rounded-full flex items-center justify-center text-white text-2xl font-bold">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             <button
@@ -179,7 +179,7 @@ export default function Profile() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-accent to-primary-500 text-white font-medium rounded-xl shadow-button hover:shadow-glow disabled:opacity-60 transition"
+            className="flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white font-medium rounded-xl shadow-button hover:shadow-glow disabled:opacity-60 transition"
           >
             {saving ? <i className="fas fa-spinner fa-spin text-sm"></i> : <i className="fas fa-floppy-disk text-sm"></i>}
             {saving ? 'Saving' : 'Save Changes'}

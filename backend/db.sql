@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     finance_name VARCHAR(255),
     owner_name VARCHAR(255),
+    state VARCHAR(100) DEFAULT NULL,
+    location VARCHAR(255) DEFAULT NULL,
     role ENUM('admin', 'office', 'user') NOT NULL,
     status ENUM('pending', 'active', 'blocked') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -51,6 +53,28 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     message TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Subscription Plans Table
+CREATE TABLE IF NOT EXISTS plans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    duration VARCHAR(50) NOT NULL,
+    period VARCHAR(50) NOT NULL,
+    features TEXT,
+    popular BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Insert default plans
+INSERT INTO plans (name, price, duration, period, features, popular, sort_order) VALUES
+('Basic', 499, '30 Days', '30 Days', '["Access all auctions","Real-time bidding","Email notifications","Standard support"]', FALSE, 1),
+('Professional', 2799, '180 Days', '180 Days', '["Everything in Basic","Priority bidding queue","SMS & WhatsApp alerts","Dedicated manager","Early access"]', TRUE, 2),
+('Enterprise', 4999, '365 Days', '365 Days', '["Everything in Pro","Unlimited bids","Analytics dashboard","24/7 priority support","API access"]', FALSE, 3)
+ON DUPLICATE KEY UPDATE name=name;
 
 -- Insert default admin user (password: admin123)
 INSERT INTO users (username, email, password_hash, role, status)

@@ -11,7 +11,7 @@ const colorMap = {
 export default function StatusBadge({ status, className }) {
   const color = getStatusColor(status);
   return (
-    <span className={cn(colorMap[color] || 'badge-neutral', className)}>
+    <span className={cn('inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border', colorMap[color] || 'badge-neutral', className)}>
       {status}
     </span>
   );

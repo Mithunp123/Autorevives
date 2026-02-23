@@ -68,18 +68,18 @@ export default function UserDetails() {
       </button>
 
       <div className="card p-6">
-        <div className="flex flex-col sm:flex-row items-start gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-primary-400 flex items-center justify-center text-white text-2xl font-bold">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#4285F4] to-[#3367D6] flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-blue-500/30">
             {user.username?.charAt(0).toUpperCase()}
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex-1 text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-3 flex-wrap">
               <h1 className="text-xl font-bold text-slate-900">{user.username}</h1>
               <StatusBadge status={user.status} />
             </div>
-            <p className="text-sm text-slate-400 capitalize mt-1">{user.role}</p>
+            <p className="text-sm text-slate-500 capitalize mt-1 font-medium">{user.role}</p>
           </div>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap justify-center sm:justify-end w-full sm:w-auto mt-4 sm:mt-0">
             {user.status === 'active' ? (
               <Button variant="secondary" icon="fa-ban" onClick={handleBlock} size="sm">
                 Block

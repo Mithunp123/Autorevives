@@ -60,9 +60,14 @@ export default function Auctions() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="page-header"><div><h1 className="page-title">Auctions</h1><p className="page-subtitle">Manage all vehicle auctions</p></div></div>
-      <div className="grid grid-cols-3 gap-4">
+    <div className="space-y-6 animate-fade-in">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Auctions</h1>
+          <p className="page-subtitle">Manage all vehicle auctions</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard icon="fa-gavel" label="Total Auctions" value={auctions.length} color="success" />
         <StatCard icon="fa-hand-holding-dollar" label="Total Bids" value={totalBids} color="accent" />
         <StatCard icon="fa-car" label="Listed Vehicles" value={filtered.length} color="warning" />

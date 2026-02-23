@@ -29,14 +29,22 @@
                 { value: '100+', label: 'Cities' },
               ].map((s) => (
                 <div key={s.label}>
-                  <span className="font-display text-2xl font-bold text-gradient block">{s.value}</span>
+                  <span className="font-display text-2xl font-bold text-accent block">{s.value}</span>
                   <span className="text-xs text-slate-400">{s.label}</span>
                 </div>
               ))}
             </div>
           </div>
           <div className="text-center">
-            <img src="/images/icons/values.svg" alt="Growth" className="max-w-xs mx-auto" />
+            <div className="max-w-xs mx-auto bg-gradient-to-br from-[#4285F4]/10 to-[#4285F4]/5 rounded-3xl p-12">
+              <i className="fas fa-chart-line text-[#4285F4] text-7xl mb-4 block"></i>
+              <div className="flex items-end justify-center gap-2 mt-4">
+                <div className="w-8 h-16 bg-[#4285F4]/20 rounded-t-lg"></div>
+                <div className="w-8 h-24 bg-[#4285F4]/40 rounded-t-lg"></div>
+                <div className="w-8 h-32 bg-[#4285F4]/60 rounded-t-lg"></div>
+                <div className="w-8 h-40 bg-[#4285F4] rounded-t-lg"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -126,13 +134,13 @@
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
             <a
               href="mailto:investors@autorevive.in"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-accent to-primary-500 text-white rounded-xl font-semibold text-sm shadow-button hover:shadow-glow transition"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white rounded-xl font-semibold text-sm shadow-button hover:shadow-glow transition"
             >
               <i className="fas fa-envelope text-sm"></i> Contact Investor Relations
             </a>
             <a
               href="#"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl font-semibold text-sm hover:bg-charcoal transition"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl font-semibold text-sm hover:bg-[#202124] transition"
             >
               <i className="fas fa-download text-sm"></i> Download Pitch Deck
             </a>

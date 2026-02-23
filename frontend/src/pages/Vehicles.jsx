@@ -78,13 +78,13 @@ export default function Vehicles() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-5 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       <div className="page-header">
         <div>
           <h1 className="page-title">Vehicles</h1>
           <p className="page-subtitle">{filtered.length} vehicles in inventory</p>
         </div>
-        <Button icon="fa-plus" onClick={() => navigate('/vehicles/add')}>Add Vehicle</Button>
+        <Button icon="fa-plus" onClick={() => navigate('/vehicles/add')} size="lg">Add Vehicle</Button>
       </div>
       <SearchFilter searchValue={search} onSearchChange={setSearch} searchPlaceholder="Search by name, ID or office..." filters={[{ key: 'status', label: 'All Statuses', options: ['approved', 'pending', 'rejected'], value: statusFilter, onChange: setStatusFilter }]} />
       <DataTable columns={columns} data={paginated} onRowClick={(row) => navigate(`/vehicles/${row.id}`)} emptyMessage="No vehicles found" />
