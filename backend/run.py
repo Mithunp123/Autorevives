@@ -16,5 +16,5 @@ if __name__ == "__main__":
         app.run(host="0.0.0.0", port=5000, debug=True)
     else:
         from waitress import serve
-        print("Starting AutoRevive API on http://0.0.0.0:5006")
-        serve(app, host="0.0.0.0", port=5006)
+        print("Starting AutoRevive API on http://127.0.0.1:5006")
+        serve(app, host="127.0.0.1", port=5006)
