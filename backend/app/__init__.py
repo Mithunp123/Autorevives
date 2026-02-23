@@ -3,6 +3,9 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
+# Load .env BEFORE importing Config so os.getenv() picks up .env values
+load_dotenv()
+
 from .database import Database
 from .config import Config
 
@@ -27,7 +30,6 @@ class _StripTrailingSlash:
 
 def create_app(config_class=Config):
     """Application factory pattern."""
-    load_dotenv()
 
     app = Flask(__name__)
     app.url_map.strict_slashes = False
