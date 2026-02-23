@@ -265,9 +265,9 @@ export default function PublicLayout() {
 
             {/* Links */}
             <div>
-              <h4 className="text-sm font-bold font-display mb-5 flex items-center gap-2 tracking-wide">
+              <h3 className="text-sm font-bold font-display mb-5 flex items-center gap-2 tracking-wide">
                 <div className="w-1.5 h-1.5 bg-accent rounded-full" /> Quick Links
-              </h4>
+              </h3>
               <ul className="space-y-2.5 list-none m-0 p-0">
                 {[
                   { to: '/', label: 'Home' },
@@ -293,9 +293,9 @@ export default function PublicLayout() {
 
             {/* Contact Form */}
             <div>
-              <h4 className="text-sm font-bold font-display mb-5 flex items-center gap-2 tracking-wide">
+              <h3 className="text-sm font-bold font-display mb-5 flex items-center gap-2 tracking-wide">
                 <div className="w-1.5 h-1.5 bg-accent rounded-full" /> Quick Contact
-              </h4>
+              </h3>
               <form onSubmit={handleFooterContact} className="space-y-2.5">
                 <input
                   type="text"
@@ -332,7 +332,7 @@ export default function PublicLayout() {
           </div>
 
           {/* Bottom */}
-          <div className="border-t border-white/[0.06] py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
+          <div className="border-t border-white/[0.06] py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
             <p className="font-medium"><i className="far fa-copyright mr-1"></i>{new Date().getFullYear()} AutoRevive. All Rights Reserved.</p>
             <div className="flex gap-6">
               <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>

@@ -264,7 +264,7 @@ export default function PublicAuctions() {
                           <span className="text-sm font-bold text-slate-900">{formatPrice(a.starting_price)}</span>
                         </td>
                         <td className="px-6 py-4 text-right hidden sm:table-cell">
-                          <span className="text-sm font-bold text-[#4285F4]">{formatPrice(a.current_bid || a.starting_price)}</span>
+                          <span className="text-sm font-bold text-[#3367D6]">{formatPrice(a.current_bid || a.starting_price)}</span>
                         </td>
                         <td className="px-6 py-4 text-center">
                           <Link to={`/public/auctions/${a.id}`}

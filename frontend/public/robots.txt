@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /vehicles
+Disallow: /auctions
+Disallow: /users
+Disallow: /managers
+Disallow: /offices
+Disallow: /approvals
+Disallow: /reports
+Disallow: /settings
+Disallow: /profile
+Disallow: /office-profile
+
+Sitemap: https://autorevives.com/sitemap.xml

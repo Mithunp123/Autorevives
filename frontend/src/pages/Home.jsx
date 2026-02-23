@@ -140,9 +140,9 @@ export default function Home() {
 
               {/* Date + Location bar */}
               <div className="flex items-stretch max-w-md bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10">
-                <div className="bg-[#4285F4] text-white px-6 py-3 text-center min-w-[80px] flex flex-col justify-center">
+                <div className="bg-[#2851a3] text-white px-6 py-3 text-center min-w-[80px] flex flex-col justify-center">
                   <p className="text-2xl font-extrabold leading-none">{dayNum}</p>
-                  <p className="text-xs font-medium mt-1 uppercase tracking-wider">{monthName}</p>
+                  <p className="text-sm font-semibold mt-1 uppercase tracking-wider">{monthName}</p>
                 </div>
                 <div className="flex items-center px-6 py-3 flex-1">
                   <div className="flex flex-col">
@@ -170,7 +170,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-wrap gap-4 pt-2">
-                <a href="#auctions" className="bg-[#4285F4] hover:bg-[#3367D6] text-white px-8 py-4 rounded-xl font-bold text-base transition-colors shadow-lg shadow-[#4285F4]/25 flex items-center gap-2">
+                <a href="#auctions" className="bg-[#3367D6] hover:bg-[#2851a3] text-white px-8 py-4 rounded-xl font-bold text-base transition-colors shadow-lg shadow-[#3367D6]/25 flex items-center gap-2">
                   <i className="fas fa-gavel"></i>Browse Auctions
                 </a>
                 <Link to="/register" className="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-8 py-4 rounded-xl font-bold text-base transition-colors backdrop-blur-sm">
@@ -219,7 +219,7 @@ export default function Home() {
             
             {/* Tabs: Live / Upcoming */}
             <div className="flex items-center gap-3 bg-white p-1.5 rounded-full border border-slate-200 shadow-sm">
-              <div className="flex items-center gap-2 px-5 py-2 bg-red-50 text-red-600 rounded-full text-sm font-bold border border-red-100">
+              <div className="flex items-center gap-2 px-5 py-2 bg-red-50 text-red-700 rounded-full text-sm font-bold border border-red-100">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
@@ -342,7 +342,8 @@ export default function Home() {
                         <td className="px-6 py-4 text-center">
                           <Link to={`/public/auctions/${p.id}`}
                             aria-label={`View details for ${p.name}`}
-                            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-[#4285F4] hover:text-white transition-colors">
+                            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-[#3367D6] hover:text-white transition-colors">
+                            <span className="sr-only">View details for {p.name}</span>
                             <i className="fas fa-arrow-right"></i>
                           </Link>
                         </td>
@@ -381,7 +382,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-sm font-bold text-[#4285F4] tracking-widest uppercase mb-3">Why Choose Us</h2>
+            <h2 className="text-sm font-bold text-[#2851a3] tracking-widest uppercase mb-3">Why Choose Us</h2>
             <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">The Autorevive Advantage</h3>
             <p className="text-slate-500 text-lg">We provide a transparent, efficient, and secure platform for buying verified vehicles from top finance companies.</p>
           </div>
@@ -415,7 +416,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-sm font-bold text-[#4285F4] tracking-widest uppercase mb-3">Simple Process</h2>
+            <h2 className="text-sm font-bold text-[#60a5fa] tracking-widest uppercase mb-3">Simple Process</h2>
             <h3 className="text-3xl md:text-4xl font-extrabold mb-6">How It Works</h3>
             <p className="text-slate-400 text-lg">Start bidding and winning in four simple steps.</p>
           </div>
@@ -433,7 +434,7 @@ export default function Home() {
               <div key={i} className="relative text-center">
                 <div className="w-24 h-24 mx-auto bg-slate-800 rounded-full border-4 border-slate-900 shadow-xl flex items-center justify-center relative z-10 mb-6 group hover:border-[#4285F4] transition-colors">
                   <i className={`fas ${s.icon} text-3xl text-slate-300 group-hover:text-[#4285F4] transition-colors`}></i>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#2851a3] rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
                     {s.n}
                   </div>
                 </div>
@@ -450,7 +451,7 @@ export default function Home() {
       <section id="pricing" className="py-20 bg-slate-50 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-sm font-bold text-[#4285F4] tracking-widest uppercase mb-3">Membership Plans</h2>
+            <h2 className="text-sm font-bold text-[#2851a3] tracking-widest uppercase mb-3">Membership Plans</h2>
             <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">Choose Your Plan</h3>
             <p className="text-slate-500 text-lg">Select a membership plan that best fits your bidding requirements.</p>
           </div>
@@ -464,7 +465,7 @@ export default function Home() {
               return (
                 <div key={plan.id || plan.name} className={`bg-white rounded-3xl p-8 relative transition-all duration-300 hover:-translate-y-2 ${isPop ? 'border-2 border-[#4285F4] shadow-xl shadow-[#4285F4]/10' : 'border border-slate-200 shadow-sm hover:shadow-xl'}`}>
                   {isPop && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#4285F4] to-[#3367D6] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#3367D6] to-[#2851a3] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
                       MOST POPULAR
                     </div>
                   )}
@@ -490,7 +491,7 @@ export default function Home() {
                   <Link to="/register"
                     className={`block w-full text-center py-4 rounded-xl font-bold transition-all ${
                       isPop 
-                        ? 'bg-[#4285F4] hover:bg-[#3367D6] text-white shadow-lg shadow-[#4285F4]/25' 
+                        ? 'bg-[#3367D6] hover:bg-[#2851a3] text-white shadow-lg shadow-[#3367D6]/25' 
                         : 'bg-slate-100 hover:bg-slate-200 text-slate-900'
                     }`}
                   >
@@ -508,8 +509,8 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-sm font-bold text-[#4285F4] tracking-widest uppercase mb-3">Testimonials</h2>
-            <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">Trusted by <span className="text-[#4285F4]">{stats.total_users || '2,500'}+</span> Dealers</h3>
+            <h2 className="text-sm font-bold text-[#2851a3] tracking-widest uppercase mb-3">Testimonials</h2>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6">Trusted by <span className="text-[#3367D6]">{stats.total_users || '2,500'}+</span> Dealers</h3>
             <p className="text-slate-500 text-lg">See what our community of verified dealers has to say about their experience.</p>
           </div>
           
@@ -554,7 +555,7 @@ export default function Home() {
                 Join thousands of dealers across India. Register for free and get instant access to verified vehicle auctions from top finance companies.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/register" className="bg-[#4285F4] hover:bg-[#3367D6] text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-[#4285F4]/25 hover:-translate-y-1 text-center">
+                <Link to="/register" className="bg-[#3367D6] hover:bg-[#2851a3] text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-[#3367D6]/25 hover:-translate-y-1 text-center">
                   Create Free Account
                 </Link>
                 <Link to="/about" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg transition-all backdrop-blur-sm text-center">

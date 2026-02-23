@@ -90,7 +90,7 @@ export default function PublicAuctionDetails() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <span className="px-3 py-1 bg-[#4285F4]/20 text-[#4285F4] rounded-full text-xs font-bold uppercase tracking-wider border border-[#4285F4]/30">
+                <span className="px-3 py-1 bg-[#3367D6]/20 text-[#2851a3] rounded-full text-xs font-bold uppercase tracking-wider border border-[#3367D6]/30">
                   {auction.category || 'Vehicle'}
                 </span>
                 <span className="px-3 py-1 bg-white/10 text-white rounded-full text-xs font-bold uppercase tracking-wider border border-white/20">
@@ -227,8 +227,8 @@ export default function PublicAuctionDetails() {
                 </div>
               )}
               <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-100">
-                <span className="text-sm font-bold text-[#4285F4]">Current Highest</span>
-                <span className="font-bold text-xl text-[#4285F4]">{formatPrice(auction.current_bid || auction.starting_price)}</span>
+                <span className="text-sm font-bold text-[#2851a3]">Current Highest</span>
+                <span className="font-bold text-xl text-[#3367D6]">{formatPrice(auction.current_bid || auction.starting_price)}</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
                 <span className="text-sm font-medium text-slate-500 flex items-center gap-2">
@@ -270,7 +270,7 @@ export default function PublicAuctionDetails() {
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 bg-[#4285F4] hover:bg-[#3367D6] text-white py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-[#3367D6] hover:bg-[#2851a3] text-white py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
                 >
                   <i className="fas fa-gavel"></i>
                   Place Bid
@@ -288,7 +288,7 @@ export default function PublicAuctionDetails() {
                 <p className="text-sm font-medium text-slate-600 mb-5">Please login to place a bid</p>
                 <button
                   onClick={() => navigate('/login')}
-                  className="w-full bg-[#4285F4] hover:bg-[#3367D6] text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
+                  className="w-full bg-[#3367D6] hover:bg-[#2851a3] text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
                 >
                   Login to Bid
                 </button>

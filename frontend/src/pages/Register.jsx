@@ -219,7 +219,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#4285F4] hover:bg-[#3367D6] text-white py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 transform hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-[#3367D6] hover:bg-[#2851a3] text-white py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 transform hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? <i className="fas fa-circle-notch fa-spin"></i> : <><i className="fas fa-rocket"></i> Create Account</>}
             </button>
