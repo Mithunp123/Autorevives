@@ -1,4 +1,5 @@
 ﻿import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { publicService } from '@/services';
@@ -32,10 +33,15 @@ export default function Contact() {
 
   return (
     <div>
+      <Helmet>
+        <title>Contact Us - AutoRevive</title>
+        <meta name="description" content="Get in touch with AutoRevive support. Find our office address, phone numbers, and email for assistance." />
+      </Helmet>
+
       {/* Header */}
       <div className="text-center py-14">
         <h1 className="font-display text-3xl font-extrabold tracking-tight text-slate-900 mb-3">Contact Support</h1>
-        <p className="text-slate-400 max-w-xl mx-auto">
+        <p className="text-slate-500 max-w-xl mx-auto">
           Have a question or need assistance? Our team is here to help you.
         </p>
       </div>
@@ -154,15 +160,15 @@ export default function Contact() {
               <div>
                 <h4 className="text-sm font-semibold text-slate-900 mb-1">{c.title}</h4>
                 {c.lines.map((l, i) => (
-                  <p key={i} className="text-sm text-slate-400">{l}</p>
+                  <p key={i} className="text-sm text-slate-500">{l}</p>
                 ))}
-                {c.sub && <small className="text-xs text-slate-300 mt-1 block">{c.sub}</small>}
+                {c.sub && <small className="text-xs text-slate-500 mt-1 block">{c.sub}</small>}
               </div>
             </div>
           ))}
 
           {/* Map placeholder */}
-          <div className="h-48 bg-slate-50 card flex items-center justify-center text-slate-300 text-sm">
+          <div className="h-48 bg-slate-50 card flex items-center justify-center text-slate-500 text-sm">
             <i className="fas fa-map-location-dot mr-2"></i> Map Location
           </div>
         </div>

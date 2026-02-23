@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { StatCard, StatusBadge, PageLoader } from '@/components/ui';
 import { AreaChartCard } from '@/components/charts';
@@ -108,6 +109,11 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 animate-fade-in">
+      <Helmet>
+        <title>Dashboard - AutoRevive</title>
+        <meta name="description" content="AutoRevive admin dashboard. Monitor vehicles, auctions, users, and platform activity." />
+      </Helmet>
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
@@ -242,7 +248,7 @@ export default function Dashboard() {
                       <td className="py-2.5 px-3">
                         <div className="flex items-center gap-3">
                           {v.image_path ? (
-                            <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${v.image_path}`} alt="" className="w-10 h-10 rounded-lg object-cover" />
+                            <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${v.image_path}`} alt="" width={40} height={40} loading="lazy" className="w-10 h-10 rounded-lg object-cover" />
                           ) : (
                             <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center"><i className="fas fa-car text-slate-300 text-sm"></i></div>
                           )}

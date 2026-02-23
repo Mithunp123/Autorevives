@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from '@/context';
 import { ROLES } from '@/utils';
 import { publicService } from '@/services';
@@ -31,6 +32,11 @@ export default function Login() {
 
   return (
     <div className="min-h-[calc(100vh-5rem)] relative flex flex-col items-center justify-center py-12 sm:py-16">
+      <Helmet>
+        <title>Login - AutoRevive</title>
+        <meta name="description" content="Sign in to your AutoRevive account to bid on vehicles, manage auctions, and more." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       {/* Animated background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#4285F4]/10 rounded-full blur-3xl animate-pulse-soft" />
@@ -50,6 +56,8 @@ export default function Login() {
             <img
               src="/images/Logo.png"
               alt="AutoRevive"
+              width={48}
+              height={48}
               className="h-12 w-auto drop-shadow-lg"
               onError={(e) => { e.target.style.display = 'none'; }}
             />
@@ -64,7 +72,7 @@ export default function Login() {
         <div className="bg-white rounded-2xl shadow-2xl shadow-black/20 p-8 sm:p-10">
           <div className="mb-7">
             <h2 className="text-2xl font-extrabold text-slate-900 font-display tracking-tight">Welcome back</h2>
-            <p className="text-slate-400 text-sm mt-1.5">Sign in to your account to continue</p>
+            <p className="text-slate-500 text-sm mt-1.5">Sign in to your account to continue</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -164,7 +172,7 @@ export default function Login() {
         </div>
 
         {/* Stats Row */}
-        <div className="mt-8 grid grid-cols-3 gap-4">
+        <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-4">
           {[
             { val: siteStats.total_users?.toLocaleString('en-IN') || '0', label: 'Active Users', icon: 'fa-users' },
             { val: siteStats.live_auctions?.toLocaleString('en-IN') || '0', label: 'Live Auctions', icon: 'fa-gavel' },
@@ -174,7 +182,7 @@ export default function Login() {
               <div className="w-9 h-9 mx-auto mb-2 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center">
                 <i className={`fas ${s.icon} text-[#4285F4] text-xs`}></i>
               </div>
-              <p className="text-lg font-extrabold text-slate-900 font-display">{s.val}</p>
+              <p className="text-base sm:text-lg font-extrabold text-slate-900 font-display">{s.val}</p>
               <p className="text-slate-400 text-[11px] font-medium mt-0.5">{s.label}</p>
             </div>
           ))}

@@ -85,6 +85,7 @@ export default function Profile() {
             </div>
             <button
               type="button"
+              aria-label="Change profile picture"
               className="absolute -bottom-1 -right-1 w-7 h-7 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-sm hover:bg-slate-50"
             >
               <i className="fas fa-camera text-xs text-slate-400"></i>
@@ -92,7 +93,7 @@ export default function Profile() {
           </div>
           <div>
             <h2 className="font-semibold text-slate-900">{user?.name || 'User'}</h2>
-            <p className="text-xs text-slate-300 capitalize">{user?.role || 'user'} account</p>
+            <p className="text-xs text-slate-500 capitalize">{user?.role || 'user'} account</p>
           </div>
         </div>
 

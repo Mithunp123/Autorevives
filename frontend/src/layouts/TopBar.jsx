@@ -32,6 +32,7 @@ export default function TopBar({ onMenuClick, collapsed }) {
             <input
               type="text"
               placeholder="Search vehicles, users, auctions..."
+              aria-label="Search vehicles, users, auctions"
               className="bg-transparent text-sm flex-1 outline-none text-slate-700 placeholder:text-slate-400 font-medium"
             />
             <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 rounded-md bg-white text-[10px] font-mono font-semibold text-slate-400 border border-slate-200">/</kbd>
@@ -40,11 +41,6 @@ export default function TopBar({ onMenuClick, collapsed }) {
 
         {/* Right side */}
         <div className="flex items-center gap-1.5">
-          {/* Notifications */}
-          <button className="btn-icon relative">
-            <i className="fas fa-bell text-lg"></i>
-            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-accent rounded-full ring-2 ring-white animate-pulse-soft" />
-          </button>
 
           <div className="w-px h-8 bg-slate-200 mx-2 hidden sm:block" />
 
@@ -52,7 +48,7 @@ export default function TopBar({ onMenuClick, collapsed }) {
           <div className="hidden sm:flex items-center gap-3 pl-1">
             <div className="text-right">
               <p className="text-sm font-bold text-slate-800">{user?.username || 'Admin'}</p>
-              <p className="text-[11px] text-slate-400 font-medium capitalize">{user?.role || 'admin'}</p>
+              <p className="text-xs text-slate-500 font-medium capitalize">{user?.role || 'admin'}</p>
             </div>
             <div className="w-10 h-10 rounded-xl bg-[#202124] flex items-center justify-center text-white text-sm font-bold shadow-md shadow-accent/20 ring-2 ring-white">
               {user?.username?.charAt(0).toUpperCase() || 'A'}
@@ -63,6 +59,7 @@ export default function TopBar({ onMenuClick, collapsed }) {
           <button
             onClick={logout}
             className="btn-icon text-slate-400 hover:text-danger hover:bg-red-50"
+            aria-label="Logout"
             title="Logout"
           >
             <i className="fas fa-arrow-right-from-bracket text-lg"></i>

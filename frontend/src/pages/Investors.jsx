@@ -1,6 +1,13 @@
-﻿export default function Investors() {
+﻿import { Helmet } from 'react-helmet-async';
+
+export default function Investors() {
   return (
     <div>
+      <Helmet>
+        <title>Investors - AutoRevive</title>
+        <meta name="description" content="Explore investment opportunities with AutoRevive, India's fastest-growing automotive auction platform." />
+      </Helmet>
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-charcoal via-navy to-steel text-white py-14 text-center">
         <div className="max-w-3xl mx-auto px-4">
@@ -22,7 +29,7 @@
               Since our inception, we have facilitated over ₹500 crores in transactions, served 50,000+
               customers, and expanded to 100+ cities across India.
             </p>
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-4 sm:gap-6">
               {[
                 { value: '300%', label: 'YoY Growth' },
                 { value: '₹500Cr+', label: 'Transaction Value' },
@@ -30,7 +37,7 @@
               ].map((s) => (
                 <div key={s.label}>
                   <span className="font-display text-2xl font-bold text-accent block">{s.value}</span>
-                  <span className="text-xs text-slate-400">{s.label}</span>
+                  <span className="text-xs text-slate-500">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -53,7 +60,7 @@
       <section className="py-12 bg-surface">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="font-display text-xl font-extrabold text-center text-slate-900 mb-2">Why Invest in AutoRevive?</h2>
-          <p className="text-center text-slate-400 text-sm mb-8">Key factors that make us an attractive investment opportunity</p>
+          <p className="text-center text-slate-500 text-sm mb-8">Key factors that make us an attractive investment opportunity</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: 'fa-arrow-trend-up', title: 'Market Leadership', desc: '#1 online automotive auction platform in Western India with rapidly expanding pan-India presence' },
@@ -68,7 +75,7 @@
                   <i className={`fas ${f.icon} text-lg text-accent`}></i>
                 </div>
                 <h4 className="font-semibold text-slate-900 mb-2">{f.title}</h4>
-                <p className="text-sm text-slate-400">{f.desc}</p>
+                <p className="text-sm text-slate-500">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -79,17 +86,17 @@
       <section className="py-12">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="font-display text-xl font-extrabold text-center text-slate-900 mb-2">Financial Performance</h2>
-          <p className="text-center text-slate-400 text-sm mb-8">Consistent growth across all key metrics</p>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <p className="text-center text-slate-500 text-sm mb-8">Consistent growth across all key metrics</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
               { label: 'FY 2024-25 GMV', value: '₹180 Cr', growth: '85% YoY' },
               { label: 'Revenue', value: '₹18 Cr', growth: '120% YoY' },
               { label: 'Active Users', value: '25,000+', growth: '150% YoY' },
               { label: 'Vehicles Auctioned', value: '8,500+', growth: '95% YoY' },
             ].map((s) => (
-              <div key={s.label} className="card text-center p-6 hover:shadow-elevated transition">
-                <span className="text-xs text-slate-400 block mb-2">{s.label}</span>
-                <span className="font-display text-2xl font-bold text-slate-900 block mb-1">{s.value}</span>
+              <div key={s.label} className="card text-center p-4 sm:p-6 hover:shadow-elevated transition">
+                <span className="text-xs text-slate-500 block mb-2">{s.label}</span>
+                <span className="font-display text-lg sm:text-2xl font-bold text-slate-900 block mb-1">{s.value}</span>
                 <span className="text-xs text-green-500 font-medium flex items-center justify-center gap-1">
                   <i className="fas fa-arrow-up text-[10px]"></i> {s.growth}
                 </span>
@@ -103,7 +110,7 @@
       <section className="py-12 bg-surface">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="font-display text-xl font-extrabold text-center text-slate-900 mb-2">Leadership Team</h2>
-          <p className="text-center text-slate-400 text-sm mb-8">Experienced team with deep domain expertise</p>
+          <p className="text-center text-slate-500 text-sm mb-8">Experienced team with deep domain expertise</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
               { name: 'Rahul Sharma', role: 'Founder & CEO', desc: '15+ years in automotive finance. Previously led used car operations at HDFC Bank.' },
@@ -116,7 +123,7 @@
                 </div>
                 <h4 className="font-semibold text-slate-900">{t.name}</h4>
                 <span className="text-xs text-accent font-medium">{t.role}</span>
-                <p className="text-sm text-slate-400 mt-2">{t.desc}</p>
+                <p className="text-sm text-slate-500 mt-2">{t.desc}</p>
               </div>
             ))}
           </div>
@@ -127,7 +134,7 @@
       <section className="py-14">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="font-display text-2xl font-extrabold text-slate-900 mb-3">Interested in Investing?</h2>
-          <p className="text-slate-400 mb-6">
+          <p className="text-slate-500 mb-6">
             We're always looking for strategic partners who share our vision of transforming India's
             pre-owned vehicle market.
           </p>
@@ -145,7 +152,7 @@
               <i className="fas fa-download text-sm"></i> Download Pitch Deck
             </a>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-slate-400">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-slate-500">
             <span className="flex items-center gap-2"><i className="fas fa-envelope text-sm text-accent"></i> investors@autorevive.in</span>
             <span className="flex items-center gap-2"><i className="fas fa-phone text-sm text-accent"></i> +91 8828820306</span>
           </div>

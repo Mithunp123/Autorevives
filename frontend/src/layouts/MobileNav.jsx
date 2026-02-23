@@ -53,7 +53,7 @@ export default function MobileNav() {
                 )}>
                   <i className={cn(`fas ${icon} text-sm`, isActive && 'text-accent-light')}></i>
                 </div>
-                <span className="text-[10px] font-bold">{label}</span>
+                <span className="text-xs font-bold">{label}</span>
               </NavLink>
             );
           })}

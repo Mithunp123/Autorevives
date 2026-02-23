@@ -1,6 +1,13 @@
-﻿export default function About() {
+﻿import { Helmet } from 'react-helmet-async';
+
+export default function About() {
   return (
     <div>
+      <Helmet>
+        <title>About Us - AutoRevive</title>
+        <meta name="description" content="Learn about AutoRevive's mission, vision, and values. India's trusted online vehicle auction platform." />
+      </Helmet>
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-charcoal via-navy to-steel text-white py-16 text-center">
         <div className="max-w-3xl mx-auto px-4">
@@ -50,7 +57,7 @@
                   <i className={`fas ${v.icon} text-xl ${v.color}`}></i>
                 </div>
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-900 mb-3">{v.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{v.desc}</p>
+                <p className="text-sm text-slate-500 leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>

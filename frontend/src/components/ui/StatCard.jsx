@@ -11,7 +11,7 @@ export default function StatCard({ icon, label, value, change, changeType, color
   };
 
   return (
-    <div className={cn('bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-[#4285F4]/30 transition-all duration-300 group', className)}>
+    <div className={cn('bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-[#4285F4]/30 transition-all duration-300 group', className)}>
       <div className="flex items-start justify-between mb-4">
         <div className={cn('w-14 h-14 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110', iconStyles[color])}>
           {icon && <i className={`fas ${icon} text-xl`}></i>}
@@ -31,7 +31,7 @@ export default function StatCard({ icon, label, value, change, changeType, color
         )}
       </div>
       <div>
-        <p className="text-3xl font-extrabold text-slate-900 tracking-tight mb-1">{value}</p>
+        <p className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1 truncate">{value}</p>
         <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{label}</p>
       </div>
     </div>

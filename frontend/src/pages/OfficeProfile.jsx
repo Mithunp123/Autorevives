@@ -145,7 +145,7 @@ export default function OfficeProfile() {
                 {userInfo?.email || 'email@example.com'}
               </p>
             </div>
-            <span className={`hidden sm:inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold ${
+            <span className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-bold ${
               userInfo?.status === 'active'
                 ? 'bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/30'
                 : 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/30'

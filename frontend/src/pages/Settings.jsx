@@ -333,7 +333,7 @@ export default function Settings() {
                 } ${!plan.is_active ? 'opacity-50' : ''}`}
               >
                 {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] font-bold uppercase px-3 py-0.5 rounded-full">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-bold uppercase px-3 py-0.5 rounded-full">
                     Popular
                   </span>
                 )}
@@ -393,8 +393,8 @@ export default function Settings() {
       {planModal && (
         <Modal title={editingPlan ? 'Edit Plan' : 'Add Plan'} onClose={() => setPlanModal(false)} size="md">
           <form onSubmit={planForm.handleSubmit(savePlan)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
                 <label className="label">Plan Name</label>
                 <input {...planForm.register('name', { required: true })} className="input-field" placeholder="e.g. Professional" />
               </div>

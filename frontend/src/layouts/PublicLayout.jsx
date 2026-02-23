@@ -60,7 +60,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-[80px]">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
-            <img src="/images/Logo.png" alt="AutoRevive" className="h-[70px] w-auto object-contain" onError={(e) => { e.target.style.display='none'; }} />
+            <img src="/images/Logo.png" alt="AutoRevive" className="h-10 sm:h-[70px] w-auto object-contain" width="70" height="70" onError={(e) => { e.target.style.display='none'; }} />
             <span className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
               Auto<span className="text-accent">Revive</span>
             </span>
@@ -70,6 +70,7 @@ export default function PublicLayout() {
           <button
             className="lg:hidden p-2.5 text-slate-700 hover:text-accent rounded-xl hover:bg-accent/5 transition-all"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
           >
             <i className={`fas ${mobileOpen ? 'fa-xmark' : 'fa-bars-staggered'} text-xl`}></i>
           </button>
@@ -238,24 +239,25 @@ export default function PublicLayout() {
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <img src="/images/Logo.png" alt="" className="w-full h-full object-contain" onError={(e) => { e.target.style.display='none'; }} />
+                  <img src="/images/Logo.png" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display='none'; }} />
                 </div>
                 <span className="font-display text-xl font-extrabold tracking-tight">
                   Auto<span className="text-accent">Revive</span>
                 </span>
               </div>
-              <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-xs">
+              <p className="text-white/60 text-sm leading-relaxed mb-6 max-w-xs">
                 India's most trusted platform for vehicle auctions. Connecting buyers and sellers
                 with transparency, security, and unbeatable deals.
               </p>
               <div className="flex gap-2.5">
-                {['facebook-f', 'x-twitter', 'instagram', 'linkedin-in', 'youtube'].map((s) => (
+                {[{name:'facebook-f',label:'Facebook'},{name:'x-twitter',label:'Twitter'},{name:'instagram',label:'Instagram'},{name:'linkedin-in',label:'LinkedIn'},{name:'youtube',label:'YouTube'}].map((s) => (
                   <a
-                    key={s}
+                    key={s.name}
                     href="#"
-                    className="w-9 h-9 bg-white/[0.06] rounded-lg flex items-center justify-center text-white/50 hover:bg-accent hover:text-white hover:scale-110 transition-all duration-200 border border-white/[0.06]"
+                    aria-label={s.label}
+                    className="w-12 h-12 bg-white/[0.06] rounded-lg flex items-center justify-center text-white/60 hover:bg-accent hover:text-white hover:scale-110 transition-all duration-200 border border-white/[0.06]"
                   >
-                    <i className={`fab fa-${s} text-xs`}></i>
+                    <i className={`fab fa-${s.name} text-sm`}></i>
                   </a>
                 ))}
               </div>
@@ -279,7 +281,7 @@ export default function PublicLayout() {
                   <li key={l.to}>
                     <Link
                       to={l.to}
-                      className="text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group"
+                      className="text-white/60 hover:text-white text-sm flex items-center gap-2 transition-colors group"
                     >
                       <i className="fas fa-chevron-right text-[8px] text-accent/60 group-hover:text-accent transition-colors"></i>
                       {l.label}
@@ -298,6 +300,8 @@ export default function PublicLayout() {
                 <input
                   type="text"
                   placeholder="Full Name *"
+                  aria-label="Full Name"
+                  autoComplete="name"
                   value={footerForm.fullName}
                   onChange={(e) => setFooterForm({ ...footerForm, fullName: e.target.value })}
                   className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
@@ -305,17 +309,19 @@ export default function PublicLayout() {
                 <input
                   type="email"
                   placeholder="Email Address *"
+                  aria-label="Email Address"
+                  autoComplete="email"
                   value={footerForm.email}
                   onChange={(e) => setFooterForm({ ...footerForm, email: e.target.value })}
                   className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
                 />
-                <div className="grid grid-cols-2 gap-2.5">
-                  <input type="tel" placeholder="Mobile" value={footerForm.mobile} onChange={(e) => setFooterForm({ ...footerForm, mobile: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
-                  <input type="text" placeholder="State" value={footerForm.state} onChange={(e) => setFooterForm({ ...footerForm, state: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input type="tel" placeholder="Mobile" aria-label="Mobile Number" autoComplete="tel" value={footerForm.mobile} onChange={(e) => setFooterForm({ ...footerForm, mobile: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                  <input type="text" placeholder="State" aria-label="State" value={footerForm.state} onChange={(e) => setFooterForm({ ...footerForm, state: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
                 </div>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <input type="text" placeholder="City" value={footerForm.city} onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
-                  <input type="text" placeholder="Subject" value={footerForm.subject} onChange={(e) => setFooterForm({ ...footerForm, subject: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input type="text" placeholder="City" aria-label="City" value={footerForm.city} onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
+                  <input type="text" placeholder="Subject" aria-label="Subject" value={footerForm.subject} onChange={(e) => setFooterForm({ ...footerForm, subject: e.target.value })} className="w-full px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all" />
                 </div>
                 <button type="submit" disabled={footerSubmitting} className="w-full py-3 bg-accent hover:bg-accent-hover text-white rounded-xl text-sm font-bold transition-all duration-300 disabled:opacity-50 shadow-button hover:shadow-glow">
                   <i className={`fas ${footerSubmitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'} mr-2`}></i>
@@ -330,7 +336,7 @@ export default function PublicLayout() {
             <p className="font-medium"><i className="far fa-copyright mr-1"></i>{new Date().getFullYear()} AutoRevive. All Rights Reserved.</p>
             <div className="flex gap-6">
               <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <Link to="/privacy-policy" className="hover:text-white transition-colors">Terms of Service</Link>
               <Link to="/contact" className="hover:text-white transition-colors">Support</Link>
             </div>
           </div>
@@ -342,7 +348,8 @@ export default function PublicLayout() {
         href="https://wa.me/+918828820306"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:rounded-xl"
+        className="fixed bottom-20 sm:bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl hover:rounded-xl"
+        aria-label="Chat on WhatsApp"
       >
         <i className="fab fa-whatsapp text-2xl"></i>
       </a>

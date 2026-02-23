@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -70,6 +71,11 @@ export default function PublicAuctionDetails() {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
+      <Helmet>
+        <title>{`${auction.name || 'Auction Details'} - AutoRevive`}</title>
+        <meta name="description" content={`Bid on ${auction.name || 'this vehicle'} at AutoRevive. View details and place your bid on this verified pre-owned vehicle.`} />
+      </Helmet>
+
       {/* Header Section */}
       <div className="bg-slate-900 text-white pt-12 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,7 +97,7 @@ export default function PublicAuctionDetails() {
                   ID: {auction.id.substring(0, 8)}
                 </span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{auction.name}</h1>
+              <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">{auction.name}</h1>
               <div className="flex items-center gap-4 text-slate-400 text-sm">
                 <span className="flex items-center gap-1.5"><i className="fas fa-map-marker-alt"></i> {auction.location || 'All'}, {auction.display_state || auction.state || 'Tamil Nadu'}</span>
                 {auction.office_name && <span className="flex items-center gap-1.5"><i className="fas fa-building"></i> {auction.office_name}</span>}
@@ -99,7 +105,7 @@ export default function PublicAuctionDetails() {
             </div>
             <div className="text-left md:text-right">
               <p className="text-slate-400 text-sm font-medium mb-1">Current Bid</p>
-              <p className="text-3xl md:text-4xl font-bold text-[#4285F4]">{formatPrice(auction.current_bid || auction.starting_price)}</p>
+              <p className="text-2xl md:text-4xl font-bold text-[#4285F4]">{formatPrice(auction.current_bid || auction.starting_price)}</p>
             </div>
           </div>
         </div>
@@ -116,6 +122,8 @@ export default function PublicAuctionDetails() {
                   <img
                     src={`/api/uploads/${auction.image_path.replace('uploads/', '')}`}
                     alt={auction.name}
+                    width={800}
+                    height={450}
                     className="w-full h-full object-cover"
                     onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = 'flex'); }}
                   />
@@ -193,7 +201,7 @@ export default function PublicAuctionDetails() {
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-[#4285F4] text-lg">{formatPrice(b.amount)}</p>
-                      {i === 0 && <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">Highest</span>}
+                      {i === 0 && <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">Highest</span>}
                     </div>
                   </div>
                 ))}

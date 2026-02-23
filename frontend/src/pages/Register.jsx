@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from '@/context';
 import { Button } from '@/components/ui';
 
@@ -28,6 +29,11 @@ export default function Register() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row">
+      <Helmet>
+        <title>Register - AutoRevive</title>
+        <meta name="description" content="Create your AutoRevive account. Register as a buyer or finance office." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       {/* Brand panel */}
       <div className="hidden lg:flex lg:w-[45%] bg-[#202124] relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -38,7 +44,7 @@ export default function Register() {
         <div className="absolute bottom-20 -left-10 w-60 h-60 bg-white/[0.03] rounded-full blur-[80px]" />
         <div className="relative z-10 flex flex-col justify-center px-16 w-full">
           <div className="flex items-center gap-3 mb-14">
-            <img src="/images/Logo.png" alt="AutoRevive" className="h-14 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src="/images/Logo.png" alt="AutoRevive" width={56} height={56} className="h-14 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
             <h1 className="text-3xl font-extrabold text-white font-display tracking-tight">
               Auto<span className="text-[#4285F4]">Revive</span>
             </h1>
@@ -46,7 +52,7 @@ export default function Register() {
           <h2 className="text-3xl font-extrabold text-white font-display leading-tight mb-5 tracking-tight">
             Join India's Leading<br />Vehicle Auction Platform
           </h2>
-          <p className="text-white/40 text-sm leading-relaxed max-w-sm font-medium">
+            <p className="text-white/60 text-sm leading-relaxed max-w-sm font-medium">
             Register as a buyer to bid on verified vehicles, or as a finance office to list your inventory and reach thousands of potential buyers.
           </p>
         </div>
@@ -56,7 +62,7 @@ export default function Register() {
       <div className="flex-1 flex items-center justify-center p-6 sm:p-10 bg-surface mesh-bg">
         <div className="w-full max-w-lg space-y-7">
           <div className="lg:hidden flex items-center gap-3 justify-center mb-4">
-            <img src="/images/Logo.png" alt="" className="h-10 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src="/images/Logo.png" alt="" width={40} height={40} className="h-10 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
             <h1 className="text-xl font-extrabold font-display text-slate-900 tracking-tight">
               Auto<span className="text-[#4285F4]">Revive</span>
             </h1>
@@ -64,7 +70,7 @@ export default function Register() {
 
           <div className="text-center lg:text-left">
             <h2 className="text-3xl font-extrabold text-slate-900 font-display tracking-tight">Create Account</h2>
-            <p className="text-slate-400 text-sm mt-2 font-medium">Choose your role and fill in the details</p>
+            <p className="text-slate-500 text-sm mt-2 font-medium">Choose your role and fill in the details</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

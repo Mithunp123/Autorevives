@@ -1,4 +1,6 @@
-﻿// Font Awesome icons used via CDN
+﻿import { Helmet } from 'react-helmet-async';
+
+// Font Awesome icons used via CDN
 
 const sections = [
   {
@@ -89,6 +91,11 @@ const sections = [
 export default function PrivacyPolicy() {
   return (
     <div>
+      <Helmet>
+        <title>Privacy Policy - AutoRevive</title>
+        <meta name="description" content="Read AutoRevive's privacy policy to understand how we collect, use, and protect your personal information." />
+      </Helmet>
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-charcoal via-navy to-steel text-white py-12 text-center">
         <h1 className="font-display text-3xl font-extrabold tracking-tight mb-2">Privacy Policy</h1>
@@ -104,13 +111,13 @@ export default function PrivacyPolicy() {
               <li key={s.id}>
                 <a
                   href={`#${s.id}`}
-                  className="text-sm text-slate-400 hover:text-accent transition-colors"
+                  className="text-sm text-slate-500 hover:text-accent transition-colors"
                 >
                   {s.title}
                 </a>
               </li>
             ))}
-            <li><a href="#contact" className="text-sm text-slate-400 hover:text-accent">9. Contact Us</a></li>
+            <li><a href="#contact" className="text-sm text-slate-500 hover:text-accent">9. Contact Us</a></li>
           </ul>
         </nav>
 
@@ -139,7 +146,7 @@ export default function PrivacyPolicy() {
                 </div>
               )}
               {s.table && (
-                <div className="card overflow-hidden mt-4">
+                <div className="card overflow-x-auto mt-4">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-slate-50">
@@ -151,7 +158,7 @@ export default function PrivacyPolicy() {
                       {s.table.map(([type, purpose]) => (
                         <tr key={type} className="border-t border-slate-50">
                           <td className="px-4 py-2.5 text-slate-700 font-medium">{type}</td>
-                          <td className="px-4 py-2.5 text-slate-400">{purpose}</td>
+                          <td className="px-4 py-2.5 text-slate-500">{purpose}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -170,7 +177,7 @@ export default function PrivacyPolicy() {
             <div className="card p-6">
               <h4 className="font-semibold text-slate-900 mb-1">Data Protection Officer</h4>
               <p className="font-medium text-sm text-slate-700 mb-3">AutoRevive Private Limited</p>
-              <div className="space-y-2 text-sm text-slate-400">
+              <div className="space-y-2 text-sm text-slate-500">
                 <p className="flex items-center gap-2"><i className="fas fa-location-dot text-sm text-accent"></i> 123 Business Park, Andheri East, Mumbai - 400069</p>
                 <p className="flex items-center gap-2"><i className="fas fa-envelope text-sm text-accent"></i> privacy@autorevive.in</p>
                 <p className="flex items-center gap-2"><i className="fas fa-phone text-sm text-accent"></i> +91 8828820306</p>

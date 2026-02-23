@@ -1,4 +1,5 @@
 ﻿import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const FAQ_DATA = {
   auctions: [
@@ -36,6 +37,22 @@ export default function FAQ() {
 
   return (
     <div>
+      <Helmet>
+        <title>FAQ - AutoRevive</title>
+        <meta name="description" content="Find answers to frequently asked questions about AutoRevive's vehicle auctions, payments, and post-auction process." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": Object.values(FAQ_DATA).flat().map(item => ({
+              "@type": "Question",
+              "name": item.q,
+              "acceptedAnswer": { "@type": "Answer", "text": item.a }
+            }))
+          })}
+        </script>
+      </Helmet>
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-charcoal via-navy to-steel text-white py-12 text-center">
         <h1 className="font-display text-3xl font-extrabold tracking-tight">FAQs</h1>
@@ -80,7 +97,7 @@ export default function FAQ() {
                 }`}
               >
                 <div className="px-6 pb-5 pt-0 border-t border-slate-50">
-                  <p className="text-sm text-slate-400 leading-relaxed pt-4">{item.a}</p>
+                  <p className="text-sm text-slate-500 leading-relaxed pt-4">{item.a}</p>
                 </div>
               </div>
             </div>

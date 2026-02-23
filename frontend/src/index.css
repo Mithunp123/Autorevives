@@ -80,13 +80,13 @@
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-slate-600 font-bold rounded-xl
            hover:bg-slate-100 active:bg-slate-200 transition-all duration-200
-           focus:outline-none text-sm;
+           focus:outline-none focus:ring-2 focus:ring-slate-200 text-sm;
   }
 
   .btn-icon {
     @apply inline-flex items-center justify-center w-10 h-10 rounded-xl
            text-slate-400 hover:bg-slate-100 hover:text-slate-600 active:bg-slate-200
-           transition-all duration-200;
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/30;
   }
 
   /*  Cards  */
@@ -190,6 +190,14 @@
 
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .mesh-bg {

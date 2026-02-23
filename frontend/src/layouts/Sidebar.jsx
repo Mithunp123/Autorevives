@@ -61,28 +61,29 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
         )}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
-              <img src="/images/Logo.png" alt="" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#202124]'); }} />
+              <img src="/images/Logo.png" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#202124]'); }} />
             </div>
             {!collapsed && (
               <div className="lg:block">
                 <h1 className="text-white font-display font-extrabold text-lg tracking-tight leading-none">
                   Auto<span className="text-accent">Revive</span>
                 </h1>
-                <p className="text-[10px] text-white/30 font-medium tracking-widest uppercase mt-0.5">Premium Auctions</p>
+                <p className="text-xs text-white/40 font-medium tracking-widest uppercase mt-0.5">Premium Auctions</p>
               </div>
             )}
           </div>
 
-          <button onClick={onClose} className="lg:hidden text-white/40 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+          <button onClick={onClose} className="lg:hidden text-white/40 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors" aria-label="Close sidebar">
             <i className="fas fa-xmark text-lg"></i>
           </button>
 
           {!collapsed && (
             <button
               onClick={onToggleCollapse}
-              className="hidden lg:flex w-7 h-7 items-center justify-center text-white/25 hover:text-white/60 rounded-md hover:bg-white/5 transition-all"
+              className="hidden lg:flex w-10 h-10 items-center justify-center text-white/25 hover:text-white/60 rounded-md hover:bg-white/5 transition-all"
+              aria-label="Collapse sidebar"
             >
-              <i className="fas fa-chevron-left text-[10px]"></i>
+              <i className="fas fa-chevron-left text-xs"></i>
             </button>
           )}
         </div>
@@ -92,7 +93,7 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
           {sections.map((section) => (
             <div key={section}>
               {!collapsed && (
-                <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-white/20">
+                <p className="px-3 mb-2 text-xs font-bold uppercase tracking-[0.15em] text-white/50">
                   {section}
                 </p>
               )}
@@ -111,7 +112,7 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
                           collapsed && 'lg:justify-center lg:px-0',
                           isActive
                             ? 'bg-gradient-to-r from-accent/20 to-primary-400/10 text-white'
-                            : 'text-white/45 hover:text-white/80 hover:bg-white/[0.04]'
+                            : 'text-white/60 hover:text-white/80 hover:bg-white/[0.04]'
                         )}
                         title={collapsed ? label : undefined}
                       >
@@ -147,7 +148,7 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
             {!collapsed && (
               <div className="min-w-0 flex-1">
                 <p className="text-white text-sm font-semibold truncate">{user?.username || 'Admin'}</p>
-                <p className="text-white/30 text-[11px] font-medium capitalize">{user?.role || 'admin'}</p>
+                <p className="text-white/40 text-xs font-medium capitalize">{user?.role || 'admin'}</p>
               </div>
             )}
           </div>

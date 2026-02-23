@@ -4,16 +4,61 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AutoRevive - Premium Vehicle Auction & Bidding Platform" />
+    <meta name="description" content="AutoRevive - India's trusted platform for vehicle auctions. Browse, bid, and win verified vehicles from top finance companies. 2-wheelers, 3-wheelers, cars & commercial vehicles." />
     <meta name="theme-color" content="#4F46E5" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://autorevives.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AutoRevive - Premium Vehicle Auction Platform" />
+    <meta property="og:description" content="India's trusted platform for vehicle auctions. Browse, bid, and win verified vehicles from top finance companies." />
+    <meta property="og:url" content="https://autorevives.com/" />
+    <meta property="og:site_name" content="AutoRevive" />
+    <meta property="og:image" content="https://autorevives.com/images/Logo.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AutoRevive - Premium Vehicle Auction Platform" />
+    <meta name="twitter:description" content="India's trusted platform for vehicle auctions. Browse, bid, and win verified vehicles." />
+    <meta name="twitter:image" content="https://autorevives.com/images/Logo.png" />
+
+    <!-- Fonts - Non-render-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+
+    <!-- Font Awesome - Non-render-blocking -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    </noscript>
+
     <title>AutoRevive - Premium Vehicle Auction Platform</title>
+    <style>
+      /* Disable text selection, drag, and copy across the page */
+      body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;}
+      /* Allow selection inside form inputs/textarea */
+      input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;}
+    </style>
   </head>
   <body class="antialiased">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Disable right-click context menu
+      document.addEventListener('contextmenu',function(e){e.preventDefault();});
+      // Disable common keyboard shortcuts for viewing/copying source
+      document.addEventListener('keydown',function(e){
+        if((e.ctrlKey&&(e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'))||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c'))||e.key==='F12'){e.preventDefault();return false;}
+      });
+      // Disable drag and copy/cut
+      document.addEventListener('dragstart',function(e){e.preventDefault();});
+      document.addEventListener('copy',function(e){e.preventDefault();});
+      document.addEventListener('cut',function(e){e.preventDefault();});
+    </script>
   </body>
 </html>

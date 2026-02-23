@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { auctionService, publicService } from '@/services';
 
@@ -60,6 +61,11 @@ export default function PublicAuctions() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
+      <Helmet>
+        <title>Vehicle Auctions - AutoRevive</title>
+        <meta name="description" content="Browse and bid on verified pre-owned vehicles from top finance companies across India on AutoRevive." />
+      </Helmet>
+
       {/* ═══ Page Header ═══ */}
       <div className="bg-slate-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -158,12 +164,14 @@ export default function PublicAuctions() {
             <input
               type="text" placeholder="Search by vehicle name, ID, or location..." value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search auctions"
               className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#4285F4]/20 focus:border-[#4285F4] block pl-11 pr-4 py-3 transition-all"
             />
           </div>
           <div className="relative sm:w-64">
             <i className="fas fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
             <select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)}
+              aria-label="Filter by state"
               className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-[#4285F4]/20 focus:border-[#4285F4] block pl-11 pr-10 py-3 transition-all appearance-none"
               style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.75rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em' }}
             >
@@ -197,12 +205,12 @@ export default function PublicAuctions() {
                 <table className="w-full text-sm text-left">
                   <thead className="bg-slate-50/80 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
                     <tr>
-                      <th className="font-bold px-6 py-4">Vehicle Details</th>
-                      <th className="font-bold px-6 py-4 text-center">Category</th>
-                      <th className="font-bold px-6 py-4 hidden md:table-cell">Location</th>
-                      <th className="font-bold px-6 py-4 text-right">Base Price</th>
-                      <th className="font-bold px-6 py-4 text-right hidden sm:table-cell">Current Bid</th>
-                      <th className="font-bold px-6 py-4 text-center w-28">Action</th>
+                      <th className="font-bold px-3 sm:px-6 py-4">Vehicle Details</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-center">Category</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 hidden md:table-cell">Location</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-right">Base Price</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-right hidden sm:table-cell">Current Bid</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-center w-28">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -229,7 +237,7 @@ export default function PublicAuctions() {
                           <div className="flex items-center gap-4">
                             <div className="w-16 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex-shrink-0 relative">
                               {a.image_path ? (
-                                <img src={`/api/uploads/${a.image_path.replace('uploads/', '')}`} alt={a.name} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = 'flex'); }} />
+                                <img src={`/api/uploads/${a.image_path.replace('uploads/', '')}`} alt={a.name} width={64} height={48} loading="lazy" className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = 'flex'); }} />
                               ) : null}
                               <div className={`w-full h-full items-center justify-center ${a.image_path ? 'hidden' : 'flex'}`}>
                                 <i className="fas fa-car text-lg text-slate-300"></i>

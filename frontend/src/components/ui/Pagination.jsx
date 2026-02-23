@@ -10,7 +10,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, clas
   }
 
   return (
-    <div className={cn('flex items-center justify-center gap-1.5 mt-6', className)}>
+    <div className={cn('flex items-center justify-center gap-1.5 mt-6 flex-wrap', className)}>
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}

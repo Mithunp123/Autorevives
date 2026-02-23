@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { publicService } from '@/services';
 
 /* ── Indian states list (used for state display fallback) ── */
@@ -82,6 +83,10 @@ export default function Home() {
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>AutoRevive - India's Premium Vehicle Auction Platform</title>
+        <meta name="description" content="Browse, bid, and win verified vehicles from top finance companies. 2-wheelers, 3-wheelers, cars & commercial vehicles across India." />
+      </Helmet>
 
       {/* ═══════════════════ HERO — Clean Professional Dark Theme ═══════════════════ */}
       <section className="relative overflow-hidden bg-[#111827] min-h-[480px] lg:min-h-[600px]">
@@ -95,7 +100,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
             {/* Left — Vehicle Image */}
-            <div className="flex items-center justify-center relative min-h-[300px] lg:min-h-[400px] order-1">
+            <div className="flex items-center justify-center relative min-h-[300px] lg:min-h-[400px] order-2 lg:order-1">
               <div className="relative w-full h-full flex items-center justify-center">
                 {HERO_TYPES.map((t, i) => (
                   <div
@@ -109,6 +114,9 @@ export default function Home() {
                     <img
                       src={t.image}
                       alt={t.label}
+                      width={600}
+                      height={400}
+                      loading={i === 0 ? 'eager' : 'lazy'}
                       className={`w-full max-w-[600px] object-contain drop-shadow-2xl ${t.scale || ''}`}
                     />
                   </div>
@@ -117,7 +125,7 @@ export default function Home() {
             </div>
 
             {/* Right — Content */}
-            <div className="space-y-8 order-2">
+            <div className="space-y-8 order-1 lg:order-2">
               <div className="space-y-4">
                 <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight">
                   Get Best Deals <br />
@@ -146,7 +154,7 @@ export default function Home() {
               </div>
 
               {/* Vehicle type counters */}
-              <div className="flex items-center gap-0 divide-x divide-white/10 max-w-md">
+              <div className="flex items-center gap-0 divide-x divide-white/10 max-w-md flex-wrap sm:flex-nowrap">
                 {[
                   { label: '2 Wheeler', val: stats.two_wheeler },
                   { label: '3 Wheeler', val: stats.three_wheeler },
@@ -154,7 +162,7 @@ export default function Home() {
                 ].map(c => (
                   <div key={c.label} className="flex-1 text-center px-4 first:pl-0">
                     <p className="text-slate-400 text-xs font-medium">{c.label}</p>
-                    <p className="text-white text-3xl font-extrabold mt-0.5">{c.val}</p>
+                    <p className="text-white text-xl sm:text-3xl font-extrabold mt-0.5">{c.val}</p>
                   </div>
                 ))}
               </div>
@@ -188,7 +196,7 @@ export default function Home() {
                   <i className={`fas ${s.icon} ${s.iconColor} text-xl`}></i>
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{s.label}</p>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0.5">{s.label}</p>
                   <p className="text-2xl font-extrabold text-slate-900 leading-none">{s.val.toLocaleString('en-IN')}</p>
                 </div>
               </div>
@@ -268,12 +276,12 @@ export default function Home() {
                 <table className="w-full text-sm text-left">
                   <thead className="bg-slate-50/80 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
                     <tr>
-                      <th className="font-bold px-6 py-4">Vehicle Details</th>
-                      <th className="font-bold px-6 py-4 text-center">Category</th>
-                      <th className="font-bold px-6 py-4 hidden md:table-cell">Location</th>
-                      <th className="font-bold px-6 py-4 text-right">Base Price</th>
-                      <th className="font-bold px-6 py-4 text-right hidden sm:table-cell">Current Bid</th>
-                      <th className="font-bold px-6 py-4 text-center w-28">Action</th>
+                      <th className="font-bold px-3 sm:px-6 py-4">Vehicle Details</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-center">Category</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 hidden md:table-cell">Location</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-right">Base Price</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-right hidden sm:table-cell">Current Bid</th>
+                      <th className="font-bold px-3 sm:px-6 py-4 text-center w-28">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -300,7 +308,7 @@ export default function Home() {
                           <div className="flex items-center gap-4">
                             <div className="w-16 h-12 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex-shrink-0 relative">
                               {p.image_path ? (
-                                <img src={`/api/uploads/${p.image_path.replace('uploads/', '')}`} alt="" className="w-full h-full object-cover" onError={e => { e.target.style.display = 'none'; }} />
+                                <img src={`/api/uploads/${p.image_path.replace('uploads/', '')}`} alt="" width={64} height={48} loading="lazy" className="w-full h-full object-cover" onError={e => { e.target.style.display = 'none'; }} />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center text-slate-300"><i className="fas fa-car text-lg"></i></div>
                               )}
@@ -331,6 +339,7 @@ export default function Home() {
                         </td>
                         <td className="px-6 py-4 text-center">
                           <Link to={`/public/auctions/${p.id}`}
+                            aria-label={`View details for ${p.name}`}
                             className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-[#4285F4] hover:text-white transition-colors">
                             <i className="fas fa-arrow-right"></i>
                           </Link>
