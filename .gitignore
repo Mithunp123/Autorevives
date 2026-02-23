@@ -1,5 +1,8 @@
 # Environment variables (contains sensitive data)
 .env
+.env.local
+.env.production
+!.env.example
 
 # Python
 __pycache__/
@@ -47,3 +50,6 @@ Thumbs.db
 
 test_api.py
 test_frontend.py
+
+DEPLOYMENT.md
+ backend/gunicorn.conf.py
