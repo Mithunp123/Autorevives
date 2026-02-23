@@ -60,7 +60,7 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-[80px]">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
-            <img src="/images/Logo.png" alt="AutoRevive" className="h-10 sm:h-[70px] w-auto object-contain" width="70" height="70" onError={(e) => { e.target.style.display='none'; }} />
+            <img src="/images/Logo.webp" alt="AutoRevive" className="h-10 sm:h-[70px] w-auto object-contain" width="70" height="70" onError={(e) => { e.target.style.display='none'; }} />
             <span className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
               Auto<span className="text-accent">Revive</span>
             </span>
@@ -239,7 +239,7 @@ export default function PublicLayout() {
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <img src="/images/Logo.png" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display='none'; }} />
+                  <img src="/images/Logo.webp" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display='none'; }} />
                 </div>
                 <span className="font-display text-xl font-extrabold tracking-tight">
                   Auto<span className="text-accent">Revive</span>

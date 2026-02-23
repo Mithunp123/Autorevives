@@ -44,7 +44,7 @@ export default function Register() {
         <div className="absolute bottom-20 -left-10 w-60 h-60 bg-white/[0.03] rounded-full blur-[80px]" />
         <div className="relative z-10 flex flex-col justify-center px-16 w-full">
           <div className="flex items-center gap-3 mb-14">
-            <img src="/images/Logo.png" alt="AutoRevive" width={56} height={56} className="h-14 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src="/images/Logo.webp" alt="AutoRevive" width={56} height={56} className="h-14 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
             <h1 className="text-3xl font-extrabold text-white font-display tracking-tight">
               Auto<span className="text-[#4285F4]">Revive</span>
             </h1>
@@ -62,7 +62,7 @@ export default function Register() {
       <div className="flex-1 flex items-center justify-center p-6 sm:p-10 bg-surface mesh-bg">
         <div className="w-full max-w-lg space-y-7">
           <div className="lg:hidden flex items-center gap-3 justify-center mb-4">
-            <img src="/images/Logo.png" alt="" width={40} height={40} className="h-10 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src="/images/Logo.webp" alt="" width={40} height={40} className="h-10 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
             <h1 className="text-xl font-extrabold font-display text-slate-900 tracking-tight">
               Auto<span className="text-[#4285F4]">Revive</span>
             </h1>

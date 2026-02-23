@@ -8,11 +8,11 @@ const HERO_STATE = 'Tamil Nadu';
 
 /* ── Hero rotating vehicle types (with real images) ── */
 const HERO_TYPES = [
-  { image: '/images/hero-bike-transparent.png', label: 'Two Wheelers', category: '2W', location: 'Tamil Nadu', scale: '' },
-  { image: '/images/banner-auto.png', label: 'Auto Rickshaws', category: '3W', location: 'Kerala', scale: '' },
-  { image: '/images/banner-car1.png', label: 'Used Cars', category: '4W', location: 'Karnataka', scale: '' },
-  { image: '/images/banner-eicher.png', label: 'Commercial Vehicles', category: 'CV', location: 'Andhra Pradesh', scale: 'scale-125' },
-  { image: '/images/hero-jcb.png', label: 'Heavy Equipment', category: 'HE', location: 'Telangana', scale: '' },
+  { image: '/images/hero-bike-transparent.webp', label: 'Two Wheelers', category: '2W', location: 'Tamil Nadu', scale: '' },
+  { image: '/images/banner-auto.webp', label: 'Auto Rickshaws', category: '3W', location: 'Kerala', scale: '' },
+  { image: '/images/banner-car1.webp', label: 'Used Cars', category: '4W', location: 'Karnataka', scale: '' },
+  { image: '/images/banner-eicher.webp', label: 'Commercial Vehicles', category: 'CV', location: 'Andhra Pradesh', scale: 'scale-125' },
+  { image: '/images/hero-jcb.webp', label: 'Heavy Equipment', category: 'HE', location: 'Telangana', scale: '' },
 ];
 
 export default function Home() {
@@ -117,6 +117,8 @@ export default function Home() {
                       width={600}
                       height={400}
                       loading={i === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={i === 0 ? 'high' : 'low'}
+                      decoding={i === 0 ? 'sync' : 'async'}
                       className={`w-full max-w-[600px] object-contain drop-shadow-2xl ${t.scale || ''}`}
                     />
                   </div>

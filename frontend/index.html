@@ -15,21 +15,26 @@
     <meta property="og:description" content="India's trusted platform for vehicle auctions. Browse, bid, and win verified vehicles from top finance companies." />
     <meta property="og:url" content="https://autorevives.com/" />
     <meta property="og:site_name" content="AutoRevive" />
-    <meta property="og:image" content="https://autorevives.com/images/Logo.png" />
+    <meta property="og:image" content="https://autorevives.com/images/Logo.webp" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="AutoRevive - Premium Vehicle Auction Platform" />
     <meta name="twitter:description" content="India's trusted platform for vehicle auctions. Browse, bid, and win verified vehicles." />
-    <meta name="twitter:image" content="https://autorevives.com/images/Logo.png" />
+    <meta name="twitter:image" content="https://autorevives.com/images/Logo.webp" />
 
     <!-- Fonts - Non-render-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload LCP hero image for faster paint -->
+    <link rel="preload" as="image" type="image/webp" href="/images/hero-bike-transparent.webp" fetchpriority="high" />
+
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
 
     <!-- Font Awesome - Non-render-blocking -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" />
     <noscript>
@@ -39,6 +44,10 @@
 
     <title>AutoRevive - Premium Vehicle Auction Platform</title>
     <style>
+      /* Ensure text remains visible during webfont load */
+      @font-face{font-family:'Plus Jakarta Sans';font-display:swap;src:local('Plus Jakarta Sans')}
+      @font-face{font-family:'Inter';font-display:swap;src:local('Inter')}
+      @font-face{font-family:'Font Awesome 6 Free';font-display:swap;src:local('Font Awesome 6 Free')}
       /* Disable text selection, drag, and copy across the page */
       body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;}
       /* Allow selection inside form inputs/textarea */

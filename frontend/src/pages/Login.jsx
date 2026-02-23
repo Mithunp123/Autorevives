@@ -54,7 +54,7 @@ export default function Login() {
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center gap-3 mb-3">
             <img
-              src="/images/Logo.png"
+              src="/images/Logo.webp"
               alt="AutoRevive"
               width={48}
               height={48}

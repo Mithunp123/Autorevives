@@ -1,36 +1,49 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { DashboardLayout, PublicLayout } from '@/layouts';
 import { ProtectedRoute, PublicRoute } from './ProtectedRoute';
-import {
-  Dashboard,
-  Users,
-  UserDetails,
-  Managers,
-  Offices,
-  Vehicles,
-  VehicleDetails,
-  VehicleForm,
-  Auctions,
-  Approvals,
-  Reports,
-  Settings,
-  Login,
-  Register,
-  NotFound,
-  Home,
-  About,
-  Contact,
-  FAQ,
-  Investors,
-  PrivacyPolicy,
-  Profile,
-  OfficeProfile,
-  PublicAuctions,
-  PublicAuctionDetails,
-} from '@/pages';
+
+/* ── Eagerly loaded (above the fold / first paint) ── */
+import Home from '@/pages/Home';
+
+/* ── Lazy loaded (code-split) ── */
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Users = lazy(() => import('@/pages/Users'));
+const UserDetails = lazy(() => import('@/pages/UserDetails'));
+const Managers = lazy(() => import('@/pages/Managers'));
+const Offices = lazy(() => import('@/pages/Offices'));
+const Vehicles = lazy(() => import('@/pages/Vehicles'));
+const VehicleDetails = lazy(() => import('@/pages/VehicleDetails'));
+const VehicleForm = lazy(() => import('@/pages/VehicleForm'));
+const Auctions = lazy(() => import('@/pages/Auctions'));
+const Approvals = lazy(() => import('@/pages/Approvals'));
+const Reports = lazy(() => import('@/pages/Reports'));
+const Settings = lazy(() => import('@/pages/Settings'));
+const Login = lazy(() => import('@/pages/Login'));
+const Register = lazy(() => import('@/pages/Register'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
+const About = lazy(() => import('@/pages/About'));
+const Contact = lazy(() => import('@/pages/Contact'));
+const FAQ = lazy(() => import('@/pages/FAQ'));
+const Investors = lazy(() => import('@/pages/Investors'));
+const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
+const Profile = lazy(() => import('@/pages/Profile'));
+const OfficeProfile = lazy(() => import('@/pages/OfficeProfile'));
+const PublicAuctions = lazy(() => import('@/pages/PublicAuctions'));
+const PublicAuctionDetails = lazy(() => import('@/pages/PublicAuctionDetails'));
+
+/* ── Minimal loading spinner ── */
+function PageFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="w-8 h-8 border-3 border-accent border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
 
 export default function AppRoutes() {
   return (
+    <Suspense fallback={<PageFallback />}>
     <Routes>
       {/* Public routes */}
       {/* Login & Register are now nested inside PublicLayout so <Outlet /> renders them */}
@@ -144,5 +157,6 @@ export default function AppRoutes() {
       {/* 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </Suspense>
   );
 }

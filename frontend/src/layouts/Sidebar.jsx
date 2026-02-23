@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
         )}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
-              <img src="/images/Logo.png" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#202124]'); }} />
+              <img src="/images/Logo.webp" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#202124]'); }} />
             </div>
             {!collapsed && (
               <div className="lg:block">

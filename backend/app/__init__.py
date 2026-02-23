@@ -78,11 +78,37 @@ def create_app(config_class=Config):
         return {"status": "ok", "message": "AutoRevive API is running"}
 
     # Serve uploaded files
-    from flask import send_from_directory
+    from flask import send_from_directory, make_response
 
     @app.route("/api/uploads/<path:filename>")
     def uploaded_file(filename):
-        return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+        response = make_response(send_from_directory(app.config["UPLOAD_FOLDER"], filename))
+        # Cache uploaded images for 7 days (immutable content)
+        response.headers["Cache-Control"] = "public, max-age=604800, immutable"
+        return response
+
+    # ── Static-asset caching & compression headers ──
+    @app.after_request
+    def add_cache_headers(response):
+        """Add cache-control and security headers to all responses."""
+        # Cache static assets (JS, CSS, images, fonts) aggressively
+        content_type = response.content_type or ""
+        if any(ct in content_type for ct in [
+            "javascript", "text/css", "image/", "font/",
+            "application/font", "application/x-font",
+        ]):
+            response.headers.setdefault(
+                "Cache-Control", "public, max-age=31536000, immutable"
+            )
+        # API responses: don't cache
+        elif "/api/" in (getattr(response, "request_path", "") or ""):
+            response.headers.setdefault("Cache-Control", "no-store")
+
+        # Security headers
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        return response
 
     # Database initialization endpoint
     @app.route("/api/init-db")
