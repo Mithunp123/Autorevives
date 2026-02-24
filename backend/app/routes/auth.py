@@ -98,6 +98,14 @@ def register():
         conn.close()
 
 
+@auth_bp.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    # JWT is stateless — client simply discards the token.
+    # This endpoint exists so the frontend call doesn't 404/CORS-fail.
+    return jsonify({"message": "Logged out successfully"})
+
+
 @auth_bp.route("/profile", methods=["GET"])
 @login_required
 def get_profile():

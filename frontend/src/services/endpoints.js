@@ -45,9 +45,11 @@ export const vehicleService = {
   getById: (id) => api.get(`/vehicles/${id}`),
   create: (data) => api.post('/vehicles', data, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120000,
   }),
   update: (id, data) => api.put(`/vehicles/${id}`, data, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120000,
   }),
   delete: (id) => api.delete(`/vehicles/${id}`),
   approve: (id) => api.patch(`/vehicles/${id}/approve`),

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -77,10 +77,18 @@ def create_app(config_class=Config):
     def health():
         return {"status": "ok", "message": "AutoRevive API is running"}
 
-    # Handle request too large (413)
+    # Handle request too large (413) – must include CORS headers because
+    # Flask may reject the body before flask-cors processes the response.
     @app.errorhandler(413)
     def request_entity_too_large(error):
-        return {"error": "File too large. Maximum upload size is 50MB."}, 413
+        resp = jsonify({"error": "File too large. Maximum upload size is 100 MB."})
+        resp.status_code = 413
+        origin = request.headers.get("Origin", "")
+        allowed = app.config.get("CORS_ORIGINS", [])
+        if origin in allowed:
+            resp.headers["Access-Control-Allow-Origin"] = origin
+            resp.headers["Access-Control-Allow-Credentials"] = "true"
+        return resp
 
     # Serve uploaded files (supports nested paths: uploads/{mobile}/{category}/file.jpg)
     from flask import send_from_directory, make_response, send_file, abort
@@ -117,10 +125,23 @@ def create_app(config_class=Config):
             app.logger.error(f"Error serving file {filename}: {e}")
             abort(404)
 
-    # ── Static-asset caching & compression headers ──
+    # ── Ensure CORS headers are present on EVERY response (incl. errors) ──
     @app.after_request
-    def add_cache_headers(response):
-        """Add cache-control and security headers to all responses."""
+    def add_cors_and_cache_headers(response):
+        """Guarantee CORS + cache-control + security headers on all responses."""
+        # --- CORS (belt-and-suspenders alongside Flask-CORS) ---
+        origin = request.headers.get("Origin", "")
+        allowed_origins = app.config.get("CORS_ORIGINS", [])
+        if origin in allowed_origins:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            response.headers["Access-Control-Allow-Methods"] = (
+                "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+            )
+            response.headers["Access-Control-Allow-Headers"] = (
+                "Content-Type, Authorization"
+            )
+
         # Cache static assets (JS, CSS, images, fonts) aggressively
         content_type = response.content_type or ""
         if any(ct in content_type for ct in [
