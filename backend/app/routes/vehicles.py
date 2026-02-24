@@ -111,6 +111,48 @@ def get_vehicle(vehicle_id):
         conn.close()
 
 
+@vehicles_bp.route("/upload-image", methods=["POST"])
+@role_required("office", "admin")
+def upload_single_image():
+    """Upload a single image and return its path.
+    Used by the frontend to upload images one-by-one before form submission."""
+    category = request.form.get("category", "").strip() or "uncategorized"
+    image_type = request.form.get("type", "vehicle")  # vehicle | rc | insurance
+    file = request.files.get("image")
+
+    if not file or not file.filename:
+        return jsonify({"error": "No image provided"}), 400
+    if not allowed_file(file.filename):
+        return jsonify({"error": "File type not allowed"}), 400
+
+    office_id = request.current_user["user_id"]
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT mobile_number FROM users WHERE id = %s", (office_id,))
+        user_row = cursor.fetchone()
+        officer_mobile = user_row["mobile_number"] if user_row and user_row.get("mobile_number") else str(office_id)
+        officer_mobile = ''.join(filter(str.isdigit, officer_mobile)) or str(office_id)
+    except Exception:
+        officer_mobile = str(office_id)
+    finally:
+        cursor.close()
+        conn.close()
+
+    upload_subfolder = os.path.join(officer_mobile, category)
+    upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], upload_subfolder)
+    os.makedirs(upload_path, exist_ok=True)
+
+    original = secure_filename(file.filename)
+    name_part, ext = os.path.splitext(original)
+    prefix = {"rc": "rc_", "insurance": "ins_"}.get(image_type, "")
+    filename = f"{prefix}{name_part}_{int(time.time())}{ext}"
+    file.save(os.path.join(upload_path, filename))
+    saved_path = f"uploads/{upload_subfolder}/{filename}".replace("\\", "/")
+
+    return jsonify({"path": saved_path}), 201
+
+
 @vehicles_bp.route("/", methods=["POST"])
 @role_required("office", "admin")
 def create_vehicle():
@@ -157,30 +199,34 @@ def create_vehicle():
     upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], upload_subfolder)
     os.makedirs(upload_path, exist_ok=True)
 
-    # Handle multiple image uploads (1-10 images)
-    image_paths = []
-    files = request.files.getlist("images")  # Get list of uploaded files
-    # Also check for single 'image' field for backward compatibility
+    # ── Image paths (pre-uploaded via /upload-image or legacy multi-upload) ──
+    # Prefer pre-uploaded paths sent as JSON string
+    uploaded_paths_raw = request.form.get("uploaded_image_paths", "")
+    try:
+        pre_uploaded = json.loads(uploaded_paths_raw) if uploaded_paths_raw else []
+    except (json.JSONDecodeError, TypeError):
+        pre_uploaded = []
+
+    # Also accept legacy multi-file upload for backward compat
+    image_paths = list(pre_uploaded)
+    files = request.files.getlist("images")
     if not files or all(f.filename == '' for f in files):
         single_file = request.files.get("image")
         if single_file and single_file.filename:
             files = [single_file]
-    
-    for file in files[:10]:  # Limit to 10 images max
+    for file in files[:10 - len(image_paths)]:
         if file and file.filename and allowed_file(file.filename):
             original = secure_filename(file.filename)
             name_part, ext = os.path.splitext(original)
             filename = f"{name_part}_{int(time.time())}_{len(image_paths)}{ext}"
             file.save(os.path.join(upload_path, filename))
-            # Store path relative to uploads folder
             image_paths.append(f"uploads/{upload_subfolder}/{filename}".replace("\\", "/"))
-    
-    # Store as JSON array string, or single path for backward compatibility
+
     image_path = json.dumps(image_paths) if image_paths else None
 
-    # Handle RC image upload
-    rc_image_path = None
-    if rc_available:
+    # ── RC image (pre-uploaded path or legacy file) ──
+    rc_image_path = request.form.get("uploaded_rc_path", "").strip() or None
+    if not rc_image_path and rc_available:
         rc_file = request.files.get("rc_image")
         if rc_file and rc_file.filename and allowed_file(rc_file.filename):
             original = secure_filename(rc_file.filename)
@@ -189,9 +235,9 @@ def create_vehicle():
             rc_file.save(os.path.join(upload_path, rc_filename))
             rc_image_path = f"uploads/{upload_subfolder}/{rc_filename}".replace("\\", "/")
 
-    # Handle Insurance image upload
-    insurance_image_path = None
-    if insurance_available:
+    # ── Insurance image (pre-uploaded path or legacy file) ──
+    insurance_image_path = request.form.get("uploaded_insurance_path", "").strip() or None
+    if not insurance_image_path and insurance_available:
         ins_file = request.files.get("insurance_image")
         if ins_file and ins_file.filename and allowed_file(ins_file.filename):
             original = secure_filename(ins_file.filename)
@@ -278,28 +324,39 @@ def update_vehicle(vehicle_id):
         upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], upload_subfolder)
         os.makedirs(upload_path, exist_ok=True)
 
-        # Handle multiple image uploads (1-10 images)
-        files = request.files.getlist("images")
-        # Also check for single 'image' field for backward compatibility
-        if not files or all(f.filename == '' for f in files):
-            single_file = request.files.get("image")
-            if single_file and single_file.filename:
-                files = [single_file]
-        
-        if files and any(f.filename for f in files):
-            image_paths = []
-            for file in files[:10]:  # Limit to 10 images max
-                if file and file.filename and allowed_file(file.filename):
-                    original = secure_filename(file.filename)
-                    name_part, ext = os.path.splitext(original)
-                    filename = f"{name_part}_{int(time.time())}_{len(image_paths)}{ext}"
-                    file.save(os.path.join(upload_path, filename))
-                    image_paths.append(f"uploads/{upload_subfolder}/{filename}".replace("\\", "/"))
-            if image_paths:
-                image_path = json.dumps(image_paths)
+        # ── Image paths (pre-uploaded via /upload-image or legacy multi-upload) ──
+        uploaded_paths_raw = request.form.get("uploaded_image_paths", "")
+        try:
+            pre_uploaded = json.loads(uploaded_paths_raw) if uploaded_paths_raw else []
+        except (json.JSONDecodeError, TypeError):
+            pre_uploaded = []
 
-        # Handle RC image upload
-        if rc_available:
+        if pre_uploaded:
+            image_path = json.dumps(pre_uploaded)
+        else:
+            # Legacy: accept files in the PUT body
+            files = request.files.getlist("images")
+            if not files or all(f.filename == '' for f in files):
+                single_file = request.files.get("image")
+                if single_file and single_file.filename:
+                    files = [single_file]
+            if files and any(f.filename for f in files):
+                new_paths = []
+                for file in files[:10]:
+                    if file and file.filename and allowed_file(file.filename):
+                        original = secure_filename(file.filename)
+                        name_part, ext = os.path.splitext(original)
+                        filename = f"{name_part}_{int(time.time())}_{len(new_paths)}{ext}"
+                        file.save(os.path.join(upload_path, filename))
+                        new_paths.append(f"uploads/{upload_subfolder}/{filename}".replace("\\", "/"))
+                if new_paths:
+                    image_path = json.dumps(new_paths)
+
+        # ── RC image (pre-uploaded or legacy) ──
+        uploaded_rc = request.form.get("uploaded_rc_path", "").strip()
+        if uploaded_rc:
+            rc_image_path = uploaded_rc
+        elif rc_available:
             rc_file = request.files.get("rc_image")
             if rc_file and rc_file.filename and allowed_file(rc_file.filename):
                 original = secure_filename(rc_file.filename)
@@ -310,8 +367,11 @@ def update_vehicle(vehicle_id):
         else:
             rc_image_path = None
 
-        # Handle Insurance image upload
-        if insurance_available:
+        # ── Insurance image (pre-uploaded or legacy) ──
+        uploaded_ins = request.form.get("uploaded_insurance_path", "").strip()
+        if uploaded_ins:
+            insurance_image_path = uploaded_ins
+        elif insurance_available:
             ins_file = request.files.get("insurance_image")
             if ins_file and ins_file.filename and allowed_file(ins_file.filename):
                 original = secure_filename(ins_file.filename)

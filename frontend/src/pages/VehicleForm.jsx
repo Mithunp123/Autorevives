@@ -27,6 +27,7 @@ export default function VehicleForm() {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [existingImages, setExistingImages] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, label: '' });
 
   // RC & Insurance
   const [rcAvailable, setRcAvailable] = useState(false);
@@ -104,6 +105,8 @@ export default function VehicleForm() {
       .finally(() => setLoading(false));
   }, [id, isEdit, navigate, setValue, isAdmin]);
 
+  const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+
   const onSubmit = async (data) => {
     // Validate at least 1 image
     const totalImages = images.length + existingImages.length;
@@ -113,10 +116,61 @@ export default function VehicleForm() {
     }
 
     setSubmitting(true);
+    const category = data.category || '';
+
     try {
+      // ── Step 1: Upload images one-by-one (1 s gap) ──
+      const totalUploads = images.length + (rcAvailable && rcImage ? 1 : 0) + (insuranceAvailable && insuranceImage ? 1 : 0);
+      let completed = 0;
+      setUploadProgress({ current: 0, total: totalUploads, label: '' });
+
+      // Vehicle images
+      const uploadedPaths = [];
+      for (let i = 0; i < images.length; i++) {
+        setUploadProgress({ current: completed + 1, total: totalUploads, label: `Uploading image ${i + 1} of ${images.length}...` });
+        const res = await vehicleService.uploadImage(images[i], category, 'vehicle');
+        uploadedPaths.push(res.data.path);
+        completed++;
+        if (i < images.length - 1 || (rcAvailable && rcImage) || (insuranceAvailable && insuranceImage)) {
+          await delay(1000);
+        }
+      }
+
+      // RC image
+      let uploadedRcPath = '';
+      if (rcAvailable && rcImage) {
+        setUploadProgress({ current: completed + 1, total: totalUploads, label: 'Uploading RC image...' });
+        const res = await vehicleService.uploadImage(rcImage, category, 'rc');
+        uploadedRcPath = res.data.path;
+        completed++;
+        if (insuranceAvailable && insuranceImage) await delay(1000);
+      }
+
+      // Insurance image
+      let uploadedInsPath = '';
+      if (insuranceAvailable && insuranceImage) {
+        setUploadProgress({ current: completed + 1, total: totalUploads, label: 'Uploading insurance image...' });
+        const res = await vehicleService.uploadImage(insuranceImage, category, 'insurance');
+        uploadedInsPath = res.data.path;
+        completed++;
+      }
+
+      setUploadProgress({ current: totalUploads, total: totalUploads, label: 'Saving vehicle details...' });
+
+      // ── Step 2: Combine existing + newly uploaded paths ──
+      const allImagePaths = [
+        ...existingImages.map((url) => {
+          // Convert full URL back to relative path (uploads/...)
+          const match = url.match(/uploads\/.*/);
+          return match ? match[0] : url;
+        }),
+        ...uploadedPaths,
+      ];
+
+      // ── Step 3: Submit form data (no files, just paths) ──
       const formData = new FormData();
       formData.append('name', data.name);
-      formData.append('category', data.category || '');
+      formData.append('category', category);
       formData.append('state', data.state || '');
       if (data.vehicle_year) formData.append('vehicle_year', data.vehicle_year);
       if (data.mileage) formData.append('mileage', data.mileage);
@@ -133,13 +187,11 @@ export default function VehicleForm() {
       // RC & Insurance
       formData.append('rc_available', rcAvailable ? 'true' : 'false');
       formData.append('insurance_available', insuranceAvailable ? 'true' : 'false');
-      if (rcAvailable && rcImage) formData.append('rc_image', rcImage);
-      if (insuranceAvailable && insuranceImage) formData.append('insurance_image', insuranceImage);
-      
-      // Append all images
-      images.forEach((img) => {
-        formData.append('images', img);
-      });
+
+      // Paths instead of files
+      formData.append('uploaded_image_paths', JSON.stringify(allImagePaths));
+      if (uploadedRcPath) formData.append('uploaded_rc_path', uploadedRcPath);
+      if (uploadedInsPath) formData.append('uploaded_insurance_path', uploadedInsPath);
 
       if (isEdit) {
         await vehicleService.update(id, formData);
@@ -153,6 +205,7 @@ export default function VehicleForm() {
       toast.error(err.response?.data?.error || `Failed to ${isEdit ? 'update' : 'add'} vehicle`);
     } finally {
       setSubmitting(false);
+      setUploadProgress({ current: 0, total: 0, label: '' });
     }
   };
 
@@ -495,11 +548,29 @@ export default function VehicleForm() {
             )}
           </div>
 
+          {/* Upload Progress */}
+          {submitting && uploadProgress.total > 0 && (
+            <div className="rounded-xl border border-accent/20 bg-accent/5 p-4 space-y-2">
+              <div className="flex items-center justify-between text-sm font-medium">
+                <span className="text-slate-700">{uploadProgress.label}</span>
+                <span className="text-accent font-bold">{uploadProgress.current}/{uploadProgress.total}</span>
+              </div>
+              <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-accent rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${Math.round((uploadProgress.current / uploadProgress.total) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+
           {/* Actions */}
           <div className="flex justify-end gap-3 pt-2">
-            <Button variant="secondary" type="button" onClick={() => navigate('/vehicles')}>Cancel</Button>
+            <Button variant="secondary" type="button" onClick={() => navigate('/vehicles')} disabled={submitting}>Cancel</Button>
             <Button type="submit" loading={submitting} icon={isEdit ? 'fa-save' : 'fa-car'}>
-              {isEdit ? 'Save Changes' : 'Add Vehicle'}
+              {submitting && uploadProgress.total > 0
+                ? `Uploading ${uploadProgress.current}/${uploadProgress.total}...`
+                : isEdit ? 'Save Changes' : 'Add Vehicle'}
             </Button>
           </div>
         </form>

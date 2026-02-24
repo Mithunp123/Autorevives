@@ -51,6 +51,17 @@ export const vehicleService = {
     headers: { 'Content-Type': 'multipart/form-data' },
     timeout: 120000,
   }),
+  /** Upload a single image; returns { path: "uploads/..." } */
+  uploadImage: (file, category = '', type = 'vehicle') => {
+    const fd = new FormData();
+    fd.append('image', file);
+    fd.append('category', category);
+    fd.append('type', type);
+    return api.post('/vehicles/upload-image', fd, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 60000,
+    });
+  },
   delete: (id) => api.delete(`/vehicles/${id}`),
   approve: (id) => api.patch(`/vehicles/${id}/approve`),
   reject: (id) => api.patch(`/vehicles/${id}/reject`),
