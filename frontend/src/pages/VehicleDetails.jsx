@@ -2,7 +2,7 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { StatusBadge, Button, PageLoader, ConfirmDialog } from '@/components/ui';
 import { vehicleService, approvalService } from '@/services';
-import { formatCurrency, formatDate, formatDateTime, timeAgo } from '@/utils';
+import { formatCurrency, formatDate, formatDateTime, timeAgo, getImageUrl, getImageUrls } from '@/utils';
 import toast from 'react-hot-toast';
 
 export default function VehicleDetails() {
@@ -33,22 +33,31 @@ export default function VehicleDetails() {
   const handleApprove = async () => { try { await approvalService.approveVehicle(vehicle.id); setVehicle({ ...vehicle, status: 'approved' }); toast.success('Vehicle approved'); } catch { toast.error('Failed'); } };
   const handleReject = async () => { try { await approvalService.rejectVehicle(vehicle.id); setVehicle({ ...vehicle, status: 'rejected' }); toast.success('Vehicle rejected'); } catch { toast.error('Failed'); } };
 
+  // Get all images for gallery view
+  const vehicleImages = getImageUrls(vehicle.image_path);
+  const firstImage = vehicleImages.length > 0 ? vehicleImages[0] : null;
+
   return (
     <div className="space-y-6 animate-fade-in">
       <button onClick={() => navigate('/vehicles')} className="btn-ghost text-sm -ml-2"><i className="fas fa-arrow-left text-sm"></i> Back to Vehicles</button>
 
       <div className="card overflow-hidden">
         <div className="aspect-video sm:aspect-[21/9] bg-gradient-to-br from-slate-100 to-slate-50 relative flex items-center justify-center">
-          {vehicle.image_path ? (
+          {firstImage ? (
             <img
-              src={`/api/uploads/${vehicle.image_path.replace('uploads/', '')}`}
+              src={firstImage}
               alt={vehicle.name}
               className="w-full h-full object-cover"
               onError={(e) => { e.target.style.display = 'none'; }}
             />
           ) : null}
-          {!vehicle.image_path && <i className="fas fa-car text-5xl text-slate-200"></i>}
+          {!firstImage && <i className="fas fa-car text-5xl text-slate-200"></i>}
           <div className="absolute top-4 left-4"><StatusBadge status={vehicle.status} className="text-sm px-3 py-1" /></div>
+          {vehicleImages.length > 1 && (
+            <div className="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded">
+              +{vehicleImages.length - 1} more
+            </div>
+          )}
         </div>
         <div className="p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -72,8 +81,62 @@ export default function VehicleDetails() {
           <InfoCard icon="fa-file-invoice-dollar" label="Quoted Amount" value={formatCurrency(vehicle.quoted_price)} />
         )}
         <InfoCard icon="fa-building" label="Office" value={vehicle.office_name} />
+        {vehicle.bid_end_date && (
+          <InfoCard 
+            icon="fa-hourglass-end" 
+            label="Auction Ends" 
+            value={formatDateTime(vehicle.bid_end_date)} 
+            highlight={new Date(vehicle.bid_end_date) < new Date()}
+          />
+        )}
         <InfoCard icon="fa-calendar" label="Listed" value={formatDate(vehicle.created_at)} />
+        <InfoCard icon="fa-location-dot" label="State" value={vehicle.state || 'N/A'} />
       </div>
+
+      {/* Vehicle Specifications */}
+      {(vehicle.vehicle_year || vehicle.mileage || vehicle.fuel_type || vehicle.transmission || vehicle.owner_name || vehicle.registration_number) && (
+        <div className="card p-5">
+          <h3 className="section-title mb-4">Vehicle Specifications</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {vehicle.vehicle_year && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Manufacturing Year</p>
+                <p className="text-sm font-semibold text-slate-900">{vehicle.vehicle_year}</p>
+              </div>
+            )}
+            {vehicle.mileage && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Mileage</p>
+                <p className="text-sm font-semibold text-slate-900">{Number(vehicle.mileage).toLocaleString('en-IN')} km</p>
+              </div>
+            )}
+            {vehicle.fuel_type && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Fuel Type</p>
+                <p className="text-sm font-semibold text-slate-900">{vehicle.fuel_type}</p>
+              </div>
+            )}
+            {vehicle.transmission && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Transmission</p>
+                <p className="text-sm font-semibold text-slate-900">{vehicle.transmission}</p>
+              </div>
+            )}
+            {vehicle.owner_name && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Previous Owner</p>
+                <p className="text-sm font-semibold text-slate-900">{vehicle.owner_name}</p>
+              </div>
+            )}
+            {vehicle.registration_number && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Registration Number</p>
+                <p className="text-sm font-semibold text-slate-900 uppercase">{vehicle.registration_number}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {vehicle.description && (
         <div className="card p-5">

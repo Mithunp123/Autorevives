@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui';
 import { vehicleService } from '@/services';
 import { useAuth } from '@/context/AuthContext';
+import { getImageUrl, getImageUrls } from '@/utils';
 import toast from 'react-hot-toast';
 
 const INDIAN_STATES = [
@@ -21,24 +22,37 @@ export default function VehicleForm() {
   const isEdit = Boolean(id);
   const isAdmin = user?.role === 'admin';
 
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [existingImage, setExistingImage] = useState(null);
+  const [existingImages, setExistingImages] = useState([]);
 
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'image/*': [] },
-    maxFiles: 1,
+    maxFiles: 10,
     onDrop: (files) => {
-      if (files[0]) {
-        setImage(files[0]);
-        setPreview(URL.createObjectURL(files[0]));
+      const validFiles = files.slice(0, 10 - images.length);
+      if (validFiles.length > 0) {
+        setImages(prev => [...prev, ...validFiles].slice(0, 10));
+        setPreviews(prev => [...prev, ...validFiles.map(f => URL.createObjectURL(f))].slice(0, 10));
+      }
+      if (files.length > validFiles.length) {
+        toast.error('Maximum 10 images allowed');
       }
     },
   });
+
+  const removeImage = (index) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
+    setPreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeExistingImage = (index) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== index));
+  };
 
   // Load existing vehicle data in edit mode
   useEffect(() => {
@@ -50,14 +64,22 @@ export default function VehicleForm() {
         setValue('name', v.name || '');
         setValue('category', v.category || '');
         setValue('state', v.state || '');
+        setValue('vehicle_year', v.vehicle_year || '');
+        setValue('mileage', v.mileage || '');
+        setValue('fuel_type', v.fuel_type || '');
+        setValue('transmission', v.transmission || '');
+        setValue('owner_name', v.owner_name || '');
+        setValue('registration_number', v.registration_number || '');
         setValue('starting_price', v.starting_price || '');
         setValue('quoted_price', v.quoted_price || '');
+        setValue('bid_end_date', v.bid_end_date ? new Date(v.bid_end_date).toISOString().slice(0, 16) : '');
         setValue('description', v.description || '');
         if (isAdmin) {
           setValue('status', v.status || 'pending');
         }
         if (v.image_path) {
-          setExistingImage(`/api/uploads/${v.image_path.replace('uploads/', '')}`);
+          const urls = getImageUrls(v.image_path);
+          setExistingImages(urls);
         }
       })
       .catch(() => {
@@ -68,17 +90,35 @@ export default function VehicleForm() {
   }, [id, isEdit, navigate, setValue, isAdmin]);
 
   const onSubmit = async (data) => {
+    // Validate at least 1 image
+    const totalImages = images.length + existingImages.length;
+    if (totalImages === 0) {
+      toast.error('Please upload at least 1 image');
+      return;
+    }
+
     setSubmitting(true);
     try {
       const formData = new FormData();
       formData.append('name', data.name);
       formData.append('category', data.category || '');
       formData.append('state', data.state || '');
+      if (data.vehicle_year) formData.append('vehicle_year', data.vehicle_year);
+      if (data.mileage) formData.append('mileage', data.mileage);
+      if (data.fuel_type) formData.append('fuel_type', data.fuel_type);
+      if (data.transmission) formData.append('transmission', data.transmission);
+      if (data.owner_name) formData.append('owner_name', data.owner_name);
+      if (data.registration_number) formData.append('registration_number', data.registration_number);
       formData.append('starting_price', data.starting_price);
       if (data.quoted_price) formData.append('quoted_price', data.quoted_price);
+      if (data.bid_end_date) formData.append('bid_end_date', data.bid_end_date);
       formData.append('description', data.description);
       if (isAdmin && data.status) formData.append('status', data.status);
-      if (image) formData.append('image', image);
+      
+      // Append all images
+      images.forEach((img) => {
+        formData.append('images', img);
+      });
 
       if (isEdit) {
         await vehicleService.update(id, formData);
@@ -149,6 +189,86 @@ export default function VehicleForm() {
             </div>
           </div>
 
+          {/* Vehicle Specifications */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Manufacturing Year</label>
+              <input
+                {...register('vehicle_year', { min: { value: 1980, message: 'Min 1980' }, max: { value: new Date().getFullYear(), message: 'Invalid year' } })}
+                type="number"
+                className="input-field"
+                placeholder="2022"
+              />
+              {errors.vehicle_year && <p className="text-xs text-danger mt-1.5 font-medium">{errors.vehicle_year.message}</p>}
+            </div>
+            <div>
+              <label className="label">Mileage (KM)</label>
+              <input
+                {...register('mileage', { min: { value: 0, message: 'Must be positive' } })}
+                type="number"
+                className="input-field"
+                placeholder="45000"
+              />
+              {errors.mileage && <p className="text-xs text-danger mt-1.5 font-medium">{errors.mileage.message}</p>}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Fuel Type</label>
+              <select {...register('fuel_type')} className="select-field">
+                <option value="">Select fuel type</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="CNG">CNG</option>
+                <option value="Electric">Electric</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+            <div>
+              <label className="label">Transmission</label>
+              <select {...register('transmission')} className="select-field">
+                <option value="">Select transmission</option>
+                <option value="Manual">Manual</option>
+                <option value="Automatic">Automatic</option>
+                <option value="AMT">AMT</option>
+                <option value="CVT">CVT</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Owner Name <span className="text-slate-400 font-normal">— optional</span></label>
+              <input
+                {...register('owner_name')}
+                className="input-field"
+                placeholder="Previous owner name"
+              />
+            </div>
+            <div>
+              <label className="label">Registration Number <span className="text-slate-400 font-normal">— optional</span></label>
+              <input
+                {...register('registration_number')}
+                className="input-field"
+                placeholder="TN01AB1234"
+              />
+            </div>
+          </div>
+
+          {/* Bid End Date & Time */}
+          <div>
+            <label className="label">Auction End Date & Time</label>
+            <input
+              {...register('bid_end_date', { required: 'Bid end date is required' })}
+              type="datetime-local"
+              className="input-field"
+              min={new Date().toISOString().slice(0, 16)}
+            />
+            {errors.bid_end_date && <p className="text-xs text-danger mt-1.5 font-medium">{errors.bid_end_date.message}</p>}
+            <p className="text-xs text-slate-400 mt-1">Set when the bidding will close for this vehicle</p>
+          </div>
+
           {/* Starting Price & Quoted Price */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -210,52 +330,79 @@ export default function VehicleForm() {
             {errors.description && <p className="text-xs text-danger mt-1.5 font-medium">{errors.description.message}</p>}
           </div>
 
-          {/* Vehicle Image */}
+          {/* Vehicle Images (1-10) */}
           <div>
-            <label className="label">Vehicle Image</label>
+            <label className="label">Vehicle Images <span className="text-slate-400 font-normal">— minimum 1, maximum 10</span></label>
             <div
               {...getRootProps()}
-              className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
+              className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${
                 isDragActive
                   ? 'border-accent bg-accent/5'
                   : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'
               }`}
             >
               <input {...getInputProps()} />
-              {preview ? (
-                <div className="relative inline-block">
-                  <img src={preview} alt="Preview" className="w-40 h-28 object-cover rounded-xl mx-auto" />
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); setImage(null); setPreview(null); }}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-danger text-white rounded-full flex items-center justify-center"
-                  >
-                    <i className="fas fa-xmark text-xs"></i>
-                  </button>
-                  <p className="text-xs text-slate-400 mt-2">{image?.name}</p>
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center mb-1">
+                  <i className="fas fa-upload text-xl text-accent"></i>
                 </div>
-              ) : existingImage ? (
-                <div className="relative inline-block">
-                  <img
-                    src={existingImage}
-                    alt="Current"
-                    className="w-40 h-28 object-cover rounded-xl mx-auto"
-                    onError={(e) => { e.target.style.display = 'none'; }}
-                  />
-                  <p className="text-xs text-slate-400 mt-2">Current image — drop a new one to replace</p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center mb-1">
-                    <i className="fas fa-upload text-xl text-accent"></i>
-                  </div>
-                  <p className="text-sm text-slate-500">
-                    Drag & drop image here, or <span className="text-accent font-bold">click to browse</span>
-                  </p>
-                  <p className="text-xs text-slate-400">PNG, JPG up to 10MB</p>
-                </div>
-              )}
+                <p className="text-sm text-slate-500">
+                  Drag & drop images here, or <span className="text-accent font-bold">click to browse</span>
+                </p>
+                <p className="text-xs text-slate-400">PNG, JPG up to 10MB each • {10 - images.length - existingImages.length} slots remaining</p>
+              </div>
             </div>
+
+            {/* Image Previews Grid */}
+            {(previews.length > 0 || existingImages.length > 0) && (
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {/* Existing images */}
+                {existingImages.map((img, idx) => (
+                  <div key={`existing-${idx}`} className="relative group">
+                    <img 
+                      src={img} 
+                      alt={`Existing ${idx + 1}`} 
+                      className="w-full h-24 object-cover rounded-xl border border-slate-200"
+                      onError={(e) => { e.target.src = '/images/placeholder-vehicle.svg'; }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeExistingImage(idx)}
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-danger text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <i className="fas fa-xmark text-xs"></i>
+                    </button>
+                    <span className="absolute bottom-1 left-1 text-[10px] bg-black/50 text-white px-1.5 py-0.5 rounded">
+                      Saved
+                    </span>
+                  </div>
+                ))}
+                {/* New images */}
+                {previews.map((preview, idx) => (
+                  <div key={`new-${idx}`} className="relative group">
+                    <img 
+                      src={preview} 
+                      alt={`Preview ${idx + 1}`} 
+                      className="w-full h-24 object-cover rounded-xl border-2 border-accent/30"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-danger text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <i className="fas fa-xmark text-xs"></i>
+                    </button>
+                    <span className="absolute bottom-1 left-1 text-[10px] bg-accent text-white px-1.5 py-0.5 rounded">
+                      New
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {(images.length + existingImages.length === 0) && (
+              <p className="text-xs text-danger mt-2">At least 1 image is required</p>
+            )}
           </div>
 
           {/* Actions */}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#F3F4F6"/>
+  <path d="M200 90c-44.2 0-80 35.8-80 80s35.8 80 80 80 80-35.8 80-80-35.8-80-80-80zm0 140c-33.1 0-60-26.9-60-60s26.9-60 60-60 60 26.9 60 60-26.9 60-60 60z" fill="#D1D5DB"/>
+  <path d="M245 140h-25v-15c0-8.3-6.7-15-15-15h-10c-8.3 0-15 6.7-15 15v15h-25c-5.5 0-10 4.5-10 10v45c0 5.5 4.5 10 10 10h90c5.5 0 10-4.5 10-10v-45c0-5.5-4.5-10-10-10zm-55-15c0-2.8 2.2-5 5-5h10c2.8 0 5 2.2 5 5v15h-20v-15z" fill="#D1D5DB"/>
+  <rect x="155" y="180" width="20" height="10" rx="2" fill="#E5E7EB"/>
+  <rect x="225" y="180" width="20" height="10" rx="2" fill="#E5E7EB"/>
+  <text x="200" y="250" font-family="system-ui, sans-serif" font-size="14" fill="#9CA3AF" text-anchor="middle">No Image</text>
+</svg>

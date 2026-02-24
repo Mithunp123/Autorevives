@@ -2,8 +2,14 @@
 import { useNavigate } from 'react-router-dom';
 import { DataTable, SearchFilter, StatusBadge, Pagination, Button, ConfirmDialog, PageLoader } from '@/components/ui';
 import { vehicleService } from '@/services';
-import { formatCurrency, formatDate } from '@/utils';
+import { formatCurrency, formatDate, getImageUrl, getImageUrls } from '@/utils';
 import toast from 'react-hot-toast';
+
+// Helper to get first image URL from image_path (supports both single and multi-image)
+const getFirstImage = (imagePath) => {
+  const urls = getImageUrls(imagePath);
+  return urls.length > 0 ? urls[0] : null;
+};
 
 export default function Vehicles() {
   const navigate = useNavigate();
@@ -50,7 +56,7 @@ export default function Vehicles() {
       render: (_, row) => (
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center overflow-hidden flex-shrink-0">
-            {row.image_path ? <img src={`/api/uploads/${row.image_path.replace('uploads/', '')}`} alt={row.name} className="w-full h-full object-cover" /> : <i className="fas fa-car text-sm text-slate-300"></i>}
+            {row.image_path ? <img src={getFirstImage(row.image_path)} alt={row.name} className="w-full h-full object-cover" /> : <i className="fas fa-car text-sm text-slate-300"></i>}
           </div>
           <div>
             <p className="font-semibold text-slate-900">{row.name}</p>
@@ -62,6 +68,30 @@ export default function Vehicles() {
     { key: 'office_name', label: 'Office', render: (val) => <span className="text-slate-500 font-medium">{val || '\u2014'}</span> },
     { key: 'starting_price', label: 'Starting Price', render: (val) => <span className="font-semibold font-display">{formatCurrency(val)}</span> },
     { key: 'current_bid', label: 'Current Bid', render: (val) => <span className={val ? 'font-bold text-accent font-display' : 'text-slate-300'}>{val ? formatCurrency(val) : 'No bids'}</span> },
+    { 
+      key: 'bid_end_date', 
+      label: 'Auction Ends', 
+      render: (val) => {
+        if (!val) return <span className="text-slate-300 text-xs">Not set</span>;
+        const endDate = new Date(val);
+        const now = new Date();
+        const diff = endDate - now;
+        const isExpired = diff < 0;
+        const daysLeft = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hoursLeft = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        return (
+          <div className="text-xs">
+            <div className={`font-semibold ${isExpired ? 'text-red-600' : daysLeft <= 1 ? 'text-orange-600' : 'text-slate-700'}`}>
+              {formatDate(val)}
+            </div>
+            <div className={`${isExpired ? 'text-red-500' : 'text-slate-400'}`}>
+              {isExpired ? 'Expired' : daysLeft > 0 ? `${daysLeft}d ${hoursLeft}h left` : `${hoursLeft}h left`}
+            </div>
+          </div>
+        );
+      }
+    },
     { key: 'status', label: 'Status', render: (val) => <StatusBadge status={val} /> },
     {
       key: 'actions', label: 'Actions',

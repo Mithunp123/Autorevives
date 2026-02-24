@@ -31,6 +31,7 @@ const Profile = lazy(() => import('@/pages/Profile'));
 const OfficeProfile = lazy(() => import('@/pages/OfficeProfile'));
 const PublicAuctions = lazy(() => import('@/pages/PublicAuctions'));
 const PublicAuctionDetails = lazy(() => import('@/pages/PublicAuctionDetails'));
+const SellVehicle = lazy(() => import('@/pages/SellVehicle'));
 
 /* ── Minimal loading spinner ── */
 function PageFallback() {
@@ -139,8 +140,9 @@ export default function AppRoutes() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/investors" element={<Investors />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/public/auctions" element={<PublicAuctions />} />
-        <Route path="/public/auctions/:id" element={<PublicAuctionDetails />} />
+        <Route path="/sell" element={<SellVehicle />} />
+        <Route path="/auctions" element={<PublicAuctions />} />
+        <Route path="/auctions/:id" element={<PublicAuctionDetails />} />
       </Route>
 
       {/* Profile (protected, inside dashboard) */}

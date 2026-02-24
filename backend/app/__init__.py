@@ -77,15 +77,40 @@ def create_app(config_class=Config):
     def health():
         return {"status": "ok", "message": "AutoRevive API is running"}
 
-    # Serve uploaded files
-    from flask import send_from_directory, make_response
+    # Serve uploaded files (supports nested paths: uploads/{mobile}/{category}/file.jpg)
+    from flask import send_from_directory, make_response, send_file, abort
+    import os as os_module
 
     @app.route("/api/uploads/<path:filename>")
     def uploaded_file(filename):
-        response = make_response(send_from_directory(app.config["UPLOAD_FOLDER"], filename))
-        # Cache uploaded images for 7 days (immutable content)
-        response.headers["Cache-Control"] = "public, max-age=604800, immutable"
-        return response
+        try:
+            # Normalize the path for Windows compatibility
+            upload_folder = app.config["UPLOAD_FOLDER"]
+            # Replace forward slashes with OS-appropriate separator
+            safe_filename = filename.replace("/", os_module.sep).replace("\\", os_module.sep)
+            full_path = os_module.path.join(upload_folder, safe_filename)
+            
+            # Security check - ensure path is within upload folder
+            full_path = os_module.path.abspath(full_path)
+            upload_folder_abs = os_module.path.abspath(upload_folder)
+            if not full_path.startswith(upload_folder_abs):
+                abort(403)
+            
+            # Check if file exists
+            if not os_module.path.isfile(full_path):
+                abort(404)
+            
+            response = make_response(send_file(full_path))
+            # Cache uploaded images for 7 days (immutable content)
+            response.headers["Cache-Control"] = "public, max-age=604800, immutable"
+            # CORS headers for Cloudflare/separate frontend hosting
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+            return response
+        except Exception as e:
+            app.logger.error(f"Error serving file {filename}: {e}")
+            abort(404)
 
     # ── Static-asset caching & compression headers ──
     @app.after_request

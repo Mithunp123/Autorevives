@@ -2,7 +2,13 @@
 import { useNavigate } from 'react-router-dom';
 import { StatCard, DataTable, SearchFilter, StatusBadge, Pagination, Button, PageLoader } from '@/components/ui';
 import { auctionService } from '@/services';
-import { formatCurrency, formatDateTime, cn } from '@/utils';
+import { formatCurrency, formatDateTime, cn, getImageUrl, getImageUrls } from '@/utils';
+
+// Helper to get first image URL from image_path (supports both single and multi-image)
+const getFirstImage = (imagePath) => {
+  const urls = getImageUrls(imagePath);
+  return urls.length > 0 ? urls[0] : null;
+};
 
 export default function Auctions() {
   const navigate = useNavigate();
@@ -40,7 +46,7 @@ export default function Auctions() {
     { key: 'name', label: 'Vehicle', render: (_, row) => (
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center flex-shrink-0">
-          {row.image_path ? <img src={`/api/uploads/${row.image_path.replace('uploads/', '')}`} alt={row.name} className="w-full h-full object-cover rounded-xl" /> : <i className="fas fa-car text-sm text-slate-300"></i>}
+          {row.image_path ? <img src={getFirstImage(row.image_path)} alt={row.name} className="w-full h-full object-cover rounded-xl" /> : <i className="fas fa-car text-sm text-slate-300"></i>}
         </div>
         <div><p className="font-semibold text-slate-900">{row.name}</p><p className="text-xs text-slate-400">{row.total_bids || 0} bids</p></div>
       </div>

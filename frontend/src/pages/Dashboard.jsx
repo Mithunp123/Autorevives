@@ -116,14 +116,14 @@ export default function Dashboard() {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-          <p className="text-sm font-medium text-slate-500 mt-1">Welcome back! Here's your platform overview.</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Dashboard</h1>
+          <p className="text-sm font-medium text-gray-500 mt-1">Welcome back! Here's your platform overview.</p>
         </div>
         <div className="flex gap-3">
-          <Link to="/vehicles" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-700 hover:text-[#4285F4] hover:border-[#4285F4] rounded-xl text-sm font-bold transition-all shadow-sm">
+          <Link to="/vehicles" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:text-orange-600 hover:border-orange-500 rounded-xl text-sm font-semibold transition-all shadow-sm">
             <i className="fas fa-car"></i> Vehicles
           </Link>
-          <Link to="/auctions" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#4285F4] hover:bg-[#3367D6] text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-500/20">
+          <Link to="/auctions" className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-orange-500/20">
             <i className="fas fa-gavel"></i> Auctions
           </Link>
         </div>
@@ -137,10 +137,10 @@ export default function Dashboard() {
         <div className="lg:col-span-3">
           <AreaChartCard data={chartData} dataKey="auctions" title="Monthly Auction Growth" height={340} />
         </div>
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
-          <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
-            <h3 className="font-bold text-slate-900">Recent Activity</h3>
-            <Link to="/auctions" className="text-xs font-bold text-[#4285F4] hover:text-[#3367D6] flex items-center gap-1">
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+            <h3 className="font-bold text-[#111111]">Recent Activity</h3>
+            <Link to="/auctions" className="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1">
               View all <i className="fas fa-arrow-right"></i>
             </Link>
           </div>
@@ -148,15 +148,15 @@ export default function Dashboard() {
             {activity.map((item) => {
               const iconConfig = activityIcons[item.type] || activityIcons.auction;
               return (
-                <div key={item.id} className="flex items-start gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                <div key={item.id} className="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors group">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${iconConfig.color} bg-opacity-10`}>
                     <i className={`fas ${iconConfig.icon} text-sm`}></i>
                   </div>
                   <div className="flex-1 min-w-0 pt-0.5">
-                    <p className="text-sm font-medium text-slate-800 line-clamp-2 leading-relaxed group-hover:text-slate-900 transition-colors">{item.message}</p>
+                    <p className="text-sm font-medium text-gray-800 line-clamp-2 leading-relaxed group-hover:text-[#111111] transition-colors">{item.message}</p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <i className="far fa-clock text-slate-400 text-[10px]"></i>
-                      <span className="text-xs font-medium text-slate-400">{timeAgo(item.time)}</span>
+                      <i className="far fa-clock text-gray-400 text-[10px]"></i>
+                      <span className="text-xs font-medium text-gray-400">{timeAgo(item.time)}</span>
                     </div>
                   </div>
                 </div>
@@ -168,15 +168,15 @@ export default function Dashboard() {
       </div>
 
       {stats.pendingApprovals > 0 && (
-        <div className="card bg-gradient-to-r from-blue-50 to-blue-50/50 border-blue-200/50 p-5">
+        <div className="card bg-gradient-to-r from-orange-50 to-orange-50/50 border-orange-200/50 p-5">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl flex items-center justify-center">
-                <i className="fas fa-shield-halved text-warning"></i>
+              <div className="w-11 h-11 bg-gradient-to-br from-orange-100 to-orange-50 rounded-xl flex items-center justify-center">
+                <i className="fas fa-shield-halved text-orange-500"></i>
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">{stats.pendingApprovals} Pending Approvals</h3>
-                <p className="text-sm text-slate-500">Review and approve pending requests</p>
+                <h3 className="font-bold text-[#111111]">{stats.pendingApprovals} Pending Approvals</h3>
+                <p className="text-sm text-gray-500">Review and approve pending requests</p>
               </div>
             </div>
             <Link to="/approvals" className="btn-primary text-sm"><i className="fas fa-eye text-sm"></i> Review Now</Link>
@@ -190,9 +190,9 @@ export default function Dashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div>
               <h3 className="section-title flex items-center gap-2">
-                <i className="fas fa-map-location-dot text-accent text-sm"></i> Vehicles by State
+                <i className="fas fa-map-location-dot text-orange-500 text-sm"></i> Vehicles by State
               </h3>
-              <p className="text-sm text-slate-400 mt-0.5">Filter and view vehicles from different states</p>
+              <p className="text-sm text-gray-400 mt-0.5">Filter and view vehicles from different states</p>
             </div>
             <select
               value={selectedState}
@@ -216,8 +216,8 @@ export default function Dashboard() {
                 onClick={() => setSelectedState(s.state === selectedState ? '' : s.state)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   selectedState === s.state
-                    ? 'bg-accent text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                    ? 'bg-orange-500 text-white shadow-sm'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                 }`}
               >
                 {s.state} <span className="ml-1 opacity-70">{s.vehicle_count}</span>
@@ -230,19 +230,19 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100">
-                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vehicle</th>
-                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Office</th>
-                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Price</th>
-                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Bids</th>
-                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Vehicle</th>
+                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Office</th>
+                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Price</th>
+                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Bids</th>
+                    <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-gray-50">
                   {stateVehicles.slice(0, 10).map((v) => (
                     <tr
                       key={v.id}
-                      className="hover:bg-slate-50/50 cursor-pointer transition-colors"
+                      className="hover:bg-gray-50/50 cursor-pointer transition-colors"
                       onClick={() => navigate(`/vehicles/${v.id}`)}
                     >
                       <td className="py-2.5 px-3">
@@ -250,16 +250,16 @@ export default function Dashboard() {
                           {v.image_path ? (
                             <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${v.image_path}`} alt="" width={40} height={40} loading="lazy" className="w-10 h-10 rounded-lg object-cover" />
                           ) : (
-                            <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center"><i className="fas fa-car text-slate-300 text-sm"></i></div>
+                            <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center"><i className="fas fa-car text-gray-300 text-sm"></i></div>
                           )}
-                          <span className="font-medium text-slate-800">{v.name}</span>
+                          <span className="font-medium text-[#111111]">{v.name}</span>
                         </div>
                       </td>
-                      <td className="py-2.5 px-3 text-slate-500">{v.office_name || '—'}</td>
-                      <td className="py-2.5 px-3 font-semibold text-slate-800">₹{Number(v.starting_price || 0).toLocaleString('en-IN')}</td>
+                      <td className="py-2.5 px-3 text-gray-500">{v.office_name || '—'}</td>
+                      <td className="py-2.5 px-3 font-semibold text-[#111111]">₹{Number(v.starting_price || 0).toLocaleString('en-IN')}</td>
                       <td className="py-2.5 px-3">
-                        <span className="text-accent font-semibold">{v.bid_count || 0}</span>
-                        {v.current_bid && <span className="text-xs text-slate-400 ml-1">(₹{Number(v.current_bid).toLocaleString('en-IN')})</span>}
+                        <span className="text-orange-600 font-semibold">{v.bid_count || 0}</span>
+                        {v.current_bid && <span className="text-xs text-gray-400 ml-1">(₹{Number(v.current_bid).toLocaleString('en-IN')})</span>}
                       </td>
                       <td className="py-2.5 px-3"><StatusBadge status={v.status} /></td>
                     </tr>
@@ -267,8 +267,8 @@ export default function Dashboard() {
                 </tbody>
               </table>
               {stateVehicles.length > 10 && (
-                <div className="text-center py-3 border-t border-slate-50">
-                  <Link to="/vehicles" className="text-xs text-accent font-semibold hover:underline">
+                <div className="text-center py-3 border-t border-gray-100">
+                  <Link to="/vehicles" className="text-xs text-orange-600 font-semibold hover:underline">
                     View all {stateVehicles.length} vehicles in {selectedState} →
                   </Link>
                 </div>
@@ -277,7 +277,7 @@ export default function Dashboard() {
           )}
 
           {selectedState && stateVehicles.length === 0 && (
-            <div className="text-center py-8 text-slate-400">
+            <div className="text-center py-8 text-gray-400">
               <i className="fas fa-car text-2xl mb-2 block opacity-40"></i>
               <p className="text-sm">No vehicles found in {selectedState}</p>
             </div>

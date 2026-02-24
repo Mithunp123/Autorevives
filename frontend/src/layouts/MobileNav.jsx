@@ -19,7 +19,7 @@ const officeItems = [
 
 const userItems = [
   { to: '/', label: 'Home', icon: 'fa-house' },
-  { to: '/public/auctions', label: 'Auctions', icon: 'fa-gavel' },
+  { to: '/auctions', label: 'Auctions', icon: 'fa-gavel' },
   { to: '/profile', label: 'Profile', icon: 'fa-circle-user' },
   { to: '/contact', label: 'Contact', icon: 'fa-envelope' },
 ];

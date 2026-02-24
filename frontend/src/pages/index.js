@@ -23,3 +23,4 @@ export { default as Profile } from './Profile';
 export { default as OfficeProfile } from './OfficeProfile';
 export { default as PublicAuctions } from './PublicAuctions';
 export { default as PublicAuctionDetails } from './PublicAuctionDetails';
+export { default as SellVehicle } from './SellVehicle';
