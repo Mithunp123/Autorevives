@@ -17,7 +17,7 @@ class Config:
 
     # File uploads
     UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads"))
-    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 16 * 1024 * 1024))  # 16 MB
+    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 50 * 1024 * 1024))  # 50 MB
     ALLOWED_EXTENSIONS = set(
         ext.strip() for ext in os.getenv("ALLOWED_EXTENSIONS", "png,jpg,jpeg,gif,webp").split(",")
     )

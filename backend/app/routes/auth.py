@@ -18,12 +18,13 @@ def login():
     password = data.get("password", "")
 
     if not username or not password:
-        return jsonify({"error": "Username and password are required"}), 400
+        return jsonify({"error": "Username/email and password are required"}), 400
 
     conn = _get_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        # Allow login with username OR email
+        cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, username))
         user = cursor.fetchone()
 
         if not user or not check_password_hash(user["password_hash"], password):

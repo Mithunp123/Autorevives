@@ -48,17 +48,17 @@ export default function Login() {
           {/* Login Form */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Username */}
+              {/* Username or Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Username</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Username or Email</label>
                 <input
-                  {...register('username', { required: 'Username is required' })}
+                  {...register('username', { required: 'Username or email is required' })}
                   className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
                     errors.username
                       ? 'border-red-300 focus:border-red-500'
                       : 'border-gray-300 focus:border-orange-500'
                   }`}
-                  placeholder="Enter your username"
+                  placeholder="Enter your username or email"
                   autoComplete="username"
                 />
                 {errors.username && (

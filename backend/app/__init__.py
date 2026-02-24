@@ -77,6 +77,11 @@ def create_app(config_class=Config):
     def health():
         return {"status": "ok", "message": "AutoRevive API is running"}
 
+    # Handle request too large (413)
+    @app.errorhandler(413)
+    def request_entity_too_large(error):
+        return {"error": "File too large. Maximum upload size is 50MB."}, 413
+
     # Serve uploaded files (supports nested paths: uploads/{mobile}/{category}/file.jpg)
     from flask import send_from_directory, make_response, send_file, abort
     import os as os_module

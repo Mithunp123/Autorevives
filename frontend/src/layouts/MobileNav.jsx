@@ -4,9 +4,9 @@ import { cn } from '@/utils';
 
 const adminItems = [
   { to: '/dashboard', label: 'Home', icon: 'fa-gauge-high' },
+  { to: '/finance', label: 'Finance', icon: 'fa-building-columns' },
   { to: '/vehicles', label: 'Vehicles', icon: 'fa-car-side' },
   { to: '/auctions', label: 'Auctions', icon: 'fa-gavel' },
-  { to: '/users', label: 'Users', icon: 'fa-user-group' },
   { to: '/settings', label: 'More', icon: 'fa-sliders' },
 ];
 

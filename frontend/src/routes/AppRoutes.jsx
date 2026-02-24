@@ -12,6 +12,7 @@ const Users = lazy(() => import('@/pages/Users'));
 const UserDetails = lazy(() => import('@/pages/UserDetails'));
 const Managers = lazy(() => import('@/pages/Managers'));
 const Offices = lazy(() => import('@/pages/Offices'));
+const Finance = lazy(() => import('@/pages/Finance'));
 const Vehicles = lazy(() => import('@/pages/Vehicles'));
 const VehicleDetails = lazy(() => import('@/pages/VehicleDetails'));
 const VehicleForm = lazy(() => import('@/pages/VehicleForm'));
@@ -101,6 +102,14 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute roles={['admin']}>
               <Offices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/finance"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <Finance />
             </ProtectedRoute>
           }
         />

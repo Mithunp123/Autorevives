@@ -28,6 +28,16 @@ export default function VehicleForm() {
   const [loading, setLoading] = useState(false);
   const [existingImages, setExistingImages] = useState([]);
 
+  // RC & Insurance
+  const [rcAvailable, setRcAvailable] = useState(false);
+  const [rcImage, setRcImage] = useState(null);
+  const [rcPreview, setRcPreview] = useState(null);
+  const [existingRcImage, setExistingRcImage] = useState(null);
+  const [insuranceAvailable, setInsuranceAvailable] = useState(false);
+  const [insuranceImage, setInsuranceImage] = useState(null);
+  const [insurancePreview, setInsurancePreview] = useState(null);
+  const [existingInsuranceImage, setExistingInsuranceImage] = useState(null);
+
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -81,6 +91,11 @@ export default function VehicleForm() {
           const urls = getImageUrls(v.image_path);
           setExistingImages(urls);
         }
+        // RC & Insurance
+        setRcAvailable(!!v.rc_available);
+        if (v.rc_image) setExistingRcImage(getImageUrl(v.rc_image));
+        setInsuranceAvailable(!!v.insurance_available);
+        if (v.insurance_image) setExistingInsuranceImage(getImageUrl(v.insurance_image));
       })
       .catch(() => {
         toast.error('Failed to load vehicle data');
@@ -112,8 +127,14 @@ export default function VehicleForm() {
       formData.append('starting_price', data.starting_price);
       if (data.quoted_price) formData.append('quoted_price', data.quoted_price);
       if (data.bid_end_date) formData.append('bid_end_date', data.bid_end_date);
-      formData.append('description', data.description);
+      if (data.description) formData.append('description', data.description);
       if (isAdmin && data.status) formData.append('status', data.status);
+
+      // RC & Insurance
+      formData.append('rc_available', rcAvailable ? 'true' : 'false');
+      formData.append('insurance_available', insuranceAvailable ? 'true' : 'false');
+      if (rcAvailable && rcImage) formData.append('rc_image', rcImage);
+      if (insuranceAvailable && insuranceImage) formData.append('insurance_image', insuranceImage);
       
       // Append all images
       images.forEach((img) => {
@@ -320,14 +341,83 @@ export default function VehicleForm() {
 
           {/* Description */}
           <div>
-            <label className="label">Description</label>
+            <label className="label">Description <span className="text-slate-400 font-normal">— optional</span></label>
             <textarea
-              {...register('description', { required: 'Description is required' })}
+              {...register('description')}
               rows={4}
               className="input-field resize-none"
               placeholder="Vehicle condition, registration year, kilometers driven, features..."
             />
-            {errors.description && <p className="text-xs text-danger mt-1.5 font-medium">{errors.description.message}</p>}
+          </div>
+
+          {/* RC Availability */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <label className="label mb-0">RC (Registration Certificate) Available?</label>
+              <button
+                type="button"
+                onClick={() => { setRcAvailable(!rcAvailable); if (rcAvailable) { setRcImage(null); setRcPreview(null); } }}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  rcAvailable ? 'bg-accent' : 'bg-slate-300'
+                }`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  rcAvailable ? 'translate-x-6' : 'translate-x-1'
+                }`} />
+              </button>
+            </div>
+            {rcAvailable && (
+              <div className="pl-1">
+                <label className="label text-sm">Upload RC Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const f = e.target.files[0];
+                    if (f) { setRcImage(f); setRcPreview(URL.createObjectURL(f)); }
+                  }}
+                  className="input-field text-sm"
+                />
+                {(rcPreview || existingRcImage) && (
+                  <img src={rcPreview || existingRcImage} alt="RC" className="mt-2 h-24 rounded-lg border object-cover" />
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Insurance Availability */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <label className="label mb-0">Insurance Available?</label>
+              <button
+                type="button"
+                onClick={() => { setInsuranceAvailable(!insuranceAvailable); if (insuranceAvailable) { setInsuranceImage(null); setInsurancePreview(null); } }}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  insuranceAvailable ? 'bg-accent' : 'bg-slate-300'
+                }`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  insuranceAvailable ? 'translate-x-6' : 'translate-x-1'
+                }`} />
+              </button>
+            </div>
+            {insuranceAvailable && (
+              <div className="pl-1">
+                <label className="label text-sm">Upload Insurance Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const f = e.target.files[0];
+                    if (f) { setInsuranceImage(f); setInsurancePreview(URL.createObjectURL(f)); }
+                  }}
+                  className="input-field text-sm"
+                />
+                {(insurancePreview || existingInsuranceImage) && (
+                  <img src={insurancePreview || existingInsuranceImage} alt="Insurance" className="mt-2 h-24 rounded-lg border object-cover" />
+                )}
+              </div>
+            )}
           </div>
 
           {/* Vehicle Images (1-10) */}

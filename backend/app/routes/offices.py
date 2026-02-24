@@ -267,3 +267,93 @@ def get_office_details_admin(office_user_id):
     finally:
         cursor.close()
         conn.close()
+
+
+@offices_bp.route("/finance-summary", methods=["GET"])
+@role_required("admin")
+def get_finance_summary():
+    """Get all offices with their product summary counts for the Finance page."""
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            SELECT u.id, u.username, u.finance_name, u.owner_name, u.state, u.location,
+                   u.mobile_number, u.email, u.status,
+                   COUNT(p.id) as total_products,
+                   SUM(CASE WHEN p.status = 'pending' THEN 1 ELSE 0 END) as pending,
+                   SUM(CASE WHEN p.status = 'approved' THEN 1 ELSE 0 END) as live_auction,
+                   SUM(CASE WHEN p.status = 'rejected' THEN 1 ELSE 0 END) as completed
+            FROM users u
+            LEFT JOIN products p ON u.id = p.office_id
+            WHERE u.role = 'office' AND u.status = 'active'
+            GROUP BY u.id
+            ORDER BY total_products DESC, u.finance_name ASC
+        """)
+        offices = serialize_rows(cursor.fetchall())
+        return jsonify({"offices": offices})
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@offices_bp.route("/finance-summary/<int:office_id>", methods=["GET"])
+@role_required("admin")
+def get_finance_office_detail(office_id):
+    """Get detail for a specific office with products grouped by category."""
+    category_filter = request.args.get("category", "").strip()
+    
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        # Office info
+        cursor.execute("""
+            SELECT u.id, u.username, u.finance_name, u.owner_name, u.state, u.location,
+                   u.mobile_number, u.email, u.status
+            FROM users u WHERE u.id = %s AND u.role = 'office'
+        """, (office_id,))
+        office = cursor.fetchone()
+        if not office:
+            return jsonify({"error": "Office not found"}), 404
+
+        # Category summary
+        cursor.execute("""
+            SELECT COALESCE(category, 'Uncategorized') as category,
+                   COUNT(*) as total,
+                   SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
+                   SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as live_auction,
+                   SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as completed
+            FROM products WHERE office_id = %s
+            GROUP BY category
+            ORDER BY total DESC
+        """, (office_id,))
+        categories = serialize_rows(cursor.fetchall())
+
+        # Products (optionally filtered by category)
+        if category_filter:
+            cursor.execute("""
+                SELECT p.*, COALESCE(MAX(b.amount), 0) as current_bid, COUNT(b.id) as bid_count
+                FROM products p
+                LEFT JOIN bids b ON p.id = b.product_id
+                WHERE p.office_id = %s AND COALESCE(p.category, 'Uncategorized') = %s
+                GROUP BY p.id
+                ORDER BY p.created_at DESC
+            """, (office_id, category_filter))
+        else:
+            cursor.execute("""
+                SELECT p.*, COALESCE(MAX(b.amount), 0) as current_bid, COUNT(b.id) as bid_count
+                FROM products p
+                LEFT JOIN bids b ON p.id = b.product_id
+                WHERE p.office_id = %s
+                GROUP BY p.id
+                ORDER BY p.created_at DESC
+            """, (office_id,))
+        products = serialize_rows(cursor.fetchall())
+
+        return jsonify({
+            "office": serialize_row(office),
+            "categories": categories,
+            "products": products,
+        })
+    finally:
+        cursor.close()
+        conn.close()

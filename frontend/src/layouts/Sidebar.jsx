@@ -4,7 +4,8 @@ import { cn } from '@/utils';
 
 const adminNav = [
   { to: '/dashboard', label: 'Dashboard', icon: 'fa-gauge-high', section: 'Overview' },
-  { to: '/vehicles', label: 'Products', icon: 'fa-car-side', section: 'Overview' },
+  { to: '/finance', label: 'Finance', icon: 'fa-building-columns', section: 'Overview' },
+  { to: '/vehicles', label: 'Vehicles', icon: 'fa-car-side', section: 'Overview' },
   { to: '/users', label: 'Users', icon: 'fa-user-group', section: 'Overview' },
   { to: '/offices', label: 'Offices', icon: 'fa-building', section: 'Management' },
   { to: '/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Management' },

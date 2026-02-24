@@ -133,6 +133,10 @@ def create_vehicle():
     if not name or not starting_price:
         return jsonify({"error": "Name and starting price are required"}), 400
 
+    # RC and Insurance fields
+    rc_available = request.form.get("rc_available", "false").lower() in ("true", "1", "yes")
+    insurance_available = request.form.get("insurance_available", "false").lower() in ("true", "1", "yes")
+
     office_id = request.current_user["user_id"]
     
     # Get officer's mobile number for folder organization
@@ -174,13 +178,37 @@ def create_vehicle():
     # Store as JSON array string, or single path for backward compatibility
     image_path = json.dumps(image_paths) if image_paths else None
 
+    # Handle RC image upload
+    rc_image_path = None
+    if rc_available:
+        rc_file = request.files.get("rc_image")
+        if rc_file and rc_file.filename and allowed_file(rc_file.filename):
+            original = secure_filename(rc_file.filename)
+            name_part, ext = os.path.splitext(original)
+            rc_filename = f"rc_{name_part}_{int(time.time())}{ext}"
+            rc_file.save(os.path.join(upload_path, rc_filename))
+            rc_image_path = f"uploads/{upload_subfolder}/{rc_filename}".replace("\\", "/")
+
+    # Handle Insurance image upload
+    insurance_image_path = None
+    if insurance_available:
+        ins_file = request.files.get("insurance_image")
+        if ins_file and ins_file.filename and allowed_file(ins_file.filename):
+            original = secure_filename(ins_file.filename)
+            name_part, ext = os.path.splitext(original)
+            ins_filename = f"ins_{name_part}_{int(time.time())}{ext}"
+            ins_file.save(os.path.join(upload_path, ins_filename))
+            insurance_image_path = f"uploads/{upload_subfolder}/{ins_filename}".replace("\\", "/")
+
     try:
         cursor.execute(
             """INSERT INTO products (office_id, name, description, category, state, image_path, starting_price, quoted_price, 
-               bid_end_date, vehicle_year, mileage, fuel_type, transmission, owner_name, registration_number, status)
-               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending')""",
+               bid_end_date, vehicle_year, mileage, fuel_type, transmission, owner_name, registration_number,
+               rc_available, rc_image, insurance_available, insurance_image, status)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending')""",
             (office_id, name, description, category or None, state or None, image_path, starting_price, quoted_price,
-             bid_end_date, vehicle_year, mileage, fuel_type, transmission, owner_name, registration_number),
+             bid_end_date, vehicle_year, mileage, fuel_type, transmission, owner_name, registration_number,
+             rc_available, rc_image_path, insurance_available, insurance_image_path),
         )
         conn.commit()
         return jsonify({"message": "Vehicle added! Waiting for admin approval.", "id": cursor.lastrowid}), 201
@@ -222,6 +250,12 @@ def update_vehicle(vehicle_id):
         owner_name = request.form.get("owner_name", vehicle.get("owner_name"))
         registration_number = request.form.get("registration_number", vehicle.get("registration_number"))
         
+        # RC and Insurance fields
+        rc_available = request.form.get("rc_available", str(vehicle.get("rc_available", False))).lower() in ("true", "1", "yes")
+        insurance_available = request.form.get("insurance_available", str(vehicle.get("insurance_available", False))).lower() in ("true", "1", "yes")
+        rc_image_path = vehicle.get("rc_image")
+        insurance_image_path = vehicle.get("insurance_image")
+        
         image_path = vehicle["image_path"]
 
         # Admin can also update status
@@ -230,6 +264,19 @@ def update_vehicle(vehicle_id):
             new_status = request.form.get("status", "")
             if new_status in ('pending', 'approved', 'rejected'):
                 status = new_status
+
+        # Get officer's mobile number for folder organization (used by multiple upload sections)
+        office_id = vehicle["office_id"]
+        cursor.execute("SELECT mobile_number FROM users WHERE id = %s", (office_id,))
+        user_row = cursor.fetchone()
+        officer_mobile = user_row["mobile_number"] if user_row and user_row.get("mobile_number") else str(office_id)
+        officer_mobile = ''.join(filter(str.isdigit, officer_mobile)) or str(office_id)
+        
+        # Create folder structure: uploads/{officer_mobile}/{category}/
+        category_folder = category if category else "uncategorized"
+        upload_subfolder = os.path.join(officer_mobile, category_folder)
+        upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], upload_subfolder)
+        os.makedirs(upload_path, exist_ok=True)
 
         # Handle multiple image uploads (1-10 images)
         files = request.files.getlist("images")
@@ -240,19 +287,6 @@ def update_vehicle(vehicle_id):
                 files = [single_file]
         
         if files and any(f.filename for f in files):
-            # Get officer's mobile number for folder organization
-            office_id = vehicle["office_id"]
-            cursor.execute("SELECT mobile_number FROM users WHERE id = %s", (office_id,))
-            user_row = cursor.fetchone()
-            officer_mobile = user_row["mobile_number"] if user_row and user_row.get("mobile_number") else str(office_id)
-            officer_mobile = ''.join(filter(str.isdigit, officer_mobile)) or str(office_id)
-            
-            # Create folder structure: uploads/{officer_mobile}/{category}/
-            category_folder = category if category else "uncategorized"
-            upload_subfolder = os.path.join(officer_mobile, category_folder)
-            upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], upload_subfolder)
-            os.makedirs(upload_path, exist_ok=True)
-            
             image_paths = []
             for file in files[:10]:  # Limit to 10 images max
                 if file and file.filename and allowed_file(file.filename):
@@ -264,14 +298,40 @@ def update_vehicle(vehicle_id):
             if image_paths:
                 image_path = json.dumps(image_paths)
 
+        # Handle RC image upload
+        if rc_available:
+            rc_file = request.files.get("rc_image")
+            if rc_file and rc_file.filename and allowed_file(rc_file.filename):
+                original = secure_filename(rc_file.filename)
+                name_part, ext = os.path.splitext(original)
+                rc_filename = f"rc_{name_part}_{int(time.time())}{ext}"
+                rc_file.save(os.path.join(upload_path, rc_filename))
+                rc_image_path = f"uploads/{upload_subfolder}/{rc_filename}".replace("\\", "/")
+        else:
+            rc_image_path = None
+
+        # Handle Insurance image upload
+        if insurance_available:
+            ins_file = request.files.get("insurance_image")
+            if ins_file and ins_file.filename and allowed_file(ins_file.filename):
+                original = secure_filename(ins_file.filename)
+                name_part, ext = os.path.splitext(original)
+                ins_filename = f"ins_{name_part}_{int(time.time())}{ext}"
+                ins_file.save(os.path.join(upload_path, ins_filename))
+                insurance_image_path = f"uploads/{upload_subfolder}/{ins_filename}".replace("\\", "/")
+        else:
+            insurance_image_path = None
+
         cursor.execute(
             """UPDATE products SET name = %s, description = %s, category = %s, state = %s,
                starting_price = %s, quoted_price = %s, image_path = %s, status = %s,
                bid_end_date = %s, vehicle_year = %s, mileage = %s, fuel_type = %s, 
-               transmission = %s, owner_name = %s, registration_number = %s
+               transmission = %s, owner_name = %s, registration_number = %s,
+               rc_available = %s, rc_image = %s, insurance_available = %s, insurance_image = %s
                WHERE id = %s""",
             (name, description, category or None, state or None, starting_price, quoted_price, image_path, status,
-             bid_end_date, vehicle_year, mileage, fuel_type, transmission, owner_name, registration_number, vehicle_id),
+             bid_end_date, vehicle_year, mileage, fuel_type, transmission, owner_name, registration_number,
+             rc_available, rc_image_path, insurance_available, insurance_image_path, vehicle_id),
         )
         conn.commit()
         return jsonify({"message": "Vehicle updated successfully"})

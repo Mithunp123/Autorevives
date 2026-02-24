@@ -3,6 +3,7 @@ export { default as Users } from './Users';
 export { default as UserDetails } from './UserDetails';
 export { default as Managers } from './Managers';
 export { default as Offices } from './Offices';
+export { default as Finance } from './Finance';
 export { default as Vehicles } from './Vehicles';
 export { default as VehicleDetails } from './VehicleDetails';
 export { default as VehicleForm } from './VehicleForm';
