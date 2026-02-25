@@ -24,7 +24,9 @@ const officeNav = [
 
 const userNav = [
   { to: '/', label: 'Home', icon: 'fa-house', section: 'Main' },
-  { to: '/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Main' },
+  { to: '/auctions', label: 'My Bids', icon: 'fa-gavel', section: 'Main' },
+  { to: '/wishlist', label: 'Wishlist', icon: 'fa-heart', section: 'Main' },
+  { to: '/transactions', label: 'Transactions', icon: 'fa-receipt', section: 'Account' },
   { to: '/profile', label: 'Profile', icon: 'fa-circle-user', section: 'Account' },
   { to: '/about', label: 'About', icon: 'fa-info-circle', section: 'Links' },
   { to: '/contact', label: 'Contact', icon: 'fa-envelope', section: 'Links' },

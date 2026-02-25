@@ -33,12 +33,16 @@ const OfficeProfile = lazy(() => import('@/pages/OfficeProfile'));
 const PublicAuctions = lazy(() => import('@/pages/PublicAuctions'));
 const PublicAuctionDetails = lazy(() => import('@/pages/PublicAuctionDetails'));
 const SellVehicle = lazy(() => import('@/pages/SellVehicle'));
+const Wishlist = lazy(() => import('@/pages/Wishlist'));
+const Transactions = lazy(() => import('@/pages/Transactions'));
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 
 /* ── Minimal loading spinner ── */
 function PageFallback() {
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="w-8 h-8 border-3 border-accent border-t-transparent rounded-full animate-spin" />
+    <div className="flex items-center justify-center min-h-[60vh] bg-inherit">
+      <div className="w-8 h-8 border-[3px] border-gold-200 border-t-gold-500 rounded-full animate-spin" />
     </div>
   );
 }
@@ -46,128 +50,132 @@ function PageFallback() {
 export default function AppRoutes() {
   return (
     <Suspense fallback={<PageFallback />}>
-    <Routes>
-      {/* Public routes */}
-      {/* Login & Register are now nested inside PublicLayout so <Outlet /> renders them */}
+      <Routes>
+        {/* Public routes */}
+        {/* Login & Register are now nested inside PublicLayout so <Outlet /> renders them */}
 
-      {/* Protected dashboard routes */}
-      <Route
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        {/* Vehicles — accessible by admin + office */}
-        <Route path="/vehicles" element={<Vehicles />} />
-        <Route path="/vehicles/add" element={<VehicleForm />} />
-        <Route path="/vehicles/:id" element={<VehicleDetails />} />
-        <Route path="/vehicles/:id/edit" element={<VehicleForm />} />
-
-        {/* Auctions — accessible by admin + office */}
-        <Route path="/auctions" element={<Auctions />} />
-
-        {/* Office profile */}
-        <Route path="/office-profile" element={<OfficeProfile />} />
-
-        {/* Admin-only routes */}
+        {/* Protected dashboard routes */}
         <Route
-          path="/users"
           element={
-            <ProtectedRoute roles={['admin']}>
-              <Users />
+            <ProtectedRoute>
+              <DashboardLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/users/:id"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <UserDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/managers"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Managers />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/offices"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Offices />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/finance"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Finance />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/approvals"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Approvals />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reports"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Reports />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-      </Route>
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
 
-      {/* Public pages wrapped in PublicLayout */}
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/investors" element={<Investors />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/sell" element={<SellVehicle />} />
-        <Route path="/auctions" element={<PublicAuctions />} />
-        <Route path="/auctions/:id" element={<PublicAuctionDetails />} />
-      </Route>
+          {/* Vehicles — accessible by admin + office */}
+          <Route path="/vehicles" element={<Vehicles />} />
+          <Route path="/vehicles/add" element={<VehicleForm />} />
+          <Route path="/vehicles/:id" element={<VehicleDetails />} />
+          <Route path="/vehicles/:id/edit" element={<VehicleForm />} />
 
-      {/* Profile (protected, inside dashboard) */}
-      <Route
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/profile" element={<Profile />} />
-      </Route>
+          {/* Auctions — accessible by admin + office */}
+          <Route path="/auctions" element={<Auctions />} />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+          {/* Office profile */}
+          <Route path="/office-profile" element={<OfficeProfile />} />
+
+          {/* Admin-only routes */}
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Users />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/:id"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <UserDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managers"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Managers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/offices"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Offices />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/finance"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Finance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/approvals"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Approvals />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Reports />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        {/* Public pages wrapped in PublicLayout */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+          <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/investors" element={<Investors />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/sell" element={<SellVehicle />} />
+          <Route path="/auctions" element={<PublicAuctions />} />
+          <Route path="/auctions/:id" element={<PublicAuctionDetails />} />
+        </Route>
+
+        {/* Profile and User Features (protected, inside dashboard) */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/transactions" element={<Transactions />} />
+        </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Suspense>
   );
 }

@@ -91,7 +91,7 @@ export default function Dashboard() {
   useEffect(() => {
     dashboardService.getVehiclesByState('')
       .then(({ data }) => { if (data?.states) setStateList(data.states); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Fetch vehicles when state changes
@@ -99,7 +99,7 @@ export default function Dashboard() {
     if (!selectedState) { setStateVehicles([]); return; }
     dashboardService.getVehiclesByState(selectedState)
       .then(({ data }) => { if (data?.vehicles) setStateVehicles(data.vehicles); })
-      .catch(() => {});
+      .catch(() => { });
   }, [selectedState]);
 
   if (loading) return <PageLoader />;
@@ -216,11 +216,10 @@ export default function Dashboard() {
               <button
                 key={s.state}
                 onClick={() => setSelectedState(s.state === selectedState ? '' : s.state)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  selectedState === s.state
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${selectedState === s.state
                     ? 'bg-gold-500 text-white shadow-sm'
                     : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 {s.state} <span className="ml-1 opacity-70">{s.vehicle_count}</span>
               </button>

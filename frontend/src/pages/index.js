@@ -25,3 +25,7 @@ export { default as OfficeProfile } from './OfficeProfile';
 export { default as PublicAuctions } from './PublicAuctions';
 export { default as PublicAuctionDetails } from './PublicAuctionDetails';
 export { default as SellVehicle } from './SellVehicle';
+export { default as Wishlist } from './Wishlist';
+export { default as Transactions } from './Transactions';
+export { default as ForgotPassword } from './ForgotPassword';
+export { default as ResetPassword } from './ResetPassword';

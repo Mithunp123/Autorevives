@@ -26,11 +26,11 @@ export function AuthProvider({ children }) {
       storage.setUser(data.user);
       setToken(data.token);
       setUser(data.user);
-      toast.success(`Welcome back, ${data.user.username}!`);
+      toast.success(`Welcome back, ${data.user.username}!`, { id: 'login-success' });
       return data.user;
     } catch (err) {
       const message = err.response?.data?.error || err.response?.data?.message || 'Login failed';
-      toast.error(message);
+      toast.error(message, { id: 'login-error' });
       throw err;
     } finally {
       setLoading(false);
@@ -41,11 +41,11 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       const res = await authService.register(data);
-      toast.success(res.data.message || 'Registration successful!');
+      toast.success(res.data.message || 'Registration successful!', { id: 'register-success' });
       return res.data;
     } catch (err) {
       const message = err.response?.data?.error || err.response?.data?.message || 'Registration failed';
-      toast.error(message);
+      toast.error(message, { id: 'register-error' });
       throw err;
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ export function AuthProvider({ children }) {
       storage.clear();
       setToken(null);
       setUser(null);
-      toast.success('Logged out successfully');
+      toast.success('Logged out successfully', { id: 'logout-success' });
     }
   }, []);
 

@@ -26,10 +26,10 @@ export default function Contact() {
     setSubmitting(true);
     try {
       const { data: result } = await publicService.submitContact(data);
-      toast.success(result.message || 'Message sent successfully!');
+      toast.success(result.message || 'Message sent successfully!', { id: 'contact-success' });
       reset();
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to send message');
+      toast.error(err.response?.data?.error || 'Failed to send message', { id: 'contact-error' });
     } finally {
       setSubmitting(false);
     }
@@ -51,7 +51,7 @@ export default function Contact() {
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
             <p className="text-lg text-gray-400">
-              Have a question? Our support team is ready to help you. 
+              Have a question? Our support team is ready to help you.
               Reach out and we'll respond within 24 hours.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function Contact() {
       <section className="py-20 lg:py-28 bg-gray-50">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            
+
             {/* ── FORM ── */}
             <div className="bg-white rounded-2xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold text-[#0B1628] mb-2">Send us a Message</h2>
@@ -102,9 +102,8 @@ export default function Contact() {
                   <input
                     {...register('fullName', { required: 'Full name is required' })}
                     placeholder="Enter your full name"
-                    className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                      errors.fullName ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
-                    }`}
+                    className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${errors.fullName ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
+                      }`}
                   />
                   {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>}
                 </div>
@@ -122,9 +121,8 @@ export default function Contact() {
                         pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' },
                       })}
                       placeholder="john@example.com"
-                      className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                        errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
-                      }`}
+                      className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
+                        }`}
                     />
                     {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
                   </div>
@@ -139,9 +137,8 @@ export default function Contact() {
                         pattern: { value: /^[6-9]\d{9}$/, message: 'Enter a valid 10-digit mobile number' },
                       })}
                       placeholder="98765 43210"
-                      className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                        errors.mobile ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
-                      }`}
+                      className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${errors.mobile ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
+                        }`}
                     />
                     {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile.message}</p>}
                   </div>
@@ -178,9 +175,8 @@ export default function Contact() {
                   </label>
                   <select
                     {...register('subject', { required: 'Please select a subject' })}
-                    className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                      errors.subject ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
-                    }`}
+                    className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${errors.subject ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
+                      }`}
                   >
                     <option value="">Select Subject</option>
                     {SUBJECTS.map((s) => (
@@ -233,9 +229,9 @@ export default function Contact() {
                     </div>
                     <h3 className="font-semibold text-[#0B1628] mb-1">Mumbai, Maharashtra</h3>
                     <p className="text-gray-500 text-sm mb-4">123 Auto Marketplace Tower, Business Bay</p>
-                    <a 
-                      href="https://maps.google.com" 
-                      target="_blank" 
+                    <a
+                      href="https://maps.google.com"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-gold-500 font-medium text-sm hover:text-gold-600"
                     >

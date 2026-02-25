@@ -33,9 +33,9 @@ export default function Profile() {
     try {
       const { data } = await authService.updateProfile(values);
       setUser((prev) => ({ ...prev, ...data.user }));
-      toast.success('Profile updated successfully');
+      toast.success('Profile updated successfully', { id: 'profile-success' });
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to update profile');
+      toast.error(err.response?.data?.error || 'Failed to update profile', { id: 'profile-error' });
     } finally {
       setSaving(false);
     }
@@ -57,9 +57,8 @@ export default function Profile() {
         <input
           type={type}
           placeholder={placeholder}
-          className={`w-full ${icon ? 'pl-10' : 'pl-3'} pr-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition ${
-            errors[name] ? 'border-red-300' : 'border-slate-200'
-          }`}
+          className={`w-full ${icon ? 'pl-10' : 'pl-3'} pr-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition ${errors[name] ? 'border-red-300' : 'border-slate-200'
+            }`}
           {...register(name, rules)}
           {...rest}
         />

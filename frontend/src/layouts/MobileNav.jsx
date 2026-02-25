@@ -18,9 +18,9 @@ const officeItems = [
 
 const userItems = [
   { to: '/', label: 'Home', icon: 'fa-house' },
-  { to: '/auctions', label: 'Auctions', icon: 'fa-gavel' },
+  { to: '/auctions', label: 'My Bids', icon: 'fa-gavel' },
+  { to: '/wishlist', label: 'Wishlist', icon: 'fa-heart' },
   { to: '/profile', label: 'Profile', icon: 'fa-user' },
-  { to: '/contact', label: 'Contact', icon: 'fa-envelope' },
 ];
 
 export default function MobileNav() {

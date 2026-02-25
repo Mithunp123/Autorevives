@@ -1,0 +1,158 @@
+﻿vite v6.4.1 building for production...
+transforming...
+Ô£ô 783 modules transformed.
+
+Ô£¿ [vite-plugin-compression]:algorithm=gzip - compressed file successfully: 
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/B1vH_FVQ.js.gz    1.72kb / gzip: 0.87kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/B-X-mwa0.js.gz    7.53kb / gzip: 2.99kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Bj8CxcVQ.js.gz    11.03kb / gzip: 3.47kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BlVMpR4F.js.gz    4.30kb / gzip: 1.58kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Bao0NcA_.js.gz    4.23kb / gzip: 1.54kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/ByA8Q6yj.js.gz    9.77kb / gzip: 3.03kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BH8OVasU.js.gz    17.18kb / gzip: 4.54kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CAsPxyoe.js.gz    3.34kb / gzip: 1.42kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CA8LPi7R.js.gz    8.33kb / gzip: 2.43kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BZXwlQYr.js.gz    21.11kb / gzip: 7.75kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CN3wOBqX.js.gz    1.39kb / gzip: 0.64kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CGHT6u5D.js.gz    5.64kb / gzip: 1.90kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/COBNhfvW.js.gz    18.21kb / gzip: 4.61kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Cw43u0QM.js.gz    16.87kb / gzip: 4.64kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CWgmmsPS.js.gz    5.68kb / gzip: 2.04kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CoMdP0rG.js.gz    8.85kb / gzip: 2.57kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CRS75rpU.js.gz    13.55kb / gzip: 3.75kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/D0KteRcb.js.gz    9.51kb / gzip: 2.75kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DCGUcdlW.js.gz    5.84kb / gzip: 2.16kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/D8qbcfL2.js.gz    6.99kb / gzip: 1.83kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Dg9gpHyN.js.gz    7.28kb / gzip: 2.43kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/C9hGkBhs.css.gz   80.70kb / gzip: 11.85kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DYhdI3Vy.js.gz    1.47kb / gzip: 0.75kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Dm8iQT1K.js.gz    5.22kb / gzip: 2.07kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DmTn0Meo.js.gz    1.19kb / gzip: 0.58kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/fwYWwmiv.js.gz    9.64kb / gzip: 2.82kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/kQQ93cA4.js.gz    4.53kb / gzip: 1.65kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Jlk8FARU.js.gz    4.25kb / gzip: 1.79kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/FZkW7fEb.js.gz    11.81kb / gzip: 3.74kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/index.html.gz            5.60kb / gzip: 1.66kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/mvQhdrVH.js.gz    5.89kb / gzip: 2.12kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/tglkVoGd.js.gz    1.30kb / gzip: 0.64kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Mf7wrKuf.js.gz    15.31kb / gzip: 4.45kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/XT3z3kOC.js.gz    11.61kb / gzip: 4.57kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Xwktxl2m.js.gz    7.95kb / gzip: 2.63kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BRZ5oemI.js.gz    99.16kb / gzip: 30.93kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DaTKAgc3.js.gz    81.11kb / gzip: 23.91kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DnL_dOgQ.js.gz    137.02kb / gzip: 44.12kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BrFuOLlj.js.gz    373.86kb / gzip: 98.58kb
+
+
+
+Ô£¿ [vite-plugin-compression]:algorithm=brotliCompress - compressed file successfully: 
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/B1vH_FVQ.js.br    1.72kb / brotliCompress: 0.75kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Bao0NcA_.js.br    4.23kb / brotliCompress: 1.31kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/B-X-mwa0.js.br    7.53kb / brotliCompress: 2.50kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BlVMpR4F.js.br    4.30kb / brotliCompress: 1.39kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Bj8CxcVQ.js.br    11.03kb / brotliCompress: 3.03kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/ByA8Q6yj.js.br    9.77kb / brotliCompress: 2.69kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BH8OVasU.js.br    17.18kb / brotliCompress: 3.96kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CAsPxyoe.js.br    3.34kb / brotliCompress: 1.25kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BZXwlQYr.js.br    21.11kb / brotliCompress: 6.96kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CGHT6u5D.js.br    5.64kb / brotliCompress: 1.66kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CA8LPi7R.js.br    8.33kb / brotliCompress: 2.15kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/COBNhfvW.js.br    18.21kb / brotliCompress: 3.93kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CN3wOBqX.js.br    1.39kb / brotliCompress: 0.57kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Cw43u0QM.js.br    16.87kb / brotliCompress: 4.03kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CWgmmsPS.js.br    5.68kb / brotliCompress: 1.77kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CoMdP0rG.js.br    8.85kb / brotliCompress: 2.16kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/D0KteRcb.js.br    9.51kb / brotliCompress: 2.38kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DCGUcdlW.js.br    5.84kb / brotliCompress: 1.89kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Dm8iQT1K.js.br    5.22kb / brotliCompress: 1.80kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/C9hGkBhs.css.br   80.70kb / brotliCompress: 9.52kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/CRS75rpU.js.br    13.55kb / brotliCompress: 3.30kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DmTn0Meo.js.br    1.19kb / brotliCompress: 0.49kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/D8qbcfL2.js.br    6.99kb / brotliCompress: 1.55kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Dg9gpHyN.js.br    7.28kb / brotliCompress: 2.12kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/FZkW7fEb.js.br    11.81kb / brotliCompress: 3.02kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DYhdI3Vy.js.br    1.47kb / brotliCompress: 0.66kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Jlk8FARU.js.br    4.25kb / brotliCompress: 1.58kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/fwYWwmiv.js.br    9.64kb / brotliCompress: 2.31kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/kQQ93cA4.js.br    4.53kb / brotliCompress: 1.44kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/index.html.br            5.60kb / brotliCompress: 1.26kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/mvQhdrVH.js.br    5.89kb / brotliCompress: 1.87kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Mf7wrKuf.js.br    15.31kb / brotliCompress: 3.99kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/tglkVoGd.js.br    1.30kb / brotliCompress: 0.54kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/XT3z3kOC.js.br    11.61kb / brotliCompress: 4.11kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/Xwktxl2m.js.br    7.95kb / brotliCompress: 2.34kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BRZ5oemI.js.br    99.16kb / brotliCompress: 27.52kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DaTKAgc3.js.br    81.11kb / brotliCompress: 21.01kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/DnL_dOgQ.js.br    137.02kb / brotliCompress: 38.55kb
+dist/D:/Project-Mainfiles/Client-Project/Autorevives/frontend/assets/BrFuOLlj.js.br    373.86kb / brotliCompress: 80.74kb
+
+
+node.exe : Ô£ù Build failed in 
+2.37s
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified:  
+   (Ô£ù Build failed in 2.37s:Str  
+  ing) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandE 
+   rror
+ 
+error during build:
+src/pages/Wishlist.jsx (2:9): "api" is 
+not exported by "src/services/api.js", 
+imported by "src/pages/Wishlist.jsx".
+file: D:/Project-Mainfiles/Client-Projec
+t/Autorevives/frontend/src/pages/Wishlist.jsx
+:2:9
+
+1: import { useState, useEffect } from 
+'react';
+2: import { api } from '@/services/api';
+            ^
+3: import PageLoader from 
+'@/components/ui/PageLoader';
+4: import EmptyState from 
+'@/components/ui/EmptyState';
+
+    at getRollupError (file:///D:/Project-Mai
+nfiles/Client-Project/Autorevives/frontend/no
+de_modules/rollup/dist/es/shared/parseAst.js:
+402:41)
+    at error (file:///D:/Project-Mainfiles/Cl
+ient-Project/Autorevives/frontend/node_module
+s/rollup/dist/es/shared/parseAst.js:398:42)
+    at Module.error (file:///D:/Project-Mainf
+iles/Client-Project/Autorevives/frontend/node
+_modules/rollup/dist/es/shared/node-entry.js:
+17040:16)
+    at Module.traceVariable (file:///D:/Proje
+ct-Mainfiles/Client-Project/Autorevives/front
+end/node_modules/rollup/dist/es/shared/node-e
+ntry.js:17452:29)
+    at ModuleScope.findVariable (file:///D:/P
+roject-Mainfiles/Client-Project/Autorevives/f
+rontend/node_modules/rollup/dist/es/shared/no
+de-entry.js:15070:39)
+    at FunctionScope.findVariable (file:///D:
+/Project-Mainfiles/Client-Project/Autorevives
+/frontend/node_modules/rollup/dist/es/shared/
+node-entry.js:5673:38)
+    at FunctionBodyScope.findVariable (file:/
+//D:/Project-Mainfiles/Client-Project/Autorev
+ives/frontend/node_modules/rollup/dist/es/sha
+red/node-entry.js:5673:38)
+    at ReturnValueScope.findVariable (file://
+/D:/Project-Mainfiles/Client-Project/Autorevi
+ves/frontend/node_modules/rollup/dist/es/shar
+ed/node-entry.js:5673:38)
+    at FunctionBodyScope.findVariable (file:/
+//D:/Project-Mainfiles/Client-Project/Autorev
+ives/frontend/node_modules/rollup/dist/es/sha
+red/node-entry.js:5673:38)
+    at BlockScope.findVariable (file:///D:/Pr
+oject-Mainfiles/Client-Project/Autorevives/fr
+ontend/node_modules/rollup/dist/es/shared/nod
+e-entry.js:5673:38)

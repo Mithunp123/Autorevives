@@ -74,6 +74,16 @@ class Database:
             except Exception:
                 pass  # Column already exists
 
+        # Wishlists table (one user, one row, items stored as JSON text to support older MySQL versions or directly as JSON)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS wishlists (
+                user_id INT PRIMARY KEY,
+                items JSON,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        """)
+
         # Products table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS products (
@@ -200,6 +210,82 @@ class Database:
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # Transactions table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS transactions (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                product_id INT NOT NULL,
+                amount DECIMAL(12, 2) NOT NULL,
+                status ENUM('won', 'completed', 'cancelled') DEFAULT 'won',
+                transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+            )
+        """)
+
+        # Password Resets table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS password_resets (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                token VARCHAR(255) NOT NULL UNIQUE,
+                expires_at TIMESTAMP NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        """)
+
+        # Error Logs table — full device + browser fingerprint
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS error_logs (
+                id              INT AUTO_INCREMENT PRIMARY KEY,
+                user_id         INT DEFAULT NULL,
+                username        VARCHAR(100) DEFAULT NULL,
+
+                -- Error details
+                error_type      VARCHAR(50)  DEFAULT 'frontend',
+                error_message   TEXT,
+                error_stack     TEXT,
+                component_name  VARCHAR(255) DEFAULT NULL,
+
+                -- Page context
+                page_url        VARCHAR(1000) DEFAULT NULL,
+                page_title      VARCHAR(500)  DEFAULT NULL,
+                referrer_url    VARCHAR(1000) DEFAULT NULL,
+
+                -- Device info (sent by client)
+                device_type     VARCHAR(50)  DEFAULT NULL,
+                device_model    VARCHAR(255) DEFAULT NULL,
+                os_name         VARCHAR(100) DEFAULT NULL,
+                os_version      VARCHAR(100) DEFAULT NULL,
+                browser_name    VARCHAR(100) DEFAULT NULL,
+                browser_version VARCHAR(100) DEFAULT NULL,
+                user_agent      TEXT         DEFAULT NULL,
+
+                -- Screen & locale
+                screen_width    SMALLINT     DEFAULT NULL,
+                screen_height   SMALLINT     DEFAULT NULL,
+                viewport_width  SMALLINT     DEFAULT NULL,
+                viewport_height SMALLINT     DEFAULT NULL,
+                language        VARCHAR(20)  DEFAULT NULL,
+                timezone        VARCHAR(100) DEFAULT NULL,
+
+                -- Network & server
+                ip_address      VARCHAR(45)  DEFAULT NULL,
+                app_version     VARCHAR(50)  DEFAULT NULL,
+
+                -- Timing
+                occurred_at     DATETIME     NOT NULL,
+                created_at      TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+
+                INDEX idx_error_type (error_type),
+                INDEX idx_user_id    (user_id),
+                INDEX idx_occurred_at (occurred_at)
+            )
+        """)
+
 
         # Subscription plans table
         cursor.execute("""

@@ -50,7 +50,7 @@ export default function PublicAuctionDetails() {
         const { data } = await auctionService.getById(id);
         setAuction(data);
         setBids(data.bids || []);
-        
+
         // Fetch similar vehicles
         const homeData = await publicService.getHomeData();
         const vehicles = homeData.data?.products || [];
@@ -79,13 +79,13 @@ export default function PublicAuctionDetails() {
 
     try {
       await api.post(`/vehicles/${id}/bid`, { amount: numericAmount });
-      toast.success('Bid placed successfully!');
+      toast.success('Bid placed successfully!', { id: 'bid-success' });
       reset();
       const { data } = await auctionService.getById(id);
       setAuction(data);
       setBids(data.bids || []);
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to place bid');
+      toast.error(err.response?.data?.error || 'Failed to place bid', { id: 'bid-error' });
     }
   };
 
@@ -100,7 +100,7 @@ export default function PublicAuctionDetails() {
   if (!auction) return null;
 
   const formatPrice = (val) => `₹${Number(val || 0).toLocaleString('en-IN')}`;
-  
+
   // Get gallery images from image_path (now supports multiple images)
   const galleryImages = getImageUrls(auction.image_path);
 
@@ -127,10 +127,10 @@ export default function PublicAuctionDetails() {
       {/* ------- MAIN CONTENT ------- */}
       <div className="max-w-[1200px] mx-auto px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* ------- LEFT COLUMN — Images & Details ------- */}
           <div className="lg:col-span-2 space-y-6">
-            
+
             {/* IMAGE GALLERY */}
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               {/* Main Image */}
@@ -149,7 +149,7 @@ export default function PublicAuctionDetails() {
                     </div>
                   </div>
                 )}
-                
+
                 {/* Status Badge */}
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1.5 bg-red-500 text-white text-sm font-semibold rounded-lg flex items-center gap-2">
@@ -184,9 +184,8 @@ export default function PublicAuctionDetails() {
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
-                        selectedImage === idx ? 'border-gold-500' : 'border-transparent opacity-60 hover:opacity-100'
-                      }`}
+                      className={`w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === idx ? 'border-gold-500' : 'border-transparent opacity-60 hover:opacity-100'
+                        }`}
                     >
                       <img
                         src={img}
@@ -240,7 +239,7 @@ export default function PublicAuctionDetails() {
                 <i className="fas fa-list-check text-gold-500"></i>
                 Vehicle Specifications
               </h2>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {[
                   { label: 'Category', value: auction.category || '4 Wheeler', icon: 'fa-car' },
@@ -297,14 +296,12 @@ export default function PublicAuctionDetails() {
                   {bids.map((b, i) => (
                     <div
                       key={i}
-                      className={`flex items-center justify-between p-4 rounded-xl transition-all ${
-                        i === 0 ? 'bg-gold-50 border border-gold-200' : 'bg-gray-50'
-                      }`}
+                      className={`flex items-center justify-between p-4 rounded-xl transition-all ${i === 0 ? 'bg-gold-50 border border-gold-200' : 'bg-gray-50'
+                        }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                          i === 0 ? 'bg-gold-500 text-white' : 'bg-gray-200 text-gray-600'
-                        }`}>
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${i === 0 ? 'bg-gold-500 text-white' : 'bg-gray-200 text-gray-600'
+                          }`}>
                           {b.bidder_name?.charAt(0).toUpperCase() || 'U'}
                         </div>
                         <div>
@@ -334,7 +331,7 @@ export default function PublicAuctionDetails() {
           {/* ------- RIGHT COLUMN — Bid Form ------- */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              
+
               {/* PRICE & BID CARD */}
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {/* Header */}
@@ -398,16 +395,15 @@ export default function PublicAuctionDetails() {
                                 </div>
                               )}
                               <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">?</span>
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">{'\u20B9'}</span>
                                 <input
                                   type="number"
                                   step="1"
                                   placeholder="Enter amount"
-                                  className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-[#0B1628] font-medium focus:ring-2 outline-none transition-all ${
-                                    errors.amount
-                                      ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
-                                      : 'border-gray-200 focus:border-gold-500 focus:ring-gold-500/20'
-                                  }`}
+                                  className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-[#0B1628] font-medium focus:ring-2 outline-none transition-all ${errors.amount
+                                    ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                                    : 'border-gray-200 focus:border-gold-500 focus:ring-gold-500/20'
+                                    }`}
                                   {...register('amount', {
                                     required: 'Bid amount is required',
                                     valueAsNumber: true,
@@ -504,7 +500,7 @@ export default function PublicAuctionDetails() {
                 View All <i className="fas fa-arrow-right text-sm"></i>
               </Link>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {similarVehicles.map((v) => (
                 <Link
@@ -538,7 +534,7 @@ export default function PublicAuctionDetails() {
                         <p className="text-xs text-gray-400">Current Bid</p>
                         <p className="font-bold text-[#0B1628]">{formatPrice(v.current_bid || v.starting_price)}</p>
                       </div>
-                      <span className="text-gold-600 text-sm font-medium">Bid Now ?</span>
+                      <span className="text-gold-600 text-sm font-medium">Bid Now →</span>
                     </div>
                   </div>
                 </Link>

@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { publicService } from '@/services';
-import { getImageUrl, getImageUrls } from '@/utils';
+import { getImageUrls, logError } from '@/utils';
+import { useAuth } from '@/context/AuthContext';
+import api from '@/services/api';
+import toast from 'react-hot-toast';
 
-const fmt = (v) => `₹${Number(v || 0).toLocaleString('en-IN')}`;
+const fmt = (v) => `\u20B9${Number(v || 0).toLocaleString('en-IN')}`;
 
 // Helper to get first image URL from image_path (supports both single and multi-image)
 const getFirstImage = (imagePath) => {
@@ -23,14 +26,29 @@ export default function Home() {
   const [data, setData] = useState({ products: [], stats: {}, plans: [] });
   const [loading, setLoading] = useState(true);
   const [activeHero, setActiveHero] = useState(0);
+  const [wishlistIds, setWishlistIds] = useState(new Set());
+  const [wishlistLoading, setWishlistLoading] = useState({});
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     publicService.getHomeData()
       .then(({ data: d }) => setData(d))
-      .catch(() => {})
+      .catch((err) => logError(err, { errorType: 'api' }))
       .finally(() => setLoading(false));
   }, []);
+
+  // Fetch user's wishlist to show heart states
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    api.get('/features/wishlist')
+      .then(({ data }) => {
+        const ids = (data.wishlist || []).map((p) => p.id);
+        setWishlistIds(new Set(ids));
+      })
+      .catch((err) => logError(err, { errorType: 'api' }));
+  }, [isAuthenticated]);
 
   // Auto-rotate hero images
   useEffect(() => {
@@ -48,6 +66,40 @@ export default function Home() {
     }
   }, [location]);
 
+  const toggleWishlist = async (e, productId) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      toast.error('Please login to save to wishlist');
+      navigate('/login');
+      return;
+    }
+
+    setWishlistLoading((prev) => ({ ...prev, [productId]: true }));
+    try {
+      await api.post('/features/wishlist', { product_id: productId });
+      // Determine add/remove BEFORE calling setState — avoid calling toast inside updater
+      // (React StrictMode runs updaters twice in dev, causing duplicate toasts)
+      const isCurrentlyInWishlist = wishlistIds.has(productId);
+      setWishlistIds((prev) => {
+        const next = new Set(prev);
+        if (isCurrentlyInWishlist) {
+          next.delete(productId);
+        } else {
+          next.add(productId);
+        }
+        return next;
+      });
+      toast.success(isCurrentlyInWishlist ? 'Removed from wishlist' : 'Added to wishlist', { id: 'wishlist-toggle' });
+    } catch (err) {
+      logError(err, { errorType: 'wishlist' });
+      toast.error('Failed to update wishlist', { id: 'wishlist-error' });
+    } finally {
+      setWishlistLoading((prev) => ({ ...prev, [productId]: false }));
+    }
+  };
+
   const s = data.stats || {};
   const products = data.products || [];
 
@@ -63,14 +115,13 @@ export default function Home() {
         {/* Dynamic Background Image */}
         <div className="absolute inset-0">
           {heroVehicles.map((vehicle, idx) => (
-            <div 
+            <div
               key={idx}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                idx === activeHero ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`absolute inset-0 transition-opacity duration-1000 ${idx === activeHero ? 'opacity-100' : 'opacity-0'
+                }`}
             >
-              <img 
-                src={vehicle.image} 
+              <img
+                src={vehicle.image}
                 alt={vehicle.label}
                 className="w-full h-full object-cover opacity-60 sm:opacity-80"
               />
@@ -83,7 +134,7 @@ export default function Home() {
         {/* Content Container */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full pt-16 sm:pt-20 pb-12 sm:pb-20">
           <div className="max-w-2xl">
-            
+
             {/* Top Left Progress Bars */}
             <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
               {heroVehicles.map((vehicle, idx) => (
@@ -93,10 +144,9 @@ export default function Home() {
                   className="group relative h-1 sm:h-1.5 w-10 sm:w-16 rounded-full overflow-hidden bg-white/20 hover:bg-white/30 transition-all"
                   aria-label={vehicle.label}
                 >
-                  <span 
-                    className={`absolute inset-0 bg-gold-500 transition-all duration-500 ${
-                      idx === activeHero ? 'w-full' : 'w-0'
-                    }`}
+                  <span
+                    className={`absolute inset-0 bg-gold-500 transition-all duration-500 ${idx === activeHero ? 'w-full' : 'w-0'
+                      }`}
                   ></span>
                 </button>
               ))}
@@ -107,16 +157,16 @@ export default function Home() {
               <span className="block text-lg sm:text-3xl md:text-4xl font-bold text-gold-500 mb-1 sm:mb-2">{heroVehicles[activeHero].label}</span>
               Premium Vehicle Auctions
             </h1>
-            
+
             {/* Description */}
             <p className="text-gray-300 text-sm sm:text-lg md:text-xl font-medium mb-6 sm:mb-10 leading-relaxed max-w-xl drop-shadow-md">
-              Bank-verified repossessed vehicles. Transparent process.<br/>
+              Bank-verified repossessed vehicles. Transparent process.<br />
               Save up to <span className="text-gold-400 font-bold">40%</span> below market value.
             </p>
-            
+
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-16">
-              <Link 
+              <Link
                 to="/auctions"
                 className="group px-5 sm:px-8 py-3 sm:py-4 bg-gold-600 hover:bg-gold-700 text-white text-sm sm:text-base font-bold rounded-full transition-all hover:shadow-xl hover:shadow-gold-600/20 flex items-center gap-2 transform hover:-translate-y-0.5"
               >
@@ -124,7 +174,7 @@ export default function Home() {
                 <i className="fas fa-arrow-right text-xs sm:text-sm group-hover:translate-x-1 transition-transform"></i>
               </Link>
 
-              <Link 
+              <Link
                 to="/register"
                 className="px-5 sm:px-8 py-3 sm:py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm sm:text-base font-bold rounded-full transition-all backdrop-blur-md"
               >
@@ -160,13 +210,13 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Browse by Category</h2>
             <p className="text-gray-500">Find the right vehicle type for your needs</p>
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             <Link to="/auctions" className="group">
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-3">
-                <img 
-                  src="/images/hero-bike-transparent.webp" 
-                  alt="Two Wheelers" 
+                <img
+                  src="/images/hero-bike-transparent.webp"
+                  alt="Two Wheelers"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -176,12 +226,12 @@ export default function Home() {
               </div>
               <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">2 Wheelers</h3>
             </Link>
-            
+
             <Link to="/auctions" className="group">
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-3">
-                <img 
-                  src="/images/banner-auto.webp" 
-                  alt="Three Wheelers" 
+                <img
+                  src="/images/banner-auto.webp"
+                  alt="Three Wheelers"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -191,12 +241,12 @@ export default function Home() {
               </div>
               <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">3 Wheelers</h3>
             </Link>
-            
+
             <Link to="/auctions" className="group">
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-3">
-                <img 
-                  src="/images/banner-car2.webp" 
-                  alt="Four Wheelers" 
+                <img
+                  src="/images/banner-car2.webp"
+                  alt="Four Wheelers"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -206,12 +256,12 @@ export default function Home() {
               </div>
               <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">4 Wheelers</h3>
             </Link>
-            
+
             <Link to="/auctions" className="group">
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-3">
-                <img 
-                  src="/images/banner-eicher.webp" 
-                  alt="Commercial Vehicles" 
+                <img
+                  src="/images/banner-eicher.webp"
+                  alt="Commercial Vehicles"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -257,17 +307,17 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.slice(0, 6).map((p) => (
-                <Link 
-                  key={p.id} 
+                <Link
+                  key={p.id}
                   to={`/auctions/${p.id}`}
-                  className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+                  className="group bg-white rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
                 >
                   <div className="relative aspect-[4/3] bg-gray-100">
                     {p.image_path ? (
-                      <img 
-                        src={getFirstImage(p.image_path)} 
+                      <img
+                        src={getFirstImage(p.image_path)}
                         alt={p.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = '/images/placeholder-vehicle.svg';
@@ -281,9 +331,24 @@ export default function Home() {
                     <span className="absolute top-3 left-3 px-2.5 py-1 bg-red-500 text-white text-xs font-medium rounded">
                       LIVE
                     </span>
+                    {/* Wishlist Heart Button */}
+                    <button
+                      onClick={(e) => toggleWishlist(e, p.id)}
+                      title={wishlistIds.has(p.id) ? 'Remove from wishlist' : 'Save to wishlist'}
+                      className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow transition-all duration-200
+                        ${wishlistIds.has(p.id)
+                          ? 'bg-red-500 text-white hover:bg-red-600'
+                          : 'bg-white/90 text-gray-400 hover:bg-white hover:text-red-500'
+                        } ${wishlistLoading[p.id] ? 'opacity-60 cursor-wait' : ''}`}
+                    >
+                      {wishlistLoading[p.id]
+                        ? <i className="fas fa-spinner fa-spin text-sm"></i>
+                        : <i className={`${wishlistIds.has(p.id) ? 'fas' : 'far'} fa-heart text-sm`}></i>
+                      }
+                    </button>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">{p.name}</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1 group-hover:text-gold-600 transition-colors">{p.name}</h3>
                     <p className="text-sm text-gray-500 mb-3">{p.location || 'India'}</p>
                     <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                       <div>
@@ -299,7 +364,7 @@ export default function Home() {
               ))}
             </div>
           )}
-          
+
           <div className="sm:hidden text-center mt-8">
             <Link to="/auctions" className="text-gold-600 font-medium">View All Auctions →</Link>
           </div>
@@ -313,7 +378,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">How It Works</h2>
             <p className="text-gray-500">Get started in 4 simple steps</p>
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { num: '1', title: 'Register', desc: 'Create your free account with basic details' },
@@ -359,7 +424,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Why Choose AutoRevive</h2>
             <p className="text-gray-500">Your trusted partner for vehicle auctions</p>
           </div>
-          
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: 'fa-shield-halved', title: 'Verified Vehicles', desc: 'Every vehicle undergoes thorough inspection before listing' },
@@ -389,14 +454,14 @@ export default function Home() {
             Join thousands of buyers who found great deals on AutoRevive
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link 
-              to="/auctions" 
+            <Link
+              to="/auctions"
               className="px-8 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-medium rounded-lg transition-colors"
             >
               Explore Auctions
             </Link>
-            <Link 
-              to="/register" 
+            <Link
+              to="/register"
               className="px-8 py-3.5 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-lg transition-colors"
             >
               Register Free

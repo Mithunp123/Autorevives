@@ -62,6 +62,8 @@ def create_app(config_class=Config):
     from .routes.offices import offices_bp
     from .routes.public import public_bp
     from .routes.plans import plans_bp
+    from .routes.forgot_password import forgot_password_bp
+    from .routes.features import features_bp
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(users_bp, url_prefix="/api/users")
@@ -71,6 +73,8 @@ def create_app(config_class=Config):
     app.register_blueprint(offices_bp, url_prefix="/api/offices")
     app.register_blueprint(public_bp, url_prefix="/api/public")
     app.register_blueprint(plans_bp, url_prefix="/api/plans")
+    app.register_blueprint(forgot_password_bp, url_prefix="/api/auth/password")
+    app.register_blueprint(features_bp, url_prefix="/api/features")
 
     # Health check
     @app.route("/api/health")

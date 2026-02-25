@@ -62,7 +62,7 @@ export default function PublicLayout() {
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
-            <img src="/images/Logo.webp" alt="AutoRevive" className="h-12 sm:h-14 w-auto object-contain" width="56" height="56" onError={(e) => { e.target.style.display='none'; }} />
+            <img src="/images/Logo.webp" alt="AutoRevive" className="h-12 sm:h-14 w-auto object-contain" width="56" height="56" onError={(e) => { e.target.style.display = 'none'; }} />
             <span className="text-2xl sm:text-[28px] font-extrabold text-[#0B1628] tracking-tight">
               Auto<span className="text-gold-500">Revive</span>
             </span>
@@ -76,10 +76,9 @@ export default function PublicLayout() {
                   to={l.to}
                   end={l.to === '/'}
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-xl text-[13px] font-semibold transition-all duration-200 flex items-center gap-2 ${
-                      isActive
-                        ? 'text-gold-600 bg-gold-50'
-                        : 'text-gray-600 hover:text-gold-600 hover:bg-gray-50'
+                    `px-4 py-2 rounded-xl text-[13px] font-semibold transition-all duration-200 flex items-center gap-2 ${isActive
+                      ? 'text-gold-600 bg-gold-50'
+                      : 'text-gray-600 hover:text-gold-600 hover:bg-gray-50'
                     }`
                   }
                 >
@@ -151,8 +150,7 @@ export default function PublicLayout() {
                     end={l.to === '/'}
                     onClick={() => setMobileOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                        isActive ? 'text-gold-600 bg-gold-50' : 'text-gray-700 hover:bg-gray-50'
+                      `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${isActive ? 'text-gold-600 bg-gold-50' : 'text-gray-700 hover:bg-gray-50'
                       }`
                     }
                   >
@@ -199,7 +197,7 @@ export default function PublicLayout() {
             {/* Brand — wider */}
             <div className="lg:col-span-4">
               <div className="flex items-center gap-2.5 mb-4">
-                <img src="/images/Logo.webp" alt="" width="36" height="36" className="h-9 w-auto object-contain" onError={(e) => { e.target.style.display='none'; }} />
+                <img src="/images/Logo.webp" alt="" width="36" height="36" className="h-9 w-auto object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
                 <span className="font-display text-xl font-extrabold tracking-tight">
                   Auto<span className="text-gold-400">Revive</span>
                 </span>
@@ -208,7 +206,7 @@ export default function PublicLayout() {
                 India's premium vehicle auction marketplace. Verified inventory, transparent bidding, unbeatable deals.
               </p>
               <div className="flex gap-2">
-                {[{name:'facebook-f',l:'Facebook'},{name:'x-twitter',l:'Twitter'},{name:'instagram',l:'Instagram'},{name:'linkedin-in',l:'LinkedIn'},{name:'youtube',l:'YouTube'}].map((soc) => (
+                {[{ name: 'facebook-f', l: 'Facebook' }, { name: 'x-twitter', l: 'Twitter' }, { name: 'instagram', l: 'Instagram' }, { name: 'linkedin-in', l: 'LinkedIn' }, { name: 'youtube', l: 'YouTube' }].map((soc) => (
                   <a key={soc.name} href="#" aria-label={soc.l} className="w-9 h-9 bg-white/[0.05] rounded-lg flex items-center justify-center text-white/40 hover:bg-gold-500 hover:text-white transition-all duration-200">
                     <i className={`fab fa-${soc.name} text-sm`}></i>
                   </a>
