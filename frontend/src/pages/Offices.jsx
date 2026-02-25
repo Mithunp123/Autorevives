@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   DataTable,
   SearchFilter,
@@ -110,8 +110,8 @@ export default function Offices() {
       label: 'Office',
       render: (_, row) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#4285F4]/10 flex items-center justify-center text-[#4285F4] flex-shrink-0 border border-[#4285F4]/20">
-            <i className="fas fa-building text-sm"></i>
+          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
+            <span className="text-xs font-bold">{row.finance_name?.charAt(0)?.toUpperCase() || 'O'}</span>
           </div>
           <div>
             <p className="font-bold text-slate-900">{row.finance_name}</p>
@@ -126,7 +126,7 @@ export default function Offices() {
       render: (val, row) => (
         <span className="flex items-center gap-1.5 text-slate-600 font-medium">
           <i className="fas fa-location-dot text-slate-400"></i>
-          {row.state ? `${row.state}${val ? `, ${val}` : ''}` : (val || '—')}
+          {row.state ? `${row.state}${val ? `, ${val}` : ''}` : (val || '\u2014')}
         </span>
       ),
     },
@@ -135,7 +135,7 @@ export default function Offices() {
       label: 'Manager',
       render: (val) => (
         <span className="flex items-center gap-1.5 text-slate-600 font-medium">
-          <i className="fas fa-user-gear text-slate-400"></i> {val || '—'}
+          <i className="fas fa-user-gear text-slate-400"></i> {val || '\u2014'}
         </span>
       ),
     },
@@ -154,7 +154,7 @@ export default function Offices() {
       label: 'Actions',
       render: (_, row) => (
         <div className="flex items-center gap-2">
-          <button onClick={(e) => { e.stopPropagation(); openEdit(row); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-[#4285F4] hover:bg-blue-50 transition-colors" title="Edit">
+          <button onClick={(e) => { e.stopPropagation(); openEdit(row); }} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-[#D4A017] hover:bg-gold-50 transition-colors" title="Edit">
             <i className="fas fa-pen-to-square text-sm"></i>
           </button>
           <button
@@ -177,10 +177,10 @@ export default function Offices() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Offices</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900">Offices</h1>
           <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} finance offices</p>
         </div>
         <Button icon="fa-plus" onClick={openAdd}>Add Office</Button>

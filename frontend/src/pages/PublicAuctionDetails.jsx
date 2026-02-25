@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -22,7 +22,7 @@ function Countdown({ hours }) {
     <div className="flex gap-2">
       {[{ val: h, label: 'Hours' }, { val: m, label: 'Min' }, { val: s, label: 'Sec' }].map((t, i) => (
         <div key={i} className="text-center">
-          <div className="w-14 h-14 bg-[#111111] text-white rounded-lg flex items-center justify-center text-xl font-bold font-mono">
+          <div className="w-11 h-11 sm:w-14 sm:h-14 bg-[#0B1628] text-white rounded-lg flex items-center justify-center text-base sm:text-xl font-bold font-mono">
             {t.val}
           </div>
           <p className="text-xs text-gray-500 mt-1">{t.label}</p>
@@ -92,7 +92,7 @@ export default function PublicAuctionDetails() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-12 h-12 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-gray-200 border-t-gold-500 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -111,24 +111,24 @@ export default function PublicAuctionDetails() {
         <meta name="description" content={`Bid on ${auction.name || 'this vehicle'} at AutoRevive. View details and place your bid on this verified pre-owned vehicle.`} />
       </Helmet>
 
-      {/* ═══════ BREADCRUMB ═══════ */}
+      {/* ------- BREADCRUMB ------- */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8 py-4">
           <nav className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-gray-500 hover:text-[#111111]">Home</Link>
+            <Link to="/" className="text-gray-500 hover:text-[#0B1628]">Home</Link>
             <i className="fas fa-chevron-right text-[10px] text-gray-300"></i>
-            <Link to="/auctions" className="text-gray-500 hover:text-[#111111]">Auctions</Link>
+            <Link to="/auctions" className="text-gray-500 hover:text-[#0B1628]">Auctions</Link>
             <i className="fas fa-chevron-right text-[10px] text-gray-300"></i>
-            <span className="text-[#111111] font-medium truncate max-w-[200px]">{auction.name}</span>
+            <span className="text-[#0B1628] font-medium truncate max-w-[200px]">{auction.name}</span>
           </nav>
         </div>
       </div>
 
-      {/* ═══════ MAIN CONTENT ═══════ */}
+      {/* ------- MAIN CONTENT ------- */}
       <div className="max-w-[1200px] mx-auto px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* ═══════ LEFT COLUMN — Images & Details ═══════ */}
+          {/* ------- LEFT COLUMN — Images & Details ------- */}
           <div className="lg:col-span-2 space-y-6">
             
             {/* IMAGE GALLERY */}
@@ -165,13 +165,13 @@ export default function PublicAuctionDetails() {
                       onClick={() => setSelectedImage((selectedImage - 1 + galleryImages.length) % galleryImages.length)}
                       className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all"
                     >
-                      <i className="fas fa-chevron-left text-[#111111]"></i>
+                      <i className="fas fa-chevron-left text-[#0B1628]"></i>
                     </button>
                     <button
                       onClick={() => setSelectedImage((selectedImage + 1) % galleryImages.length)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all"
                     >
-                      <i className="fas fa-chevron-right text-[#111111]"></i>
+                      <i className="fas fa-chevron-right text-[#0B1628]"></i>
                     </button>
                   </>
                 )}
@@ -185,7 +185,7 @@ export default function PublicAuctionDetails() {
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
                       className={`w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
-                        selectedImage === idx ? 'border-orange-500' : 'border-transparent opacity-60 hover:opacity-100'
+                        selectedImage === idx ? 'border-gold-500' : 'border-transparent opacity-60 hover:opacity-100'
                       }`}
                     >
                       <img
@@ -200,7 +200,7 @@ export default function PublicAuctionDetails() {
             </div>
 
             {/* VEHICLE INFO HEADER */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -209,7 +209,7 @@ export default function PublicAuctionDetails() {
                     </span>
                     <span className="text-xs text-gray-400">ID: #{auction.id}</span>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-[#111111] mb-2">{auction.name}</h1>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[#0B1628] mb-2">{auction.name}</h1>
                   <p className="text-gray-500 flex items-center gap-2">
                     <i className="fas fa-map-marker-alt text-gray-400"></i>
                     {auction.location || 'India'}, {auction.display_state || auction.state || 'Tamil Nadu'}
@@ -226,22 +226,22 @@ export default function PublicAuctionDetails() {
                   { icon: 'fa-eye', label: 'Views', value: Math.floor(Math.random() * 500) + 100 },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center p-4 bg-gray-50 rounded-xl">
-                    <i className={`fas ${stat.icon} text-orange-500 mb-2`}></i>
+                    <i className={`fas ${stat.icon} text-gold-500 mb-2`}></i>
                     <p className="text-xs text-gray-500 mb-1">{stat.label}</p>
-                    <p className="font-semibold text-[#111111] text-sm">{stat.value}</p>
+                    <p className="font-semibold text-[#0B1628] text-sm">{stat.value}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* VEHICLE SPECIFICATIONS */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-[#111111] mb-4 flex items-center gap-2">
-                <i className="fas fa-list-check text-orange-500"></i>
+            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
+              <h2 className="text-lg font-bold text-[#0B1628] mb-4 flex items-center gap-2">
+                <i className="fas fa-list-check text-gold-500"></i>
                 Vehicle Specifications
               </h2>
               
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {[
                   { label: 'Category', value: auction.category || '4 Wheeler', icon: 'fa-car' },
                   { label: 'Location', value: auction.location || 'India', icon: 'fa-location-dot' },
@@ -256,7 +256,7 @@ export default function PublicAuctionDetails() {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">{spec.label}</p>
-                      <p className="font-medium text-[#111111] text-sm">{spec.value}</p>
+                      <p className="font-medium text-[#0B1628] text-sm">{spec.value}</p>
                     </div>
                   </div>
                 ))}
@@ -264,9 +264,9 @@ export default function PublicAuctionDetails() {
             </div>
 
             {/* DESCRIPTION */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-[#111111] mb-4 flex items-center gap-2">
-                <i className="fas fa-info-circle text-orange-500"></i>
+            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
+              <h2 className="text-lg font-bold text-[#0B1628] mb-4 flex items-center gap-2">
+                <i className="fas fa-info-circle text-gold-500"></i>
                 Description
               </h2>
               <p className="text-gray-600 leading-relaxed">
@@ -275,10 +275,10 @@ export default function PublicAuctionDetails() {
             </div>
 
             {/* BID HISTORY */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-[#111111] flex items-center gap-2">
-                  <i className="fas fa-history text-orange-500"></i>
+                <h2 className="text-lg font-bold text-[#0B1628] flex items-center gap-2">
+                  <i className="fas fa-history text-gold-500"></i>
                   Bid History
                 </h2>
                 <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg">
@@ -298,17 +298,17 @@ export default function PublicAuctionDetails() {
                     <div
                       key={i}
                       className={`flex items-center justify-between p-4 rounded-xl transition-all ${
-                        i === 0 ? 'bg-orange-50 border border-orange-200' : 'bg-gray-50'
+                        i === 0 ? 'bg-gold-50 border border-gold-200' : 'bg-gray-50'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                          i === 0 ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'
+                          i === 0 ? 'bg-gold-500 text-white' : 'bg-gray-200 text-gray-600'
                         }`}>
                           {b.bidder_name?.charAt(0).toUpperCase() || 'U'}
                         </div>
                         <div>
-                          <p className="font-medium text-[#111111]">{b.bidder_name || 'Anonymous'}</p>
+                          <p className="font-medium text-[#0B1628]">{b.bidder_name || 'Anonymous'}</p>
                           <p className="text-xs text-gray-400">
                             {new Date(b.bid_time || b.created_at).toLocaleString('en-IN', {
                               month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -317,11 +317,11 @@ export default function PublicAuctionDetails() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className={`font-bold text-lg ${i === 0 ? 'text-orange-600' : 'text-[#111111]'}`}>
+                        <p className={`font-bold text-lg ${i === 0 ? 'text-gold-600' : 'text-[#0B1628]'}`}>
                           {formatPrice(b.amount)}
                         </p>
                         {i === 0 && (
-                          <span className="text-xs font-semibold text-orange-600">Highest Bid</span>
+                          <span className="text-xs font-semibold text-gold-600">Highest Bid</span>
                         )}
                       </div>
                     </div>
@@ -331,16 +331,16 @@ export default function PublicAuctionDetails() {
             </div>
           </div>
 
-          {/* ═══════ RIGHT COLUMN — Bid Form ═══════ */}
+          {/* ------- RIGHT COLUMN — Bid Form ------- */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               
               {/* PRICE & BID CARD */}
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {/* Header */}
-                <div className="bg-[#111111] text-white p-5">
+                <div className="bg-[#0B1628] text-white p-5">
                   <p className="text-sm text-gray-400 mb-1">Current Highest Bid</p>
-                  <p className="text-3xl font-bold">{formatPrice(auction.current_bid || auction.starting_price)}</p>
+                  <p className="text-2xl sm:text-3xl font-bold">{formatPrice(auction.current_bid || auction.starting_price)}</p>
                 </div>
 
                 {/* Timer */}
@@ -353,17 +353,17 @@ export default function PublicAuctionDetails() {
                 <div className="p-5 space-y-3 border-b border-gray-100">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 text-sm">Base Price</span>
-                    <span className="font-semibold text-[#111111]">{formatPrice(auction.starting_price)}</span>
+                    <span className="font-semibold text-[#0B1628]">{formatPrice(auction.starting_price)}</span>
                   </div>
                   {auction.quoted_price && Number(auction.quoted_price) > 0 && (
                     <div className="flex justify-between items-center">
                       <span className="text-gray-500 text-sm">Bid Increment</span>
-                      <span className="font-semibold text-orange-600">{formatPrice(auction.quoted_price)}</span>
+                      <span className="font-semibold text-gold-600">{formatPrice(auction.quoted_price)}</span>
                     </div>
                   )}
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 text-sm">Total Bids</span>
-                    <span className="font-semibold text-[#111111]">{auction.total_bids || bids.length || 0}</span>
+                    <span className="font-semibold text-[#0B1628]">{auction.total_bids || bids.length || 0}</span>
                   </div>
                 </div>
 
@@ -390,7 +390,7 @@ export default function PublicAuctionDetails() {
                                       key={amt}
                                       type="button"
                                       onClick={() => reset({ amount: amt })}
-                                      className="px-3 py-2 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-semibold rounded-lg hover:bg-orange-100 transition-colors"
+                                      className="px-3 py-2 bg-gold-50 border border-gold-200 text-gold-700 text-sm font-semibold rounded-lg hover:bg-gold-100 transition-colors"
                                     >
                                       {formatPrice(amt)}
                                     </button>
@@ -398,15 +398,15 @@ export default function PublicAuctionDetails() {
                                 </div>
                               )}
                               <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">₹</span>
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">?</span>
                                 <input
                                   type="number"
                                   step="1"
                                   placeholder="Enter amount"
-                                  className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-[#111111] font-medium focus:ring-2 outline-none transition-all ${
+                                  className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-[#0B1628] font-medium focus:ring-2 outline-none transition-all ${
                                     errors.amount
                                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
-                                      : 'border-gray-200 focus:border-orange-500 focus:ring-orange-500/20'
+                                      : 'border-gray-200 focus:border-gold-500 focus:ring-gold-500/20'
                                   }`}
                                   {...register('amount', {
                                     required: 'Bid amount is required',
@@ -437,7 +437,7 @@ export default function PublicAuctionDetails() {
 
                       <button
                         type="submit"
-                        className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+                        className="w-full py-4 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
                       >
                         <i className="fas fa-gavel"></i>
                         Place Bid
@@ -445,17 +445,17 @@ export default function PublicAuctionDetails() {
 
                       <p className="text-xs text-center text-gray-400">
                         By bidding, you agree to our{' '}
-                        <Link to="/privacy-policy" className="text-orange-500 hover:underline">terms</Link>
+                        <Link to="/privacy-policy" className="text-gold-500 hover:underline">terms</Link>
                       </p>
                     </form>
                   ) : (
                     <div className="text-center py-4">
                       <i className="fas fa-lock text-3xl text-gray-300 mb-3"></i>
-                      <p className="font-medium text-[#111111] mb-1">Login to Bid</p>
+                      <p className="font-medium text-[#0B1628] mb-1">Login to Bid</p>
                       <p className="text-gray-400 text-sm mb-4">Sign in to place your bid</p>
                       <button
                         onClick={() => navigate('/login')}
-                        className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all"
+                        className="w-full py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all"
                       >
                         Login Now
                       </button>
@@ -466,13 +466,13 @@ export default function PublicAuctionDetails() {
 
               {/* SELLER INFO */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="font-semibold text-[#111111] mb-4">Seller Information</h3>
+                <h3 className="font-semibold text-[#0B1628] mb-4">Seller Information</h3>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-[#111111] rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[#0B1628] rounded-full flex items-center justify-center">
                     <i className="fas fa-building text-white"></i>
                   </div>
                   <div>
-                    <p className="font-medium text-[#111111]">{auction.office_name || 'Bank Partner'}</p>
+                    <p className="font-medium text-[#0B1628]">{auction.office_name || 'Bank Partner'}</p>
                     <p className="text-sm text-gray-400">Verified Seller</p>
                   </div>
                 </div>
@@ -484,9 +484,9 @@ export default function PublicAuctionDetails() {
 
               {/* HELP */}
               <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="font-semibold text-[#111111] mb-3">Need Help?</h3>
+                <h3 className="font-semibold text-[#0B1628] mb-3">Need Help?</h3>
                 <p className="text-sm text-gray-500 mb-4">Our team is here to assist you with any questions</p>
-                <Link to="/contact" className="flex items-center justify-center gap-2 py-3 border border-gray-200 bg-white rounded-lg text-[#111111] font-medium hover:bg-gray-50 transition-all">
+                <Link to="/contact" className="flex items-center justify-center gap-2 py-3 border border-gray-200 bg-white rounded-lg text-[#0B1628] font-medium hover:bg-gray-50 transition-all">
                   <i className="fas fa-headset"></i>
                   Contact Support
                 </Link>
@@ -495,12 +495,12 @@ export default function PublicAuctionDetails() {
           </div>
         </div>
 
-        {/* ═══════ SIMILAR VEHICLES ═══════ */}
+        {/* ------- SIMILAR VEHICLES ------- */}
         {similarVehicles.length > 0 && (
           <section className="mt-16">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-[#111111]">Similar Vehicles</h2>
-              <Link to="/auctions" className="text-orange-600 font-medium hover:text-orange-700 flex items-center gap-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#0B1628]">Similar Vehicles</h2>
+              <Link to="/auctions" className="text-gold-600 font-medium hover:text-gold-700 flex items-center gap-1">
                 View All <i className="fas fa-arrow-right text-sm"></i>
               </Link>
             </div>
@@ -529,16 +529,16 @@ export default function PublicAuctionDetails() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-[#111111] mb-1 line-clamp-1 group-hover:text-orange-600 transition-colors">
+                    <h3 className="font-semibold text-[#0B1628] mb-1 line-clamp-1 group-hover:text-gold-600 transition-colors">
                       {v.name}
                     </h3>
                     <p className="text-sm text-gray-500 mb-3">{v.location || 'India'}</p>
                     <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                       <div>
                         <p className="text-xs text-gray-400">Current Bid</p>
-                        <p className="font-bold text-[#111111]">{formatPrice(v.current_bid || v.starting_price)}</p>
+                        <p className="font-bold text-[#0B1628]">{formatPrice(v.current_bid || v.starting_price)}</p>
                       </div>
-                      <span className="text-orange-600 text-sm font-medium">Bid Now →</span>
+                      <span className="text-gold-600 text-sm font-medium">Bid Now ?</span>
                     </div>
                   </div>
                 </Link>

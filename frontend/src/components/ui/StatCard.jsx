@@ -1,38 +1,49 @@
-﻿import { cn } from '@/utils';
+import { cn } from '@/utils';
+
+const borderColors = {
+  accent: 'border-l-gold-500',
+  success: 'border-l-emerald-500',
+  danger: 'border-l-red-500',
+  warning: 'border-l-amber-500',
+  purple: 'border-l-violet-500',
+  navy: 'border-l-slate-500',
+};
+
+const iconColors = {
+  accent: 'text-gold-500',
+  success: 'text-emerald-500',
+  danger: 'text-red-500',
+  warning: 'text-amber-500',
+  purple: 'text-violet-500',
+  navy: 'text-slate-500',
+};
 
 export default function StatCard({ icon, label, value, change, changeType, color = 'accent', className }) {
-  const iconStyles = {
-    accent: 'bg-gradient-to-br from-blue-100 to-blue-50 text-accent',
-    success: 'bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600',
-    danger: 'bg-gradient-to-br from-red-100 to-red-50 text-red-600',
-    warning: 'bg-gradient-to-br from-amber-100 to-amber-50 text-amber-600',
-    purple: 'bg-gradient-to-br from-violet-100 to-violet-50 text-violet-600',
-    navy: 'bg-gradient-to-br from-primary-100 to-primary-50 text-primary-700',
-  };
-
   return (
-    <div className={cn('bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-[#4285F4]/30 transition-all duration-300 group', className)}>
-      <div className="flex items-start justify-between mb-4">
-        <div className={cn('w-14 h-14 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110', iconStyles[color])}>
-          {icon && <i className={`fas ${icon} text-xl`}></i>}
-        </div>
+    <div className={cn(
+      'bg-white rounded-lg p-3 sm:p-4 border border-gray-100 border-l-[3px] shadow-sm hover:shadow-md transition-all duration-300',
+      borderColors[color],
+      className
+    )}>
+      <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+        <p className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider leading-tight">{label}</p>
+        {icon && <i className={cn(`fas ${icon} text-xs sm:text-sm`, iconColors[color])}></i>}
+      </div>
+      <div className="flex items-end justify-between gap-2">
+        <p className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight truncate leading-none">{value}</p>
         {change !== undefined && (
           <span
             className={cn(
-              'text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5',
+              'text-[10px] font-semibold px-1.5 py-0.5 rounded hidden sm:inline-flex items-center gap-0.5',
               changeType === 'up'
-                ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                : 'bg-red-50 text-red-600 border border-red-100'
+                ? 'text-emerald-600'
+                : 'text-red-600'
             )}
           >
-            <i className={`fas ${changeType === 'up' ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}`}></i>
+            <i className={`fas ${changeType === 'up' ? 'fa-caret-up' : 'fa-caret-down'} text-[10px]`}></i>
             {change}%
           </span>
         )}
-      </div>
-      <div>
-        <p className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1 truncate">{value}</p>
-        <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{label}</p>
       </div>
     </div>
   );

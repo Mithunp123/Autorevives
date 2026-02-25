@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/utils';
 
 export default function Modal({ isOpen, onClose, title, children, size = 'md', className }) {

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
@@ -39,7 +39,7 @@ export default function Login() {
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-2 mb-6">
               <img src="/images/Logo.webp" alt="AutoRevive" className="h-10 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
-              <span className="text-xl font-bold text-gray-900">Auto<span className="text-orange-500">Revive</span></span>
+              <span className="text-xl font-bold text-gray-900">Auto<span className="text-gold-500">Revive</span></span>
             </Link>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h1>
             <p className="text-gray-500">Sign in to continue to your account</p>
@@ -56,7 +56,7 @@ export default function Login() {
                   className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
                     errors.username
                       ? 'border-red-300 focus:border-red-500'
-                      : 'border-gray-300 focus:border-orange-500'
+                      : 'border-gray-300 focus:border-gold-500'
                   }`}
                   placeholder="Enter your username or email"
                   autoComplete="username"
@@ -76,7 +76,7 @@ export default function Login() {
                     className={`w-full px-4 py-3 pr-12 border rounded-lg text-sm outline-none transition-colors ${
                       errors.password
                         ? 'border-red-300 focus:border-red-500'
-                        : 'border-gray-300 focus:border-orange-500'
+                        : 'border-gray-300 focus:border-gold-500'
                     }`}
                     placeholder="Enter your password"
                     autoComplete="current-password"
@@ -97,10 +97,10 @@ export default function Login() {
               {/* Remember & Forgot */}
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500" />
+                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-gold-500 focus:ring-gold-500" />
                   <span className="text-sm text-gray-600">Remember me</span>
                 </label>
-                <Link to="/forgot-password" className="text-sm text-orange-600 hover:text-orange-700">
+                <Link to="/forgot-password" className="text-sm text-gold-600 hover:text-gold-700">
                   Forgot password?
                 </Link>
               </div>
@@ -109,7 +109,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors disabled:opacity-60"
+                className="w-full py-3 bg-gold-500 hover:bg-gold-600 text-white font-medium rounded-lg transition-colors disabled:opacity-60"
               >
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
@@ -134,7 +134,7 @@ export default function Login() {
           {/* Bottom Text */}
           <p className="text-center text-sm text-gray-500 mt-6">
             By signing in, you agree to our{' '}
-            <Link to="/privacy-policy" className="text-orange-600 hover:underline">Terms of Service</Link>
+            <Link to="/privacy-policy" className="text-gold-600 hover:underline">Terms of Service</Link>
           </p>
         </div>
       </section>

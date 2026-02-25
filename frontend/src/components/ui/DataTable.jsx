@@ -1,4 +1,4 @@
-﻿import { cn } from '@/utils';
+import { cn } from '@/utils';
 import { useWindowSize } from '@/hooks';
 
 export default function DataTable({
@@ -24,9 +24,9 @@ export default function DataTable({
 
   if (!data || data.length === 0) {
     return (
-      <div className="card p-14 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl flex items-center justify-center border border-slate-100">
-          <i className="fas fa-inbox text-2xl text-slate-300"></i>
+      <div className="card p-8 sm:p-14 text-center">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl flex items-center justify-center border border-slate-100">
+          <i className="fas fa-inbox text-xl sm:text-2xl text-slate-300"></i>
         </div>
         <p className="text-slate-400 text-sm font-medium">{emptyMessage}</p>
       </div>
@@ -35,17 +35,17 @@ export default function DataTable({
 
   if (isMobile) {
     return (
-      <div className="space-y-3">
+      <div className="space-y-2">
         {data.map((row, idx) => (
           <div
             key={row.id || idx}
-            className={cn('card p-4 space-y-3', onRowClick && 'cursor-pointer active:bg-slate-50 active:scale-[0.99] transition-transform')}
+            className={cn('card p-3 space-y-2', onRowClick && 'cursor-pointer active:bg-slate-50 active:scale-[0.99] transition-transform')}
             onClick={() => onRowClick?.(row)}
           >
             {columns.map((col) => (
-              <div key={col.key} className="flex items-center justify-between gap-4">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{col.label}</span>
-                <span className="text-sm text-slate-800 text-right font-medium">
+              <div key={col.key} className="flex items-center justify-between gap-3">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0">{col.label}</span>
+                <span className="text-xs text-slate-800 text-right font-medium min-w-0">
                   {col.render ? col.render(row[col.key], row) : row[col.key] ?? '\u2014'}
                 </span>
               </div>

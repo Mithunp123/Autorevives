@@ -84,11 +84,11 @@ export default function OfficeProfile() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-4 sm:space-y-6 max-w-5xl">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 font-display tracking-tight">
+          <h1 className="text-lg sm:text-2xl font-extrabold text-slate-900 font-display tracking-tight">
             Office Profile
           </h1>
           <p className="text-sm text-slate-400 mt-1">
@@ -102,7 +102,7 @@ export default function OfficeProfile() {
                 <circle cx="18" cy="18" r="16" fill="none" stroke="#e2e8f0" strokeWidth="3" />
                 <circle
                   cx="18" cy="18" r="16" fill="none"
-                  stroke={completionPercent === 100 ? '#16a34a' : '#4F46E5'}
+                  stroke={completionPercent === 100 ? '#16a34a' : '#B88A13'}
                   strokeWidth="3"
                   strokeDasharray={`${completionPercent} ${100 - completionPercent}`}
                   strokeLinecap="round"
@@ -130,11 +130,11 @@ export default function OfficeProfile() {
             <div className="absolute bottom-0 left-10 w-48 h-48 bg-primary-400/15 rounded-full blur-[60px]" />
           </div>
           <div className="relative flex items-center gap-5">
-            <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 flex items-center justify-center flex-shrink-0">
-              <i className="fas fa-building text-2xl text-white"></i>
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/10 flex items-center justify-center flex-shrink-0">
+              <i className="fas fa-building text-xl sm:text-2xl text-white"></i>
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-xl font-extrabold text-white font-display tracking-tight truncate">
+              <h2 className="text-base sm:text-xl font-extrabold text-white font-display tracking-tight truncate">
                 {userInfo?.finance_name || 'Finance Company'}
               </h2>
               <p className="text-white/50 text-sm mt-0.5">
@@ -159,11 +159,9 @@ export default function OfficeProfile() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* GST & Tax Information */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl flex items-center justify-center">
-              <i className="fas fa-file-invoice text-accent text-sm"></i>
-            </div>
+            <i className="fas fa-file-invoice text-accent text-lg flex-shrink-0"></i>
             <div>
               <h3 className="font-bold text-slate-900 font-display">GST & Tax Information</h3>
               <p className="text-xs text-slate-400">Government tax identifiers and registration numbers</p>
@@ -213,11 +211,9 @@ export default function OfficeProfile() {
         </section>
 
         {/* Business Address */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-xl flex items-center justify-center">
-              <i className="fas fa-location-dot text-emerald-600 text-sm"></i>
-            </div>
+            <i className="fas fa-location-dot text-emerald-500 text-lg flex-shrink-0"></i>
             <div>
               <h3 className="font-bold text-slate-900 font-display">Business Address</h3>
               <p className="text-xs text-slate-400">Registered office location</p>
@@ -267,11 +263,9 @@ export default function OfficeProfile() {
         </section>
 
         {/* Banking Details */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
-            <div className="w-10 h-10 bg-gradient-to-br from-amber-100 to-amber-50 rounded-xl flex items-center justify-center">
-              <i className="fas fa-building-columns text-amber-600 text-sm"></i>
-            </div>
+            <i className="fas fa-building-columns text-amber-500 text-lg flex-shrink-0"></i>
             <div>
               <h3 className="font-bold text-slate-900 font-display">Banking Details</h3>
               <p className="text-xs text-slate-400">Bank account for auction settlements</p>
@@ -317,17 +311,15 @@ export default function OfficeProfile() {
         </section>
 
         {/* Authorized Person & Other */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl flex items-center justify-center">
-              <i className="fas fa-user-shield text-purple-600 text-sm"></i>
-            </div>
+            <i className="fas fa-user-shield text-purple-500 text-lg flex-shrink-0"></i>
             <div>
               <h3 className="font-bold text-slate-900 font-display">Authorized Representative</h3>
               <p className="text-xs text-slate-400">Contact person for official communication</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
             <FormField
               label="Authorized Person"
               name="authorized_person"

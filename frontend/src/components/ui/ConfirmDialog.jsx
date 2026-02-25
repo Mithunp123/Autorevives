@@ -1,4 +1,4 @@
-﻿import { cn } from '@/utils';
+import { cn } from '@/utils';
 
 export default function ConfirmDialog({ isOpen, onClose, onConfirm, title, message, confirmLabel = 'Confirm', variant = 'danger', loading }) {
   if (!isOpen) return null;

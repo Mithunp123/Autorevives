@@ -1,4 +1,4 @@
-﻿import { cn } from '@/utils';
+import { cn } from '@/utils';
 
 export default function EmptyState({ icon: Icon, title, description, action, className }) {
   return (

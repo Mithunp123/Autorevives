@@ -43,10 +43,10 @@ export default function Contact() {
       </Helmet>
 
       {/* ═══════ HERO ═══════ */}
-      <section className="bg-[#111111] text-white py-16 lg:py-20">
+      <section className="bg-[#0B1628] text-white py-16 lg:py-20">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-medium rounded-full mb-6">
+            <span className="inline-block px-4 py-1.5 bg-gold-500/10 border border-gold-500/20 text-gold-400 text-sm font-medium rounded-full mb-6">
               Get in Touch
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
@@ -69,11 +69,11 @@ export default function Contact() {
               { icon: 'fa-clock', title: 'Business Hours', line1: 'Monday – Saturday', line2: '9:00 AM – 7:00 PM IST' },
             ].map((item) => (
               <div key={item.title} className="flex items-start gap-4 p-5 bg-gray-50 rounded-xl">
-                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <i className={`fas ${item.icon} text-orange-500`}></i>
+                <div className="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i className={`fas ${item.icon} text-gold-500`}></i>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[#111111] mb-1">{item.title}</h3>
+                  <h3 className="font-semibold text-[#0B1628] mb-1">{item.title}</h3>
                   <p className="text-sm text-gray-600">{item.line1}</p>
                   <p className="text-sm text-gray-400">{item.line2}</p>
                 </div>
@@ -90,7 +90,7 @@ export default function Contact() {
             
             {/* ── FORM ── */}
             <div className="bg-white rounded-2xl border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold text-[#111111] mb-2">Send us a Message</h2>
+              <h2 className="text-2xl font-bold text-[#0B1628] mb-2">Send us a Message</h2>
               <p className="text-gray-500 mb-8">Fill out the form and we'll get back to you within 24 hours.</p>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -103,7 +103,7 @@ export default function Contact() {
                     {...register('fullName', { required: 'Full name is required' })}
                     placeholder="Enter your full name"
                     className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                      errors.fullName ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                      errors.fullName ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
                     }`}
                   />
                   {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>}
@@ -123,7 +123,7 @@ export default function Contact() {
                       })}
                       placeholder="john@example.com"
                       className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                        errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                        errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
                       }`}
                     />
                     {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
@@ -140,7 +140,7 @@ export default function Contact() {
                       })}
                       placeholder="98765 43210"
                       className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                        errors.mobile ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                        errors.mobile ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
                       }`}
                     />
                     {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile.message}</p>}
@@ -153,7 +153,7 @@ export default function Contact() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
                     <select
                       {...register('state')}
-                      className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all"
+                      className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all"
                     >
                       <option value="">Select State</option>
                       {STATES.map((s) => (
@@ -166,7 +166,7 @@ export default function Contact() {
                     <input
                       {...register('city')}
                       placeholder="Enter your city"
-                      className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all"
+                      className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export default function Contact() {
                   <select
                     {...register('subject', { required: 'Please select a subject' })}
                     className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                      errors.subject ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                      errors.subject ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
                     }`}
                   >
                     <option value="">Select Subject</option>
@@ -197,7 +197,7 @@ export default function Contact() {
                     {...register('message')}
                     rows={5}
                     placeholder="How can we help you today?"
-                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all resize-none"
+                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all resize-none"
                   />
                 </div>
 
@@ -205,7 +205,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full flex items-center justify-center gap-2 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 py-4 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50"
                 >
                   {submitting ? (
                     <>
@@ -228,16 +228,16 @@ export default function Contact() {
               <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden h-[300px]">
                 <div className="w-full h-full bg-gray-100 flex items-center justify-center">
                   <div className="text-center p-8">
-                    <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <i className="fas fa-map-location-dot text-2xl text-orange-500"></i>
+                    <div className="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i className="fas fa-map-location-dot text-2xl text-gold-500"></i>
                     </div>
-                    <h3 className="font-semibold text-[#111111] mb-1">Mumbai, Maharashtra</h3>
+                    <h3 className="font-semibold text-[#0B1628] mb-1">Mumbai, Maharashtra</h3>
                     <p className="text-gray-500 text-sm mb-4">123 Auto Marketplace Tower, Business Bay</p>
                     <a 
                       href="https://maps.google.com" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-orange-500 font-medium text-sm hover:text-orange-600"
+                      className="inline-flex items-center gap-2 text-gold-500 font-medium text-sm hover:text-gold-600"
                     >
                       <i className="fas fa-external-link-alt text-xs"></i>
                       View on Google Maps
@@ -248,7 +248,7 @@ export default function Contact() {
 
               {/* Quick Help Cards */}
               <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                <h3 className="font-semibold text-[#111111] mb-4">Need Immediate Help?</h3>
+                <h3 className="font-semibold text-[#0B1628] mb-4">Need Immediate Help?</h3>
                 <div className="space-y-4">
                   {[
                     { icon: 'fa-comments', title: 'Auction Queries', desc: 'Help with bidding, registration, or timelines', contact: 'support@autorevive.com' },
@@ -256,13 +256,13 @@ export default function Contact() {
                     { icon: 'fa-wrench', title: 'Technical Issues', desc: 'Platform or account problems', contact: 'tech@autorevive.com' },
                   ].map((item) => (
                     <div key={item.title} className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
-                      <div className="w-10 h-10 bg-[#111111] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-[#0B1628] rounded-lg flex items-center justify-center flex-shrink-0">
                         <i className={`fas ${item.icon} text-white text-sm`}></i>
                       </div>
                       <div>
-                        <h4 className="font-medium text-[#111111] text-sm">{item.title}</h4>
+                        <h4 className="font-medium text-[#0B1628] text-sm">{item.title}</h4>
                         <p className="text-gray-500 text-xs mb-1">{item.desc}</p>
-                        <span className="text-orange-500 text-xs font-medium">{item.contact}</span>
+                        <span className="text-gold-500 text-xs font-medium">{item.contact}</span>
                       </div>
                     </div>
                   ))}

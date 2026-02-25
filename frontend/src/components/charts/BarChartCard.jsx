@@ -1,4 +1,4 @@
-﻿import {
+import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 
@@ -16,7 +16,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   );
 };
 
-export default function BarChartCard({ data, dataKey, xAxisKey = 'name', title, color = '#4F46E5', height = 300 }) {
+export default function BarChartCard({ data, dataKey, xAxisKey = 'name', title, color = '#D4A017', height = 300 }) {
   return (
     <div className="card p-6">
       {title && <h3 className="section-title mb-5">{title}</h3>}

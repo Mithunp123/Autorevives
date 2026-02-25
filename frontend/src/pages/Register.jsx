@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
@@ -40,7 +40,7 @@ export default function Register() {
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-2 mb-6">
               <img src="/images/Logo.webp" alt="AutoRevive" className="h-10 w-auto" onError={(e) => { e.target.style.display = 'none'; }} />
-              <span className="text-xl font-bold text-gray-900">Auto<span className="text-orange-500">Revive</span></span>
+              <span className="text-xl font-bold text-gray-900">Auto<span className="text-gold-500">Revive</span></span>
             </Link>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Create Account</h1>
             <p className="text-gray-500">Join AutoRevive to start bidding on vehicles</p>
@@ -54,22 +54,22 @@ export default function Register() {
               <div className="grid grid-cols-2 gap-4">
                 <label className={`block relative p-4 cursor-pointer rounded-lg border-2 transition-all text-center ${
                   selectedRole === 'user'
-                    ? 'border-orange-500 bg-orange-50'
+                    ? 'border-gold-500 bg-gold-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}>
                   <input type="radio" value="user" {...register('role')} className="hidden" />
-                  <i className={`fas fa-user text-xl mb-2 ${selectedRole === 'user' ? 'text-orange-500' : 'text-gray-400'}`}></i>
+                  <i className={`fas fa-user text-xl mb-2 ${selectedRole === 'user' ? 'text-gold-500' : 'text-gray-400'}`}></i>
                   <p className={`text-sm font-medium ${selectedRole === 'user' ? 'text-gray-900' : 'text-gray-600'}`}>Customer</p>
                   <p className="text-xs text-gray-500">Buy vehicles</p>
                 </label>
 
                 <label className={`block relative p-4 cursor-pointer rounded-lg border-2 transition-all text-center ${
                   selectedRole === 'office'
-                    ? 'border-orange-500 bg-orange-50'
+                    ? 'border-gold-500 bg-gold-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}>
                   <input type="radio" value="office" {...register('role')} className="hidden" />
-                  <i className={`fas fa-building text-xl mb-2 ${selectedRole === 'office' ? 'text-orange-500' : 'text-gray-400'}`}></i>
+                  <i className={`fas fa-building text-xl mb-2 ${selectedRole === 'office' ? 'text-gold-500' : 'text-gray-400'}`}></i>
                   <p className={`text-sm font-medium ${selectedRole === 'office' ? 'text-gray-900' : 'text-gray-600'}`}>Finance Office</p>
                   <p className="text-xs text-gray-500">List vehicles</p>
                 </label>
@@ -81,7 +81,7 @@ export default function Register() {
                 <input
                   {...register('username', { required: 'Username is required' })}
                   className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
-                    errors.username ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-orange-500'
+                    errors.username ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-gold-500'
                   }`}
                   placeholder="Choose a username"
                 />
@@ -95,7 +95,7 @@ export default function Register() {
                   {...register('email', { required: 'Email is required' })}
                   type="email"
                   className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
-                    errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-orange-500'
+                    errors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-gold-500'
                   }`}
                   placeholder="you@example.com"
                 />
@@ -108,7 +108,7 @@ export default function Register() {
                 <input
                   {...register('mobile_number', { required: 'Mobile number is required' })}
                   className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
-                    errors.mobile_number ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-orange-500'
+                    errors.mobile_number ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-gold-500'
                   }`}
                   placeholder="9876543210"
                 />
@@ -123,7 +123,7 @@ export default function Register() {
                     <input
                       {...register('finance_name', { required: selectedRole === 'office' && 'Required' })}
                       className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
-                        errors.finance_name ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-orange-500'
+                        errors.finance_name ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-gold-500'
                       }`}
                       placeholder="Your company name"
                     />
@@ -134,7 +134,7 @@ export default function Register() {
                     <input
                       {...register('owner_name', { required: selectedRole === 'office' && 'Required' })}
                       className={`w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
-                        errors.owner_name ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-orange-500'
+                        errors.owner_name ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-gold-500'
                       }`}
                       placeholder="Full name"
                     />
@@ -151,7 +151,7 @@ export default function Register() {
                     {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Min 6 characters' } })}
                     type={showPassword ? 'text' : 'password'}
                     className={`w-full px-4 py-3 pr-12 border rounded-lg text-sm outline-none transition-colors ${
-                      errors.password ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-orange-500'
+                      errors.password ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-gold-500'
                     }`}
                     placeholder="Min 6 characters"
                   />
@@ -172,10 +172,10 @@ export default function Register() {
                   <input 
                     {...register('terms', { required: true })} 
                     type="checkbox" 
-                    className="w-4 h-4 mt-0.5 rounded border-gray-300 text-orange-500 focus:ring-orange-500" 
+                    className="w-4 h-4 mt-0.5 rounded border-gray-300 text-gold-500 focus:ring-gold-500" 
                   />
                   <span className="text-sm text-gray-600">
-                    I agree to the <Link to="/privacy-policy" className="text-orange-600 hover:underline">Terms of Service</Link>
+                    I agree to the <Link to="/privacy-policy" className="text-gold-600 hover:underline">Terms of Service</Link>
                   </span>
                 </label>
                 {errors.terms && <p className="text-xs text-red-500 mt-1">Please accept the terms</p>}
@@ -185,7 +185,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors disabled:opacity-60"
+                className="w-full py-3 bg-gold-500 hover:bg-gold-600 text-white font-medium rounded-lg transition-colors disabled:opacity-60"
               >
                 {loading ? 'Creating Account...' : 'Create Account'}
               </button>
@@ -195,7 +195,7 @@ export default function Register() {
           {/* Login Link */}
           <p className="text-center text-sm text-gray-500 mt-6">
             Already have an account?{' '}
-            <Link to="/login" className="text-orange-600 font-medium hover:underline">Sign In</Link>
+            <Link to="/login" className="text-gold-600 font-medium hover:underline">Sign In</Link>
           </p>
         </div>
       </section>

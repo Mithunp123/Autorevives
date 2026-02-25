@@ -54,14 +54,14 @@ export default function FAQ() {
       </Helmet>
 
       {/* ═══════ HERO ═══════ */}
-      <section className="relative overflow-hidden bg-[#111111] text-white">
+      <section className="relative overflow-hidden bg-[#0B1628] text-white">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-orange-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-orange-500/5 rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-gold-500/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-gold-500/5 rounded-full blur-[100px]" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full mb-6">
-            <i className="fas fa-circle-question text-orange-500 text-xs"></i>
+            <i className="fas fa-circle-question text-gold-500 text-xs"></i>
             <span className="text-sm font-medium text-white/70">Support Center</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Frequently Asked Questions</h1>
@@ -81,11 +81,11 @@ export default function FAQ() {
                 onClick={() => { setActiveTab(t.key); setOpenIndex(null); }}
                 className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all ${
                   activeTab === t.key
-                    ? 'bg-[#111111] text-white shadow-md'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-200 hover:text-orange-600'
+                    ? 'bg-[#0B1628] text-white shadow-md'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-gold-200 hover:text-gold-600'
                 }`}
               >
-                <i className={`fas ${t.icon} text-xs ${activeTab === t.key ? 'text-orange-400' : ''}`}></i>
+                <i className={`fas ${t.icon} text-xs ${activeTab === t.key ? 'text-gold-400' : ''}`}></i>
                 {t.label}
               </button>
             ))}
@@ -99,7 +99,7 @@ export default function FAQ() {
                 <div
                   key={idx}
                   className={`bg-white rounded-xl border transition-all duration-300 overflow-hidden ${
-                    isOpen ? 'border-orange-300 shadow-lg shadow-orange-500/5' : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                    isOpen ? 'border-gold-300 shadow-lg shadow-gold-500/5' : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
                   }`}
                 >
                   <button
@@ -107,23 +107,17 @@ export default function FAQ() {
                     className="w-full flex items-center justify-between px-6 sm:px-8 py-5 sm:py-6 text-left group"
                   >
                     <div className="flex items-center gap-4 pr-4">
-                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                        isOpen ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-500'
-                      }`}>
-                        <span className="text-xs font-bold">{String(idx + 1).padStart(2, '0')}</span>
-                      </div>
+                      <span className={`text-xs font-bold text-slate-400`}>{String(idx + 1).padStart(2, '0')}</span>
                       <h3 className={`text-sm sm:text-base font-semibold transition-colors ${
-                        isOpen ? 'text-[#111111]' : 'text-[#111111] group-hover:text-orange-600'
+                        isOpen ? 'text-[#0B1628]' : 'text-[#0B1628] group-hover:text-gold-600'
                       }`}>
                         {item.q}
                       </h3>
                     </div>
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                      isOpen ? 'bg-orange-50 rotate-180' : 'bg-gray-50 group-hover:bg-orange-50'
+                      isOpen ? 'rotate-180' : ''
                     }`}>
-                      <i className={`fas fa-chevron-down text-xs transition-colors ${
-                        isOpen ? 'text-orange-500' : 'text-gray-400 group-hover:text-orange-500'
-                      }`}></i>
+                      <i className={`fas fa-chevron-down text-xs text-slate-400 transition-colors`}></i>
                     </div>
                   </button>
                   <div
@@ -132,7 +126,7 @@ export default function FAQ() {
                     } overflow-hidden`}
                   >
                     <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-0">
-                      <div className="pl-12 border-l-2 border-orange-200 ml-0">
+                      <div className="pl-12 border-l-2 border-gold-200 ml-0">
                         <p className="text-sm text-gray-500 leading-relaxed">{item.a}</p>
                       </div>
                     </div>
@@ -145,14 +139,14 @@ export default function FAQ() {
           {/* Bottom helper */}
           <div className="mt-12 text-center">
             <div className="bg-white rounded-xl border border-gray-200 p-8">
-              <div className="w-14 h-14 mx-auto bg-orange-100 rounded-full flex items-center justify-center mb-4">
-                <i className="fas fa-headset text-xl text-orange-500"></i>
+              <div className="w-14 h-14 mx-auto bg-gold-100 rounded-full flex items-center justify-center mb-4">
+                <i className="fas fa-headset text-xl text-gold-500"></i>
               </div>
-              <h3 className="text-lg font-bold text-[#111111] mb-2">Still Have Questions?</h3>
+              <h3 className="text-lg font-bold text-[#0B1628] mb-2">Still Have Questions?</h3>
               <p className="text-sm text-gray-500 mb-5 max-w-md mx-auto">Our friendly support team is always ready to help you.</p>
               <a
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gold-500 hover:bg-gold-600 text-white text-sm font-semibold rounded-xl transition-all"
               >
                 <i className="fas fa-message text-xs"></i> Contact Support
               </a>

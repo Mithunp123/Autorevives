@@ -92,14 +92,14 @@ export default function SellVehicle() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
         <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <i className="fas fa-lock text-3xl text-orange-500"></i>
+          <div className="w-20 h-20 bg-gold-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <i className="fas fa-lock text-3xl text-gold-500"></i>
           </div>
-          <h1 className="text-2xl font-bold text-[#111111] mb-3">Login Required</h1>
+          <h1 className="text-2xl font-bold text-[#0B1628] mb-3">Login Required</h1>
           <p className="text-gray-500 mb-8">Please sign in to your account to list your vehicle for auction.</p>
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all"
           >
             Login to Continue <i className="fas fa-arrow-right text-sm"></i>
           </Link>
@@ -116,7 +116,7 @@ export default function SellVehicle() {
       </Helmet>
 
       {/* ═══════ HEADER ═══════ */}
-      <section className="bg-[#111111] text-white py-12 lg:py-16">
+      <section className="bg-[#0B1628] text-white py-12 lg:py-16">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <Link to="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm mb-6 transition-colors">
             <i className="fas fa-arrow-left text-xs"></i>
@@ -136,13 +136,13 @@ export default function SellVehicle() {
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${
                     step > s.id ? 'bg-green-500 text-white' :
-                    step === s.id ? 'bg-orange-500 text-white' :
+                    step === s.id ? 'bg-gold-500 text-white' :
                     'bg-gray-100 text-gray-400'
                   }`}>
                     {step > s.id ? <i className="fas fa-check"></i> : <i className={`fas ${s.icon}`}></i>}
                   </div>
                   <span className={`text-sm font-medium whitespace-nowrap hidden sm:block ${
-                    step === s.id ? 'text-[#111111]' : 'text-gray-400'
+                    step === s.id ? 'text-[#0B1628]' : 'text-gray-400'
                   }`}>
                     {s.title}
                   </span>
@@ -163,7 +163,7 @@ export default function SellVehicle() {
           {/* ─── STEP 1: Vehicle Details ─── */}
           {step === 1 && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 lg:p-8">
-              <h2 className="text-xl font-bold text-[#111111] mb-6">Vehicle Details</h2>
+              <h2 className="text-xl font-bold text-[#0B1628] mb-6">Vehicle Details</h2>
               
               {/* Category Selection */}
               <div className="mb-6">
@@ -174,7 +174,7 @@ export default function SellVehicle() {
                       key={cat.value}
                       className={`relative flex flex-col items-center p-4 border-2 rounded-xl cursor-pointer transition-all ${
                         watchedValues.category === cat.value
-                          ? 'border-orange-500 bg-orange-50'
+                          ? 'border-gold-500 bg-gold-50'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
@@ -185,10 +185,10 @@ export default function SellVehicle() {
                         className="sr-only"
                       />
                       <i className={`fas ${cat.icon} text-2xl mb-2 ${
-                        watchedValues.category === cat.value ? 'text-orange-500' : 'text-gray-400'
+                        watchedValues.category === cat.value ? 'text-gold-500' : 'text-gray-400'
                       }`}></i>
                       <span className={`text-sm font-medium ${
-                        watchedValues.category === cat.value ? 'text-[#111111]' : 'text-gray-600'
+                        watchedValues.category === cat.value ? 'text-[#0B1628]' : 'text-gray-600'
                       }`}>{cat.label}</span>
                     </label>
                   ))}
@@ -202,7 +202,7 @@ export default function SellVehicle() {
                   type="text"
                   placeholder="e.g., Maruti Swift VXi 2020"
                   className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                    errors.name ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                    errors.name ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-gold-500'
                   }`}
                   {...register('name', { required: 'Vehicle name is required' })}
                 />
@@ -216,14 +216,14 @@ export default function SellVehicle() {
                   <input
                     type="text"
                     placeholder="e.g., TN 09 AB 1234"
-                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all"
+                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all"
                     {...register('registration')}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Year of Manufacture</label>
                   <select
-                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all"
+                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all"
                     {...register('year')}
                   >
                     {Array.from({ length: 25 }, (_, i) => new Date().getFullYear() - i).map(year => (
@@ -238,7 +238,7 @@ export default function SellVehicle() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">State *</label>
                   <select
-                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all"
+                    className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all"
                     {...register('state', { required: true })}
                   >
                     {INDIAN_STATES.map(state => (
@@ -252,7 +252,7 @@ export default function SellVehicle() {
                     type="text"
                     placeholder="e.g., Chennai"
                     className={`w-full px-4 py-3.5 border rounded-lg outline-none transition-all ${
-                      errors.location ? 'border-red-300' : 'border-gray-200 focus:border-orange-500'
+                      errors.location ? 'border-red-300' : 'border-gray-200 focus:border-gold-500'
                     }`}
                     {...register('location', { required: 'Location is required' })}
                   />
@@ -265,7 +265,7 @@ export default function SellVehicle() {
                 <textarea
                   rows={4}
                   placeholder="Describe your vehicle condition, features, service history, etc."
-                  className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all resize-none"
                   {...register('description')}
                 ></textarea>
               </div>
@@ -275,11 +275,11 @@ export default function SellVehicle() {
           {/* ─── STEP 2: Upload Photos ─── */}
           {step === 2 && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 lg:p-8">
-              <h2 className="text-xl font-bold text-[#111111] mb-2">Upload Photos</h2>
+              <h2 className="text-xl font-bold text-[#0B1628] mb-2">Upload Photos</h2>
               <p className="text-gray-500 text-sm mb-6">Add up to 6 photos of your vehicle. Good photos help attract more buyers.</p>
               
               {/* Upload Area */}
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-orange-400 transition-colors mb-6">
+              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-gold-400 transition-colors mb-6">
                 <input
                   type="file"
                   accept="image/*"
@@ -289,10 +289,10 @@ export default function SellVehicle() {
                   id="imageUpload"
                 />
                 <label htmlFor="imageUpload" className="cursor-pointer">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fas fa-cloud-arrow-up text-2xl text-orange-500"></i>
+                  <div className="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i className="fas fa-cloud-arrow-up text-2xl text-gold-500"></i>
                   </div>
-                  <p className="font-medium text-[#111111] mb-1">Click to upload images</p>
+                  <p className="font-medium text-[#0B1628] mb-1">Click to upload images</p>
                   <p className="text-sm text-gray-400">PNG, JPG up to 5MB each (Max 6 images)</p>
                 </label>
               </div>
@@ -311,7 +311,7 @@ export default function SellVehicle() {
                         <i className="fas fa-times text-sm"></i>
                       </button>
                       {idx === 0 && (
-                        <span className="absolute bottom-2 left-2 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded">
+                        <span className="absolute bottom-2 left-2 px-2 py-1 bg-gold-500 text-white text-xs font-medium rounded">
                           Main Photo
                         </span>
                       )}
@@ -321,12 +321,12 @@ export default function SellVehicle() {
               )}
 
               {/* Tips */}
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2 flex items-center gap-2">
-                  <i className="fas fa-lightbulb text-blue-500"></i>
+              <div className="mt-6 p-4 bg-gold-50 rounded-lg">
+                <h4 className="font-medium text-gold-900 mb-2 flex items-center gap-2">
+                  <i className="fas fa-lightbulb text-gold-500"></i>
                   Photo Tips
                 </h4>
-                <ul className="text-sm text-blue-700 space-y-1">
+                <ul className="text-sm text-gold-700 space-y-1">
                   <li>• Take photos in good lighting</li>
                   <li>• Include exterior from all angles</li>
                   <li>• Show interior, dashboard, and odometer</li>
@@ -339,7 +339,7 @@ export default function SellVehicle() {
           {/* ─── STEP 3: Pricing ─── */}
           {step === 3 && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 lg:p-8">
-              <h2 className="text-xl font-bold text-[#111111] mb-2">Set Your Price</h2>
+              <h2 className="text-xl font-bold text-[#0B1628] mb-2">Set Your Price</h2>
               <p className="text-gray-500 text-sm mb-6">Set a competitive starting price to attract more bidders.</p>
               
               {/* Expected Price */}
@@ -351,7 +351,7 @@ export default function SellVehicle() {
                     type="number"
                     placeholder="Enter expected price"
                     className={`w-full pl-10 pr-4 py-3.5 border rounded-lg outline-none transition-all ${
-                      errors.expectedPrice ? 'border-red-300' : 'border-gray-200 focus:border-orange-500'
+                      errors.expectedPrice ? 'border-red-300' : 'border-gray-200 focus:border-gold-500'
                     }`}
                     {...register('expectedPrice', { required: 'Expected price is required' })}
                   />
@@ -368,7 +368,7 @@ export default function SellVehicle() {
                   <input
                     type="number"
                     placeholder="Enter minimum price"
-                    className="w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-lg focus:border-orange-500 outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-lg focus:border-gold-500 outline-none transition-all"
                     {...register('minimumPrice')}
                   />
                 </div>
@@ -377,7 +377,7 @@ export default function SellVehicle() {
 
               {/* Pricing Guide */}
               <div className="p-5 bg-gray-50 rounded-xl">
-                <h4 className="font-medium text-[#111111] mb-3">Pricing Guidelines</h4>
+                <h4 className="font-medium text-[#0B1628] mb-3">Pricing Guidelines</h4>
                 <div className="space-y-3 text-sm text-gray-600">
                   <div className="flex items-start gap-3">
                     <i className="fas fa-check-circle text-green-500 mt-0.5"></i>
@@ -399,40 +399,40 @@ export default function SellVehicle() {
           {/* ─── STEP 4: Review & Submit ─── */}
           {step === 4 && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 lg:p-8">
-              <h2 className="text-xl font-bold text-[#111111] mb-6">Review Your Listing</h2>
+              <h2 className="text-xl font-bold text-[#0B1628] mb-6">Review Your Listing</h2>
               
               {/* Summary */}
               <div className="space-y-6 mb-8">
                 {/* Vehicle Info */}
                 <div className="p-5 bg-gray-50 rounded-xl">
-                  <h3 className="font-medium text-[#111111] mb-4 flex items-center gap-2">
-                    <i className="fas fa-car text-orange-500"></i>
+                  <h3 className="font-medium text-[#0B1628] mb-4 flex items-center gap-2">
+                    <i className="fas fa-car text-gold-500"></i>
                     Vehicle Details
                   </h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-gray-400">Vehicle Name</p>
-                      <p className="font-medium text-[#111111]">{watchedValues.name || '-'}</p>
+                      <p className="font-medium text-[#0B1628]">{watchedValues.name || '-'}</p>
                     </div>
                     <div>
                       <p className="text-gray-400">Category</p>
-                      <p className="font-medium text-[#111111]">{CATEGORIES.find(c => c.value === watchedValues.category)?.label || '-'}</p>
+                      <p className="font-medium text-[#0B1628]">{CATEGORIES.find(c => c.value === watchedValues.category)?.label || '-'}</p>
                     </div>
                     <div>
                       <p className="text-gray-400">Location</p>
-                      <p className="font-medium text-[#111111]">{watchedValues.location}, {watchedValues.state}</p>
+                      <p className="font-medium text-[#0B1628]">{watchedValues.location}, {watchedValues.state}</p>
                     </div>
                     <div>
                       <p className="text-gray-400">Registration</p>
-                      <p className="font-medium text-[#111111]">{watchedValues.registration || '-'}</p>
+                      <p className="font-medium text-[#0B1628]">{watchedValues.registration || '-'}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Photos */}
                 <div className="p-5 bg-gray-50 rounded-xl">
-                  <h3 className="font-medium text-[#111111] mb-4 flex items-center gap-2">
-                    <i className="fas fa-camera text-orange-500"></i>
+                  <h3 className="font-medium text-[#0B1628] mb-4 flex items-center gap-2">
+                    <i className="fas fa-camera text-gold-500"></i>
                     Photos ({images.length})
                   </h3>
                   {images.length > 0 ? (
@@ -448,18 +448,18 @@ export default function SellVehicle() {
 
                 {/* Pricing */}
                 <div className="p-5 bg-gray-50 rounded-xl">
-                  <h3 className="font-medium text-[#111111] mb-4 flex items-center gap-2">
-                    <i className="fas fa-indian-rupee-sign text-orange-500"></i>
+                  <h3 className="font-medium text-[#0B1628] mb-4 flex items-center gap-2">
+                    <i className="fas fa-indian-rupee-sign text-gold-500"></i>
                     Pricing
                   </h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-gray-400">Expected Price</p>
-                      <p className="font-medium text-[#111111]">₹{Number(watchedValues.expectedPrice || 0).toLocaleString('en-IN')}</p>
+                      <p className="font-medium text-[#0B1628]">₹{Number(watchedValues.expectedPrice || 0).toLocaleString('en-IN')}</p>
                     </div>
                     <div>
                       <p className="text-gray-400">Minimum Price</p>
-                      <p className="font-medium text-[#111111]">₹{Number(watchedValues.minimumPrice || 0).toLocaleString('en-IN')}</p>
+                      <p className="font-medium text-[#0B1628]">₹{Number(watchedValues.minimumPrice || 0).toLocaleString('en-IN')}</p>
                     </div>
                   </div>
                 </div>
@@ -472,21 +472,21 @@ export default function SellVehicle() {
                     type="checkbox"
                     checked={termsAccepted}
                     onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="w-5 h-5 text-orange-500 border-gray-300 rounded focus:ring-orange-500 mt-0.5"
+                    className="w-5 h-5 text-gold-500 border-gray-300 rounded focus:ring-gold-500 mt-0.5"
                   />
                   <span className="text-sm text-gray-600">
                     I confirm that all information provided is accurate. I agree to the{' '}
-                    <Link to="/privacy-policy" className="text-orange-500 hover:underline">Terms & Conditions</Link> and{' '}
-                    <Link to="/privacy-policy" className="text-orange-500 hover:underline">Privacy Policy</Link>.
+                    <Link to="/privacy-policy" className="text-gold-500 hover:underline">Terms & Conditions</Link> and{' '}
+                    <Link to="/privacy-policy" className="text-gold-500 hover:underline">Privacy Policy</Link>.
                     I understand that AutoRevive may verify the details before listing.
                   </span>
                 </label>
               </div>
 
               {/* Info Notice */}
-              <div className="p-4 bg-blue-50 rounded-lg flex items-start gap-3">
-                <i className="fas fa-info-circle text-blue-500 mt-0.5"></i>
-                <p className="text-sm text-blue-700">
+              <div className="p-4 bg-gold-50 rounded-lg flex items-start gap-3">
+                <i className="fas fa-info-circle text-gold-500 mt-0.5"></i>
+                <p className="text-sm text-gold-700">
                   After submission, our team will review your listing and contact you within 24-48 hours for verification.
                 </p>
               </div>
@@ -512,7 +512,7 @@ export default function SellVehicle() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="flex items-center gap-2 px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all"
+                className="flex items-center gap-2 px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all"
               >
                 Continue
                 <i className="fas fa-arrow-right text-sm"></i>
@@ -521,7 +521,7 @@ export default function SellVehicle() {
               <button
                 type="submit"
                 disabled={isSubmitting || !termsAccepted}
-                className="flex items-center gap-2 px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
@@ -543,7 +543,7 @@ export default function SellVehicle() {
       {/* ═══════ WHY SELL WITH US ═══════ */}
       <section className="bg-white border-t border-gray-200 py-16">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-[#111111] text-center mb-10">Why Sell With AutoRevive?</h2>
+          <h2 className="text-2xl font-bold text-[#0B1628] text-center mb-10">Why Sell With AutoRevive?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: 'fa-users', title: 'Thousands of Buyers', desc: 'Access verified buyers from across India looking for quality vehicles' },
@@ -552,10 +552,10 @@ export default function SellVehicle() {
               { icon: 'fa-headset', title: 'Full Support', desc: 'Dedicated support team to help you throughout the process' },
             ].map((item) => (
               <div key={item.title} className="text-center p-6">
-                <div className="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <i className={`fas ${item.icon} text-xl text-orange-500`}></i>
+                <div className="w-14 h-14 bg-gold-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <i className={`fas ${item.icon} text-xl text-gold-500`}></i>
                 </div>
-                <h3 className="font-semibold text-[#111111] mb-2">{item.title}</h3>
+                <h3 className="font-semibold text-[#0B1628] mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
               </div>
             ))}

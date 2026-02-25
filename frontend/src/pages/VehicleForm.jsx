@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
@@ -119,7 +119,7 @@ export default function VehicleForm() {
     const category = data.category || '';
 
     try {
-      // ── Step 1: Upload images one-by-one (1 s gap) ──
+      // -- Step 1: Upload images one-by-one (1 s gap) --
       const totalUploads = images.length + (rcAvailable && rcImage ? 1 : 0) + (insuranceAvailable && insuranceImage ? 1 : 0);
       let completed = 0;
       setUploadProgress({ current: 0, total: totalUploads, label: '' });
@@ -157,7 +157,7 @@ export default function VehicleForm() {
 
       setUploadProgress({ current: totalUploads, total: totalUploads, label: 'Saving vehicle details...' });
 
-      // ── Step 2: Combine existing + newly uploaded paths ──
+      // -- Step 2: Combine existing + newly uploaded paths --
       const allImagePaths = [
         ...existingImages.map((url) => {
           // Convert full URL back to relative path (uploads/...)
@@ -167,7 +167,7 @@ export default function VehicleForm() {
         ...uploadedPaths,
       ];
 
-      // ── Step 3: Submit form data (no files, just paths) ──
+      // -- Step 3: Submit form data (no files, just paths) --
       const formData = new FormData();
       formData.append('name', data.name);
       formData.append('category', category);
@@ -218,13 +218,13 @@ export default function VehicleForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6 animate-fade-in">
       <button onClick={() => navigate('/vehicles')} className="btn-ghost text-sm -ml-2">
         <i className="fas fa-arrow-left text-sm"></i> Back to Vehicles
       </button>
 
-      <div className="card p-6">
-        <h1 className="text-xl font-extrabold text-slate-900 mb-6 font-display tracking-tight">
+      <div className="card p-4 sm:p-6">
+        <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 mb-4 sm:mb-6 font-display tracking-tight">
           {isEdit ? 'Edit Vehicle' : 'Add New Vehicle'}
         </h1>
 
@@ -489,19 +489,19 @@ export default function VehicleForm() {
             >
               <input {...getInputProps()} />
               <div className="flex flex-col items-center gap-2">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center mb-1">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-100 to-gold-50 flex items-center justify-center mb-1">
                   <i className="fas fa-upload text-xl text-accent"></i>
                 </div>
                 <p className="text-sm text-slate-500">
                   Drag & drop images here, or <span className="text-accent font-bold">click to browse</span>
                 </p>
-                <p className="text-xs text-slate-400">PNG, JPG up to 10MB each • {10 - images.length - existingImages.length} slots remaining</p>
+                <p className="text-xs text-slate-400">PNG, JPG up to 10MB each — {10 - images.length - existingImages.length} slots remaining</p>
               </div>
             </div>
 
             {/* Image Previews Grid */}
             {(previews.length > 0 || existingImages.length > 0) && (
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              <div className="mt-4 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
                 {/* Existing images */}
                 {existingImages.map((img, idx) => (
                   <div key={`existing-${idx}`} className="relative group">

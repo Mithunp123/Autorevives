@@ -1,4 +1,4 @@
-﻿import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 
 const sections = [
   {
@@ -102,10 +102,10 @@ export default function PrivacyPolicy() {
         <meta name="description" content="Read AutoRevive's privacy policy to understand how we collect, use, and protect your personal information." />
       </Helmet>
 
-      {/* ═══════ HERO ═══════ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-[#0f1b3d] to-slate-900 text-white">
+      {/* ------- HERO ------- */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-[#162847] to-slate-900 text-white">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-blue-500/[0.06] rounded-full blur-[120px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-gold-500/[0.06] rounded-full blur-[120px]" />
           <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
             backgroundSize: '80px 80px',
@@ -118,7 +118,7 @@ export default function PrivacyPolicy() {
         </div>
       </section>
 
-      {/* ═══════ CONTENT ═══════ */}
+      {/* ------- CONTENT ------- */}
       <div className="bg-slate-50 py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-10">
           {/* Sidebar Nav */}
@@ -130,7 +130,7 @@ export default function PrivacyPolicy() {
                   <li key={s.id}>
                     <a
                       href={`#${s.id}`}
-                      className="text-sm text-slate-500 hover:text-blue-600 transition-colors font-medium flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-blue-50"
+                      className="text-sm text-slate-500 hover:text-gold-600 transition-colors font-medium flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-gold-50"
                     >
                       <i className={`fas ${s.icon} text-xs text-slate-400 w-4 text-center`}></i>
                       <span className="truncate">{s.title}</span>
@@ -138,7 +138,7 @@ export default function PrivacyPolicy() {
                   </li>
                 ))}
                 <li>
-                  <a href="#contact" className="text-sm text-slate-500 hover:text-blue-600 transition-colors font-medium flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-blue-50">
+                  <a href="#contact" className="text-sm text-slate-500 hover:text-gold-600 transition-colors font-medium flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-gold-50">
                     <i className="fas fa-envelope text-xs text-slate-400 w-4 text-center"></i>
                     <span>9. Contact Us</span>
                   </a>
@@ -152,7 +152,7 @@ export default function PrivacyPolicy() {
             {sections.map((s) => (
               <section key={s.id} id={s.id} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                  <div className="w-10 h-10 bg-gradient-to-br from-gold-500 to-gold-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
                     <i className={`fas ${s.icon} text-white text-sm`}></i>
                   </div>
                   <h2 className="font-display text-xl font-extrabold text-slate-900 tracking-tight">{s.title}</h2>
@@ -164,8 +164,8 @@ export default function PrivacyPolicy() {
                   <ul className="space-y-2.5 mt-4">
                     {s.items.map((it, i) => (
                       <li key={i} className="text-sm text-slate-500 flex items-start gap-3">
-                        <span className="w-6 h-6 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <i className="fas fa-check text-blue-500 text-[10px]"></i>
+                        <span className="w-6 h-6 bg-gold-50 border border-gold-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <i className="fas fa-check text-gold-500 text-[10px]"></i>
                         </span>
                         <span className="leading-relaxed">{it}</span>
                       </li>
@@ -173,8 +173,8 @@ export default function PrivacyPolicy() {
                   </ul>
                 )}
                 {s.highlight && (
-                  <div className="flex items-start gap-3 bg-gradient-to-r from-blue-50 to-blue-100/50 border border-blue-200 rounded-xl p-5 mt-5">
-                    <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <div className="flex items-start gap-3 bg-gradient-to-r from-gold-50 to-gold-100/50 border border-gold-200 rounded-xl p-5 mt-5">
+                    <div className="w-10 h-10 bg-gold-500 rounded-xl flex items-center justify-center flex-shrink-0">
                       <i className="fas fa-shield-halved text-white"></i>
                     </div>
                     <p className="text-sm text-slate-700 font-medium leading-relaxed">{s.highlight}</p>
@@ -206,7 +206,7 @@ export default function PrivacyPolicy() {
             {/* Contact Section */}
             <section id="contact" className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                <div className="w-10 h-10 bg-gradient-to-br from-gold-500 to-gold-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
                   <i className="fas fa-envelope text-white text-sm"></i>
                 </div>
                 <h2 className="font-display text-xl font-extrabold text-slate-900 tracking-tight">9. Contact Us</h2>
@@ -219,20 +219,20 @@ export default function PrivacyPolicy() {
                 <p className="font-semibold text-sm text-slate-600 mb-4">AutoRevive Private Limited</p>
                 <div className="space-y-3 text-sm text-slate-500">
                   <p className="flex items-center gap-3">
-                    <span className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-100 flex-shrink-0">
-                      <i className="fas fa-location-dot text-blue-500 text-xs"></i>
+                    <span className="w-8 h-8 bg-gold-50 rounded-lg flex items-center justify-center border border-gold-100 flex-shrink-0">
+                      <i className="fas fa-location-dot text-gold-500 text-xs"></i>
                     </span>
                     123 Business Park, Andheri East, Mumbai - 400069
                   </p>
                   <p className="flex items-center gap-3">
-                    <span className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-100 flex-shrink-0">
-                      <i className="fas fa-envelope text-blue-500 text-xs"></i>
+                    <span className="w-8 h-8 bg-gold-50 rounded-lg flex items-center justify-center border border-gold-100 flex-shrink-0">
+                      <i className="fas fa-envelope text-gold-500 text-xs"></i>
                     </span>
                     privacy@autorevive.in
                   </p>
                   <p className="flex items-center gap-3">
-                    <span className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-100 flex-shrink-0">
-                      <i className="fas fa-phone text-blue-500 text-xs"></i>
+                    <span className="w-8 h-8 bg-gold-50 rounded-lg flex items-center justify-center border border-gold-100 flex-shrink-0">
+                      <i className="fas fa-phone text-gold-500 text-xs"></i>
                     </span>
                     +91 8828820306
                   </p>
@@ -243,7 +243,7 @@ export default function PrivacyPolicy() {
             {/* Changes Section */}
             <section className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                <div className="w-10 h-10 bg-gradient-to-br from-gold-500 to-gold-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
                   <i className="fas fa-pen-to-square text-white text-sm"></i>
                 </div>
                 <h2 className="font-display text-xl font-extrabold text-slate-900 tracking-tight">10. Changes to This Policy</h2>

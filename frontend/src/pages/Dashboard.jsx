@@ -1,9 +1,10 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { StatCard, StatusBadge, PageLoader } from '@/components/ui';
 import { AreaChartCard } from '@/components/charts';
 import { dashboardService } from '@/services';
+import { useAuth } from '@/context';
 import { formatCurrency, formatDateTime, timeAgo } from '@/utils';
 
 // Static placeholder chart data (backend doesn't provide monthly breakdowns)
@@ -16,6 +17,7 @@ const placeholderChartData = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { isAdmin, isOffice } = useAuth();
   const [stats, setStats] = useState({
     totalVehicles: 0, activeAuctions: 0, totalUsers: 0,
     totalManagers: 0, pendingApprovals: 0, totalVolume: 0,
@@ -33,36 +35,48 @@ export default function Dashboard() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [statsRes, activityRes] = await Promise.all([
-          dashboardService.getStats(),
-          dashboardService.getRecentActivity(),
-        ]);
+        if (isOffice) {
+          // Office users get their own stats
+          const officeRes = await dashboardService.getOfficeStats();
+          const raw = officeRes.data?.stats || officeRes.data || {};
+          setStats({
+            totalVehicles: raw.total_products ?? 0,
+            activeAuctions: raw.approved_products ?? 0,
+            totalUsers: 0,
+            totalManagers: 0,
+            pendingApprovals: raw.pending_products ?? 0,
+            totalVolume: raw.total_volume ?? 0,
+          });
+        } else {
+          // Admin gets full platform stats
+          const [statsRes, activityRes] = await Promise.all([
+            dashboardService.getStats(),
+            dashboardService.getRecentActivity(),
+          ]);
 
-        // Parse stats: GET /api/dashboard/stats → { stats: { ... }, recent_activity: [...] }
-        const raw = statsRes.data?.stats || statsRes.data || {};
-        setStats({
-          totalVehicles: raw.total_products ?? 0,
-          activeAuctions: raw.live_auctions ?? 0,
-          totalUsers: raw.total_users ?? 0,
-          totalManagers: raw.total_offices ?? 0,
-          pendingApprovals: (raw.pending_auctions ?? 0) + (raw.pending_offices ?? 0),
-          totalVolume: raw.total_volume ?? 0,
-        });
+          const raw = statsRes.data?.stats || statsRes.data || {};
+          setStats({
+            totalVehicles: raw.total_products ?? 0,
+            activeAuctions: raw.live_auctions ?? 0,
+            totalUsers: raw.total_users ?? 0,
+            totalManagers: raw.total_offices ?? 0,
+            pendingApprovals: (raw.pending_auctions ?? 0) + (raw.pending_offices ?? 0),
+            totalVolume: raw.total_volume ?? 0,
+          });
 
-        // Parse activity: GET /api/dashboard/recent-activity → [{ name, amount, username, bid_time }, ...]
-        // Fall back to recent_activity from the stats response if the dedicated endpoint returns nothing
-        const act = Array.isArray(activityRes.data) && activityRes.data.length
-          ? activityRes.data
-          : Array.isArray(statsRes.data?.recent_activity) ? statsRes.data.recent_activity : [];
+          const act = Array.isArray(activityRes.data) && activityRes.data.length
+            ? activityRes.data
+            : Array.isArray(statsRes.data?.recent_activity) ? statsRes.data.recent_activity : [];
 
-        if (act.length) {
-          setActivity(act.map((a, i) => ({
-            id: i + 1,
-            type: 'bid',
-            message: `New bid of ₹${Number(a.amount || 0).toLocaleString('en-IN')} on ${a.name || 'Unknown'}`,
-            time: a.bid_time,
-            user: a.username,
-          })));
+          if (act.length) {
+            setActivity(act.map((a, i) => ({
+              id: i + 1,
+              type: 'bid',
+              message: `New bid of ₹${Number(a.amount || 0).toLocaleString('en-IN')} on ${a.name || 'Unknown'}`,
+              time: a.bid_time,
+              user: a.username,
+            })));
+          }
         }
       } catch (err) {
         console.error('Dashboard fetch error:', err);
@@ -71,7 +85,7 @@ export default function Dashboard() {
       }
     };
     fetchData();
-  }, []);
+  }, [isAdmin, isOffice]);
 
   // Fetch state list on mount
   useEffect(() => {
@@ -90,21 +104,26 @@ export default function Dashboard() {
 
   if (loading) return <PageLoader />;
 
-  const statCards = [
-    { icon: 'fa-car', label: 'Total Vehicles', value: stats.totalVehicles?.toLocaleString('en-IN'), color: 'accent', change: 12, changeType: 'up' },
-    { icon: 'fa-gavel', label: 'Active Auctions', value: stats.activeAuctions, color: 'success', change: 8, changeType: 'up' },
-    { icon: 'fa-users', label: 'Total Users', value: stats.totalUsers?.toLocaleString('en-IN'), color: 'purple', change: 5, changeType: 'up' },
-    { icon: 'fa-building', label: 'Office Partners', value: stats.totalManagers, color: 'warning' },
-    { icon: 'fa-shield-halved', label: 'Pending Approvals', value: stats.pendingApprovals, color: 'danger' },
-    { icon: 'fa-arrow-trend-up', label: 'Total Volume', value: formatCurrency(stats.totalVolume), color: 'success', change: 15, changeType: 'up' },
+  const statCards = isOffice ? [
+    { icon: 'fa-car', label: 'My Vehicles', value: stats.totalVehicles?.toLocaleString('en-IN') || '0', color: 'accent' },
+    { icon: 'fa-gavel', label: 'Approved', value: stats.activeAuctions || '0', color: 'success' },
+    { icon: 'fa-clock', label: 'Pending', value: stats.pendingApprovals || '0', color: 'warning' },
+    { icon: 'fa-indian-rupee-sign', label: 'Total Volume', value: formatCurrency(stats.totalVolume), color: 'navy' },
+  ] : [
+    { icon: 'fa-car', label: 'Total Vehicles', value: stats.totalVehicles?.toLocaleString('en-IN') || '0', color: 'accent' },
+    { icon: 'fa-gavel', label: 'Active Auctions', value: stats.activeAuctions || '0', color: 'success' },
+    { icon: 'fa-users', label: 'Total Users', value: stats.totalUsers?.toLocaleString('en-IN') || '0', color: 'purple' },
+    { icon: 'fa-building', label: 'Office Partners', value: stats.totalManagers || '0', color: 'warning' },
+    { icon: 'fa-clock', label: 'Pending', value: stats.pendingApprovals || '0', color: 'danger' },
+    { icon: 'fa-indian-rupee-sign', label: 'Total Volume', value: formatCurrency(stats.totalVolume), color: 'navy' },
   ];
 
   const activityIcons = {
-    bid: { icon: 'fa-gavel', color: 'text-accent bg-primary-50' },
-    approval: { icon: 'fa-shield-halved', color: 'text-success bg-emerald-50' },
-    vehicle: { icon: 'fa-car', color: 'text-warning bg-amber-50' },
-    user: { icon: 'fa-users', color: 'text-purple-600 bg-purple-50' },
-    auction: { icon: 'fa-gavel', color: 'text-danger bg-red-50' },
+    bid: { icon: 'fa-gavel', color: 'text-gold-500' },
+    approval: { icon: 'fa-check-circle', color: 'text-emerald-500' },
+    vehicle: { icon: 'fa-car', color: 'text-amber-500' },
+    user: { icon: 'fa-user', color: 'text-violet-500' },
+    auction: { icon: 'fa-gavel', color: 'text-red-500' },
   };
 
   return (
@@ -116,31 +135,31 @@ export default function Dashboard() {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#111111]">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-[#0B1628]">Dashboard</h1>
           <p className="text-sm font-medium text-gray-500 mt-1">Welcome back! Here's your platform overview.</p>
         </div>
         <div className="flex gap-3">
-          <Link to="/vehicles" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:text-orange-600 hover:border-orange-500 rounded-xl text-sm font-semibold transition-all shadow-sm">
+          <Link to="/vehicles" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:text-gold-600 hover:border-gold-500 rounded-xl text-sm font-semibold transition-all shadow-sm">
             <i className="fas fa-car"></i> Vehicles
           </Link>
-          <Link to="/auctions" className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-orange-500/20">
+          <Link to="/auctions" className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold-500 hover:bg-gold-600 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-gold-500/20">
             <i className="fas fa-gavel"></i> Auctions
           </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
         {statCards.map((card, i) => <StatCard key={i} {...card} />)}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
         <div className="lg:col-span-3">
           <AreaChartCard data={chartData} dataKey="auctions" title="Monthly Auction Growth" height={340} />
         </div>
         <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-            <h3 className="font-bold text-[#111111]">Recent Activity</h3>
-            <Link to="/auctions" className="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1">
+            <h3 className="font-bold text-[#0B1628]">Recent Activity</h3>
+            <Link to="/auctions" className="text-xs font-semibold text-gold-600 hover:text-gold-700 flex items-center gap-1">
               View all <i className="fas fa-arrow-right"></i>
             </Link>
           </div>
@@ -149,11 +168,9 @@ export default function Dashboard() {
               const iconConfig = activityIcons[item.type] || activityIcons.auction;
               return (
                 <div key={item.id} className="flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors group">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${iconConfig.color} bg-opacity-10`}>
-                    <i className={`fas ${iconConfig.icon} text-sm`}></i>
-                  </div>
+                  <i className={`fas ${iconConfig.icon} text-lg ${iconConfig.color} flex-shrink-0`}></i>
                   <div className="flex-1 min-w-0 pt-0.5">
-                    <p className="text-sm font-medium text-gray-800 line-clamp-2 leading-relaxed group-hover:text-[#111111] transition-colors">{item.message}</p>
+                    <p className="text-sm font-medium text-gray-800 line-clamp-2 leading-relaxed group-hover:text-[#0B1628] transition-colors">{item.message}</p>
                     <div className="flex items-center gap-2 mt-1.5">
                       <i className="far fa-clock text-gray-400 text-[10px]"></i>
                       <span className="text-xs font-medium text-gray-400">{timeAgo(item.time)}</span>
@@ -167,22 +184,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {stats.pendingApprovals > 0 && (
-        <div className="card bg-gradient-to-r from-orange-50 to-orange-50/50 border-orange-200/50 p-5">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 bg-gradient-to-br from-orange-100 to-orange-50 rounded-xl flex items-center justify-center">
-                <i className="fas fa-shield-halved text-orange-500"></i>
-              </div>
-              <div>
-                <h3 className="font-bold text-[#111111]">{stats.pendingApprovals} Pending Approvals</h3>
-                <p className="text-sm text-gray-500">Review and approve pending requests</p>
-              </div>
-            </div>
-            <Link to="/approvals" className="btn-primary text-sm"><i className="fas fa-eye text-sm"></i> Review Now</Link>
-          </div>
-        </div>
-      )}
+      {/* Officer cannot approve anything, so do not show Pending Approvals card */}
 
       {/* State-based Vehicle Filter */}
       {stateList.length > 0 && (
@@ -190,7 +192,7 @@ export default function Dashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div>
               <h3 className="section-title flex items-center gap-2">
-                <i className="fas fa-map-location-dot text-orange-500 text-sm"></i> Vehicles by State
+                <i className="fas fa-map-location-dot text-gold-500 text-sm"></i> Vehicles by State
               </h3>
               <p className="text-sm text-gray-400 mt-0.5">Filter and view vehicles from different states</p>
             </div>
@@ -216,7 +218,7 @@ export default function Dashboard() {
                 onClick={() => setSelectedState(s.state === selectedState ? '' : s.state)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   selectedState === s.state
-                    ? 'bg-orange-500 text-white shadow-sm'
+                    ? 'bg-gold-500 text-white shadow-sm'
                     : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                 }`}
               >
@@ -252,13 +254,13 @@ export default function Dashboard() {
                           ) : (
                             <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center"><i className="fas fa-car text-gray-300 text-sm"></i></div>
                           )}
-                          <span className="font-medium text-[#111111]">{v.name}</span>
+                          <span className="font-medium text-[#0B1628]">{v.name}</span>
                         </div>
                       </td>
                       <td className="py-2.5 px-3 text-gray-500">{v.office_name || '—'}</td>
-                      <td className="py-2.5 px-3 font-semibold text-[#111111]">₹{Number(v.starting_price || 0).toLocaleString('en-IN')}</td>
+                      <td className="py-2.5 px-3 font-semibold text-[#0B1628]">₹{Number(v.starting_price || 0).toLocaleString('en-IN')}</td>
                       <td className="py-2.5 px-3">
-                        <span className="text-orange-600 font-semibold">{v.bid_count || 0}</span>
+                        <span className="text-gold-600 font-semibold">{v.bid_count || 0}</span>
                         {v.current_bid && <span className="text-xs text-gray-400 ml-1">(₹{Number(v.current_bid).toLocaleString('en-IN')})</span>}
                       </td>
                       <td className="py-2.5 px-3"><StatusBadge status={v.status} /></td>
@@ -268,7 +270,7 @@ export default function Dashboard() {
               </table>
               {stateVehicles.length > 10 && (
                 <div className="text-center py-3 border-t border-gray-100">
-                  <Link to="/vehicles" className="text-xs text-orange-600 font-semibold hover:underline">
+                  <Link to="/vehicles" className="text-xs text-gold-600 font-semibold hover:underline">
                     View all {stateVehicles.length} vehicles in {selectedState} →
                   </Link>
                 </div>

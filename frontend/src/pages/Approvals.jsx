@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   DataTable,
   SearchFilter,
@@ -13,7 +13,7 @@ import { formatDate, cn } from '@/utils';
 import toast from 'react-hot-toast';
 
 const typeConfig = {
-  vehicle: { icon: 'fa-car', color: 'bg-[#4285F4]/10 text-[#4285F4] border-[#4285F4]/20', label: 'Vehicle Upload' },
+  vehicle: { icon: 'fa-car', color: 'bg-[#D4A017]/10 text-[#D4A017] border-[#D4A017]/20', label: 'Vehicle Upload' },
   office: { icon: 'fa-building', color: 'bg-purple-50 text-purple-600 border-purple-200', label: 'Office Request' },
 };
 
@@ -47,7 +47,7 @@ export default function Approvals() {
           type: 'vehicle',
           name: v.name,
           email: v.office_name || '',
-          details: `Vehicle listing — ${v.starting_price ? '₹' + Number(v.starting_price).toLocaleString('en-IN') : 'N/A'}`,
+          details: `Vehicle listing \u2014 ${v.starting_price ? '\u20b9' + Number(v.starting_price).toLocaleString('en-IN') : 'N/A'}`,
           created_at: v.created_at,
           status: v.status,
         }));
@@ -57,7 +57,7 @@ export default function Approvals() {
           type: 'office',
           name: o.finance_name || o.username,
           email: o.email || '',
-          details: `Finance office registration — ${o.owner_name || ''}`,
+          details: `Finance office registration \u2014 ${o.owner_name || ''}`,
           created_at: o.created_at,
           status: o.status,
         }));
@@ -120,9 +120,7 @@ export default function Approvals() {
         const cfg = typeConfig[val] || typeConfig.user;
         return (
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${cfg.color}`}>
-              <i className={`fas ${cfg.icon} text-sm`}></i>
-            </div>
+            <i className={`fas ${cfg.icon} text-lg text-slate-400 flex-shrink-0`}></i>
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{cfg.label}</span>
           </div>
         );
@@ -173,10 +171,10 @@ export default function Approvals() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Approvals</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900">Approvals</h1>
           <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} items pending review</p>
         </div>
       </div>
@@ -188,7 +186,7 @@ export default function Approvals() {
             key={t.key}
             onClick={() => { setTab(t.key); setCurrentPage(1); }}
             className={cn(
-              'px-5 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap',
+              'px-3 sm:px-5 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap',
               tab === t.key
                 ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'

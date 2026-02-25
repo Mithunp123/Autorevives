@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   DataTable,
   SearchFilter,
@@ -92,7 +92,7 @@ export default function Managers() {
       label: 'Manager',
       render: (_, row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center text-purple-600 text-sm font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold flex-shrink-0">
             {row.username?.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -107,7 +107,7 @@ export default function Managers() {
       label: 'Office',
       render: (val) => (
         <span className="flex items-center gap-1.5">
-          <i className="fas fa-building text-sm text-slate-300"></i> {val || '—'}
+          <i className="fas fa-building text-sm text-slate-300"></i> {val || '\u2014'}
         </span>
       ),
     },
@@ -143,7 +143,7 @@ export default function Managers() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-5 animate-fade-in">
+    <div className="space-y-3 sm:space-y-5 animate-fade-in">
       <div className="page-header">
         <div>
           <h1 className="page-title">Managers</h1>

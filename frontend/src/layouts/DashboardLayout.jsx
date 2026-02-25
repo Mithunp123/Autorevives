@@ -1,4 +1,4 @@
-﻿import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
@@ -38,7 +38,7 @@ export default function DashboardLayout() {
       >
         <TopBar onMenuClick={handleMenuClick} collapsed={collapsed} />
 
-        <main className="p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8 min-h-[calc(100vh-4rem)]">
+        <main className="p-3 sm:p-5 lg:p-8 pb-20 lg:pb-8 min-h-[calc(100vh-4rem)]">
           <Outlet />
         </main>
       </div>

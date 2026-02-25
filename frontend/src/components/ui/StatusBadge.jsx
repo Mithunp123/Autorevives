@@ -1,4 +1,4 @@
-﻿import { cn, getStatusColor } from '@/utils';
+import { cn, getStatusColor } from '@/utils';
 
 const colorMap = {
   success: 'badge-success',

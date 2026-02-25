@@ -1,4 +1,4 @@
-﻿import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context';
 import { cn } from '@/utils';
 
@@ -62,7 +62,7 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
         )}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
-              <img src="/images/Logo.webp" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#202124]'); }} />
+              <img src="/images/Logo.webp" alt="" width="40" height="40" className="w-full h-full object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-[#0B1628]'); }} />
             </div>
             {!collapsed && (
               <div className="lg:block">
@@ -120,14 +120,12 @@ export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapse }
                         {isActive && (
                           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-accent rounded-r-full" />
                         )}
-                        <div className={cn(
-                          'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all',
+                        <i className={cn(
+                          `fas ${icon} text-sm w-5 text-center flex-shrink-0`,
                           isActive
-                            ? 'bg-accent/20 text-accent-light'
+                            ? 'text-accent-light'
                             : 'text-white/35 group-hover:text-white/60'
-                        )}>
-                          <i className={cn(`fas ${icon} text-sm`)}></i>
-                        </div>
+                        )}></i>
                         {!collapsed && <span>{label}</span>}
                       </NavLink>
                     );

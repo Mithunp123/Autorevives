@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { authService } from '@/services';
@@ -69,18 +69,18 @@ export default function Profile() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold text-slate-900">My Profile</h1>
+        <h1 className="text-lg sm:text-xl font-bold text-slate-900">My Profile</h1>
         <p className="text-sm text-slate-400">Manage your account details and preferences</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Avatar + name strip */}
-        <div className="card p-6 flex items-center gap-5">
+        <div className="card p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
           <div className="relative">
-            <div className="w-20 h-20 bg-[#202124] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 bg-[#0B1628] rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             <button
@@ -98,7 +98,7 @@ export default function Profile() {
         </div>
 
         {/* Basic Details */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
             <i className="fas fa-user text-sm text-accent"></i> Basic Details
           </h3>
@@ -120,7 +120,7 @@ export default function Profile() {
         </section>
 
         {/* Contact Info */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
             <i className="fas fa-envelope text-sm text-accent"></i> Contact Information
           </h3>
@@ -147,7 +147,7 @@ export default function Profile() {
 
         {/* Legal Info (office / admin) */}
         {(user?.role === 'office' || user?.role === 'admin') && (
-          <section className="card p-6">
+          <section className="card p-4 sm:p-6">
             <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
               <i className="fas fa-credit-card text-sm text-accent"></i> Legal & Business
             </h3>
@@ -161,7 +161,7 @@ export default function Profile() {
         )}
 
         {/* Address */}
-        <section className="card p-6">
+        <section className="card p-4 sm:p-6">
           <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
             <i className="fas fa-location-dot text-sm text-accent"></i> Address
           </h3>

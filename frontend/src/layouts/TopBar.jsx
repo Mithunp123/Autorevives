@@ -1,4 +1,4 @@
-﻿import { useAuth } from '@/context';
+import { useAuth } from '@/context';
 
 export default function TopBar({ onMenuClick, collapsed }) {
   const { user, logout } = useAuth();
@@ -50,7 +50,7 @@ export default function TopBar({ onMenuClick, collapsed }) {
               <p className="text-sm font-bold text-slate-800">{user?.username || 'Admin'}</p>
               <p className="text-xs text-slate-500 font-medium capitalize">{user?.role || 'admin'}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-[#202124] flex items-center justify-center text-white text-sm font-bold shadow-md shadow-accent/20 ring-2 ring-white">
+            <div className="w-10 h-10 rounded-xl bg-[#0B1628] flex items-center justify-center text-white text-sm font-bold shadow-md shadow-accent/20 ring-2 ring-white">
               {user?.username?.charAt(0).toUpperCase() || 'A'}
             </div>
           </div>

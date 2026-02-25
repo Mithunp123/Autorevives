@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, PageLoader, Modal } from '@/components/ui';
 import { settingsService, planService } from '@/services';
@@ -182,7 +182,7 @@ export default function Settings() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 animate-fade-in">
       <div className="page-header">
         <div>
           <h1 className="page-title">Settings</h1>
@@ -192,7 +192,7 @@ export default function Settings() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Platform settings */}
-        <div className="card p-6 space-y-5">
+        <div className="card p-4 sm:p-6 space-y-5">
           <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
             <i className="fas fa-globe text-sm text-accent"></i>
             <h2 className="text-base font-semibold text-slate-900">Platform</h2>
@@ -224,7 +224,7 @@ export default function Settings() {
         </div>
 
         {/* Auction settings */}
-        <div className="card p-6 space-y-5">
+        <div className="card p-4 sm:p-6 space-y-5">
           <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
             <i className="fas fa-clock text-sm text-warning"></i>
             <h2 className="text-base font-semibold text-slate-900">Auction Defaults</h2>
@@ -246,7 +246,7 @@ export default function Settings() {
         </div>
 
         {/* Notification settings */}
-        <div className="card p-6 space-y-5">
+        <div className="card p-4 sm:p-6 space-y-5">
           <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
             <i className="fas fa-bell text-sm text-purple-600"></i>
             <h2 className="text-base font-semibold text-slate-900">Notifications</h2>
@@ -285,7 +285,7 @@ export default function Settings() {
         </div>
 
         {/* Role permissions info */}
-        <div className="card p-6 space-y-5">
+        <div className="card p-4 sm:p-6 space-y-5">
           <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
             <i className="fas fa-shield-halved text-sm text-success"></i>
             <h2 className="text-base font-semibold text-slate-900">Role Permissions</h2>
@@ -307,11 +307,11 @@ export default function Settings() {
         </div>
       </form>
 
-      {/* ── Plan Management Section ── */}
-      <div className="card p-6 space-y-5">
+      {/* -- Plan Management Section -- */}
+      <div className="card p-4 sm:p-6 space-y-5">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <i className="fas fa-tags text-sm text-blue-500"></i>
+            <i className="fas fa-tags text-sm text-gold-500"></i>
             <h2 className="text-base font-semibold text-slate-900">Subscription Plans</h2>
           </div>
           <Button size="sm" onClick={openAddPlan} icon="fa-plus">
@@ -324,23 +324,23 @@ export default function Settings() {
         ) : plans.length === 0 ? (
           <div className="text-center py-8 text-slate-400 text-sm">No plans found. Add your first plan above.</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {plans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative rounded-xl border-2 p-5 transition-all ${
-                  plan.popular ? 'border-blue-400 bg-blue-50/30 shadow-md' : 'border-slate-200 bg-white'
+                className={`relative rounded-xl border-2 p-4 sm:p-5 transition-all ${
+                  plan.popular ? 'border-gold-400 bg-gold-50/30 shadow-md' : 'border-slate-200 bg-white'
                 } ${!plan.is_active ? 'opacity-50' : ''}`}
               >
                 {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-bold uppercase px-3 py-0.5 rounded-full">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-500 text-white text-xs font-bold uppercase px-3 py-0.5 rounded-full">
                     Popular
                   </span>
                 )}
                 <div className="text-center mb-4">
                   <h3 className="text-lg font-bold text-slate-900">{plan.name}</h3>
                   <div className="mt-2">
-                    <span className="text-3xl font-extrabold text-slate-900">₹{Number(plan.price).toLocaleString()}</span>
+                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-900">₹{Number(plan.price).toLocaleString()}</span>
                   </div>
                   <p className="text-xs text-slate-400 mt-1">
                     {plan.duration} {plan.period}
@@ -428,7 +428,7 @@ export default function Settings() {
 
             <div className="flex items-center gap-6">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" {...planForm.register('popular')} className="rounded text-blue-500 focus:ring-blue-500" />
+                <input type="checkbox" {...planForm.register('popular')} className="rounded text-gold-500 focus:ring-gold-500" />
                 <span className="text-slate-700">Mark as Popular</span>
               </label>
               <label className="flex items-center gap-2 text-sm">

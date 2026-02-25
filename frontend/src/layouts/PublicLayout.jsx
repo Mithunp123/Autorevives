@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { publicService } from '@/services';
@@ -63,8 +63,8 @@ export default function PublicLayout() {
           {/* Brand */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
             <img src="/images/Logo.webp" alt="AutoRevive" className="h-12 sm:h-14 w-auto object-contain" width="56" height="56" onError={(e) => { e.target.style.display='none'; }} />
-            <span className="text-2xl sm:text-[28px] font-extrabold text-[#111111] tracking-tight">
-              Auto<span className="text-orange-500">Revive</span>
+            <span className="text-2xl sm:text-[28px] font-extrabold text-[#0B1628] tracking-tight">
+              Auto<span className="text-gold-500">Revive</span>
             </span>
           </Link>
 
@@ -78,8 +78,8 @@ export default function PublicLayout() {
                   className={({ isActive }) =>
                     `px-4 py-2 rounded-xl text-[13px] font-semibold transition-all duration-200 flex items-center gap-2 ${
                       isActive
-                        ? 'text-orange-600 bg-orange-50'
-                        : 'text-gray-600 hover:text-orange-600 hover:bg-gray-50'
+                        ? 'text-gold-600 bg-gold-50'
+                        : 'text-gray-600 hover:text-gold-600 hover:bg-gray-50'
                     }`
                   }
                 >
@@ -97,7 +97,7 @@ export default function PublicLayout() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2.5 bg-gray-50 border border-gray-200 px-3.5 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:border-gray-300 transition-all"
                 >
-                  <div className="w-7 h-7 rounded-lg bg-[#111111] flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-7 h-7 rounded-lg bg-[#0B1628] flex items-center justify-center text-white text-xs font-bold">
                     {user?.username?.charAt(0).toUpperCase() || 'U'}
                   </div>
                   <span className="max-w-[100px] truncate">{user?.username || 'User'}</span>
@@ -105,10 +105,10 @@ export default function PublicLayout() {
                 </button>
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 animate-scale-in">
-                    <button onClick={() => { setDropdownOpen(false); navigate('/dashboard'); }} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                    <button onClick={() => { setDropdownOpen(false); navigate('/dashboard'); }} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gold-50 hover:text-gold-600 transition-colors">
                       <i className="fas fa-gauge-high w-4 text-center text-gray-400"></i> Dashboard
                     </button>
-                    <button onClick={() => { setDropdownOpen(false); navigate('/profile'); }} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                    <button onClick={() => { setDropdownOpen(false); navigate('/profile'); }} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gold-50 hover:text-gold-600 transition-colors">
                       <i className="fas fa-circle-user w-4 text-center text-gray-400"></i> Profile
                     </button>
                     <hr className="my-1.5 border-gray-100" />
@@ -120,10 +120,10 @@ export default function PublicLayout() {
               </div>
             ) : (
               <>
-                <Link to="/login" className="px-4 py-2.5 text-sm font-semibold text-gray-600 hover:text-orange-600 transition-colors">
+                <Link to="/login" className="px-4 py-2.5 text-sm font-semibold text-gray-600 hover:text-gold-600 transition-colors">
                   Sign In
                 </Link>
-                <Link to="/register" className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md shadow-orange-500/20 hover:shadow-orange-500/30 hover:-translate-y-0.5">
+                <Link to="/register" className="flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md shadow-gold-500/20 hover:shadow-gold-500/30 hover:-translate-y-0.5">
                   Get Started <i className="fas fa-arrow-right text-xs"></i>
                 </Link>
               </>
@@ -132,7 +132,7 @@ export default function PublicLayout() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2.5 text-gray-700 hover:text-orange-600 rounded-xl hover:bg-gray-50 transition-all"
+            className="lg:hidden p-2.5 text-gray-700 hover:text-gold-600 rounded-xl hover:bg-gray-50 transition-all"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
           >
@@ -152,7 +152,7 @@ export default function PublicLayout() {
                     onClick={() => setMobileOpen(false)}
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                        isActive ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:bg-gray-50'
+                        isActive ? 'text-gold-600 bg-gold-50' : 'text-gray-700 hover:bg-gray-50'
                       }`
                     }
                   >
@@ -165,7 +165,7 @@ export default function PublicLayout() {
             <div className="flex gap-3 p-4 pt-2 border-t border-gray-100">
               {isAuthenticated ? (
                 <>
-                  <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 bg-orange-500 text-white rounded-xl text-sm font-bold hover:bg-orange-600 transition-all">
+                  <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 bg-gold-500 text-white rounded-xl text-sm font-bold hover:bg-gold-600 transition-all">
                     Dashboard
                   </Link>
                   <button onClick={() => { setMobileOpen(false); logout(); }} className="flex-1 py-3 bg-red-500 text-white rounded-xl text-sm font-bold hover:bg-red-600 transition-colors">
@@ -177,7 +177,7 @@ export default function PublicLayout() {
                   <Link to="/login" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 border-2 border-gray-200 text-gray-700 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all">
                     Sign In
                   </Link>
-                  <Link to="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 bg-orange-500 text-white rounded-xl text-sm font-bold hover:bg-orange-600 transition-all">
+                  <Link to="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 bg-gold-500 text-white rounded-xl text-sm font-bold hover:bg-gold-600 transition-all">
                     Get Started
                   </Link>
                 </>
@@ -193,7 +193,7 @@ export default function PublicLayout() {
       </main>
 
       {/* ═══════ FOOTER ═══════ */}
-      <footer className="bg-[#111111] text-white">
+      <footer className="bg-[#0B1628] text-white">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8 pt-16 pb-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12">
             {/* Brand — wider */}
@@ -201,7 +201,7 @@ export default function PublicLayout() {
               <div className="flex items-center gap-2.5 mb-4">
                 <img src="/images/Logo.webp" alt="" width="36" height="36" className="h-9 w-auto object-contain" onError={(e) => { e.target.style.display='none'; }} />
                 <span className="font-display text-xl font-extrabold tracking-tight">
-                  Auto<span className="text-orange-400">Revive</span>
+                  Auto<span className="text-gold-400">Revive</span>
                 </span>
               </div>
               <p className="text-white/40 text-sm leading-relaxed mb-6 max-w-xs">
@@ -209,7 +209,7 @@ export default function PublicLayout() {
               </p>
               <div className="flex gap-2">
                 {[{name:'facebook-f',l:'Facebook'},{name:'x-twitter',l:'Twitter'},{name:'instagram',l:'Instagram'},{name:'linkedin-in',l:'LinkedIn'},{name:'youtube',l:'YouTube'}].map((soc) => (
-                  <a key={soc.name} href="#" aria-label={soc.l} className="w-9 h-9 bg-white/[0.05] rounded-lg flex items-center justify-center text-white/40 hover:bg-orange-500 hover:text-white transition-all duration-200">
+                  <a key={soc.name} href="#" aria-label={soc.l} className="w-9 h-9 bg-white/[0.05] rounded-lg flex items-center justify-center text-white/40 hover:bg-gold-500 hover:text-white transition-all duration-200">
                     <i className={`fab fa-${soc.name} text-sm`}></i>
                   </a>
                 ))}
@@ -228,7 +228,7 @@ export default function PublicLayout() {
                   { to: '/contact', label: 'Contact' },
                 ].map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="text-white/40 hover:text-orange-400 text-sm transition-colors">{l.label}</Link>
+                    <Link to={l.to} className="text-white/40 hover:text-gold-400 text-sm transition-colors">{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -244,7 +244,7 @@ export default function PublicLayout() {
                   { to: '/privacy-policy', label: 'Refund Policy' },
                 ].map((l, i) => (
                   <li key={i}>
-                    <Link to={l.to} className="text-white/40 hover:text-orange-400 text-sm transition-colors">{l.label}</Link>
+                    <Link to={l.to} className="text-white/40 hover:text-gold-400 text-sm transition-colors">{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -254,14 +254,14 @@ export default function PublicLayout() {
             <div className="lg:col-span-4">
               <h3 className="text-sm font-bold font-display mb-4 text-white/90 tracking-wide">Get in Touch</h3>
               <div className="space-y-3 mb-5">
-                <p className="text-white/40 text-sm flex items-center gap-2"><i className="fas fa-phone text-orange-400/60 text-xs"></i>+91 8828820306</p>
-                <p className="text-white/40 text-sm flex items-center gap-2"><i className="fas fa-envelope text-orange-400/60 text-xs"></i>support@autorevive.com</p>
-                <p className="text-white/40 text-sm flex items-center gap-2"><i className="fas fa-clock text-orange-400/60 text-xs"></i>Mon — Sat, 9 AM – 7 PM</p>
+                <p className="text-white/40 text-sm flex items-center gap-2"><i className="fas fa-phone text-gold-400/60 text-xs"></i>+91 8828820306</p>
+                <p className="text-white/40 text-sm flex items-center gap-2"><i className="fas fa-envelope text-gold-400/60 text-xs"></i>support@autorevive.com</p>
+                <p className="text-white/40 text-sm flex items-center gap-2"><i className="fas fa-clock text-gold-400/60 text-xs"></i>Mon — Sat, 9 AM – 7 PM</p>
               </div>
               <form onSubmit={handleFooterContact} className="flex gap-2">
                 <input type="email" placeholder="Your email" aria-label="Email" autoComplete="email" value={footerForm.email} onChange={(e) => setFooterForm({ ...footerForm, email: e.target.value })}
-                  className="flex-1 px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/25 focus:outline-none focus:border-orange-400/40 transition-all" />
-                <button type="submit" disabled={footerSubmitting} className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold transition-all disabled:opacity-50">
+                  className="flex-1 px-3.5 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-xl text-sm text-white placeholder-white/25 focus:outline-none focus:border-gold-400/40 transition-all" />
+                <button type="submit" disabled={footerSubmitting} className="px-4 py-2.5 bg-gold-500 hover:bg-gold-600 text-white rounded-xl text-sm font-bold transition-all disabled:opacity-50">
                   <i className={`fas ${footerSubmitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'}`}></i>
                 </button>
               </form>

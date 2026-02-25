@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { StatCard, Button, PageLoader } from '@/components/ui';
 import { AreaChartCard, BarChartCard } from '@/components/charts';
 import { reportService } from '@/services';
@@ -86,10 +86,10 @@ export default function Reports() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 sm:space-y-8 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900">Reports</h1>
           <p className="text-sm font-medium text-slate-500 mt-1">Analytics and insights for your platform</p>
         </div>
         <div className="flex gap-3">
@@ -104,43 +104,43 @@ export default function Reports() {
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <StatCard 
           icon="fa-gavel" 
-          title="Total Auctions" 
+          label="Total Auctions" 
           value={stats.live_auctions || 0} 
-          trend="+12% from last month"
-          color="bg-[#4285F4]"
-          iconColor="text-white"
+          change={12}
+          changeType="up"
+          color="accent"
         />
         <StatCard 
           icon="fa-car" 
-          title="Total Vehicles" 
+          label="Total Vehicles" 
           value={stats.total_products || 0} 
-          trend="+8% from last month"
-          color="bg-emerald-500"
-          iconColor="text-white"
+          change={8}
+          changeType="up"
+          color="success"
         />
         <StatCard 
           icon="fa-users" 
-          title="Active Users" 
+          label="Active Users" 
           value={stats.total_users || 0} 
-          trend="+24% from last month"
-          color="bg-purple-500"
-          iconColor="text-white"
+          change={24}
+          changeType="up"
+          color="purple"
         />
         <StatCard 
           icon="fa-indian-rupee-sign" 
-          title="Total Volume" 
+          label="Total Volume" 
           value={formatCurrency(stats.total_volume || 0)} 
-          trend="+15% from last month"
-          color="bg-amber-500"
-          iconColor="text-white"
+          change={15}
+          changeType="up"
+          color="warning"
         />
       </div>
 
       {/* Tabs + Date range */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
         <div className="flex p-1 bg-slate-100 rounded-xl">
           {tabs.map((t) => (
             <button
@@ -177,7 +177,7 @@ export default function Reports() {
 
       {/* Charts */}
       {activeTab === 'auctions' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <AreaChartCard
             data={auctionChartData}
             dataKey="total"
@@ -195,7 +195,7 @@ export default function Reports() {
       )}
 
       {activeTab === 'vehicles' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <BarChartCard
             data={[
               { name: '2W', sales: stats.two_wheeler || 0 },
@@ -217,7 +217,7 @@ export default function Reports() {
       )}
 
       {activeTab === 'users' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <AreaChartCard
             data={userGrowthData}
             dataKey="users"

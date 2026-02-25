@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { StatusBadge, Button, PageLoader, ConfirmDialog } from '@/components/ui';
 import { userService } from '@/services';
@@ -69,7 +69,7 @@ export default function UserDetails() {
 
       <div className="card p-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#4285F4] to-[#3367D6] flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-blue-500/30">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#D4A017] to-[#B88A13] flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-gold-500/30">
             {user.username?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 text-center sm:text-left">
@@ -151,7 +151,7 @@ function InfoCard({ icon, label, value }) {
       </div>
       <div>
         <p className="text-xs text-slate-400">{label}</p>
-        <p className="text-sm font-medium text-slate-900">{value || '—'}</p>
+        <p className="text-sm font-medium text-slate-900">{value || '\u2014'}</p>
       </div>
     </div>
   );

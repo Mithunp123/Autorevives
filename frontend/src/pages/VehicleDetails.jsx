@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { StatusBadge, Button, PageLoader, ConfirmDialog } from '@/components/ui';
 import { vehicleService, approvalService } from '@/services';
@@ -41,7 +41,7 @@ export default function VehicleDetails() {
   const firstImage = vehicleImages.length > 0 ? vehicleImages[0] : null;
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
       <button onClick={() => navigate('/vehicles')} className="btn-ghost text-sm -ml-2"><i className="fas fa-arrow-left text-sm"></i> Back to Vehicles</button>
 
       <div className="card overflow-hidden">
@@ -77,7 +77,7 @@ export default function VehicleDetails() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <InfoCard icon="fa-indian-rupee-sign" label="Starting Price" value={formatCurrency(vehicle.starting_price)} />
         <InfoCard icon="fa-gavel" label="Current Bid" value={vehicle.current_bid ? formatCurrency(vehicle.current_bid) : 'No bids'} highlight />
         {vehicle.quoted_price && Number(vehicle.quoted_price) > 0 && (
@@ -98,7 +98,7 @@ export default function VehicleDetails() {
 
       {/* Vehicle Specifications */}
       {(vehicle.vehicle_year || vehicle.mileage || vehicle.fuel_type || vehicle.transmission || vehicle.owner_name || vehicle.registration_number) && (
-        <div className="card p-5">
+        <div className="card p-4 sm:p-5">
           <h3 className="section-title mb-4">Vehicle Specifications</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {vehicle.vehicle_year && (
@@ -142,7 +142,7 @@ export default function VehicleDetails() {
       )}
 
       {vehicle.description && (
-        <div className="card p-5">
+        <div className="card p-4 sm:p-5">
           <h3 className="section-title mb-3">Description</h3>
           <p className="text-sm text-slate-500 leading-relaxed">{vehicle.description}</p>
         </div>
@@ -181,12 +181,12 @@ export default function VehicleDetails() {
 
 function InfoCard({ icon, label, value, highlight }) {
   return (
-    <div className="card p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <i className={`fas ${icon} text-sm text-slate-400`}></i>
-        <span className="text-xs text-slate-400 font-medium">{label}</span>
+    <div className="card p-3 sm:p-4">
+      <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+        <i className={`fas ${icon} text-xs sm:text-sm text-slate-400`}></i>
+        <span className="text-[10px] sm:text-xs text-slate-400 font-medium truncate">{label}</span>
       </div>
-      <p className={`text-lg font-extrabold font-display ${highlight ? 'text-accent' : 'text-slate-900'}`}>{value}</p>
+      <p className={`text-sm sm:text-lg font-extrabold font-display truncate ${highlight ? 'text-accent' : 'text-slate-900'}`}>{value}</p>
     </div>
   );
 }

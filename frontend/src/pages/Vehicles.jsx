@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataTable, SearchFilter, StatusBadge, Pagination, Button, ConfirmDialog, PageLoader } from '@/components/ui';
 import { vehicleService } from '@/services';
@@ -82,7 +82,7 @@ export default function Vehicles() {
         
         return (
           <div className="text-xs">
-            <div className={`font-semibold ${isExpired ? 'text-red-600' : daysLeft <= 1 ? 'text-orange-600' : 'text-slate-700'}`}>
+            <div className={`font-semibold ${isExpired ? 'text-red-600' : daysLeft <= 1 ? 'text-gold-600' : 'text-slate-700'}`}>
               {formatDate(val)}
             </div>
             <div className={`${isExpired ? 'text-red-500' : 'text-slate-400'}`}>
@@ -108,7 +108,7 @@ export default function Vehicles() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
       <div className="page-header">
         <div>
           <h1 className="page-title">Vehicles</h1>

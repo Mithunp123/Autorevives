@@ -1,4 +1,4 @@
-﻿export default function PageLoader() {
+export default function PageLoader() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-5">
       <div className="relative">

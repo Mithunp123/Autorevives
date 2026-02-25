@@ -135,9 +135,9 @@ export default function PublicAuctions() {
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
-          <h3 className="font-semibold text-[#111111]">Filters</h3>
+          <h3 className="font-semibold text-[#0B1628]">Filters</h3>
           {activeFilterCount > 0 && (
-            <button onClick={clearFilters} className="text-sm text-orange-600 hover:text-orange-700 font-medium">
+            <button onClick={clearFilters} className="text-sm text-gold-600 hover:text-gold-700 font-medium">
               Clear all
             </button>
           )}
@@ -145,7 +145,7 @@ export default function PublicAuctions() {
         
         {/* Category */}
         <div className="p-5 border-b border-gray-100">
-          <h4 className="text-sm font-semibold text-[#111111] mb-3">Vehicle Type</h4>
+          <h4 className="text-sm font-semibold text-[#0B1628] mb-3">Vehicle Type</h4>
           <div className="space-y-2">
             {[
               { k: 'all', label: 'All Vehicles', icon: 'fa-layer-group' },
@@ -159,7 +159,7 @@ export default function PublicAuctions() {
                 onClick={() => setCatTab(cat.k)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   catTab === cat.k
-                    ? 'bg-[#111111] text-white'
+                    ? 'bg-[#0B1628] text-white'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
@@ -172,7 +172,7 @@ export default function PublicAuctions() {
 
         {/* Price Range */}
         <div className="p-5 border-b border-gray-100">
-          <h4 className="text-sm font-semibold text-[#111111] mb-3">Price Range</h4>
+          <h4 className="text-sm font-semibold text-[#0B1628] mb-3">Price Range</h4>
           <div className="space-y-2">
             {PRICE_RANGES.map((range, idx) => (
               <label key={idx} className="flex items-center gap-3 cursor-pointer">
@@ -181,9 +181,9 @@ export default function PublicAuctions() {
                   name="priceRange"
                   checked={priceRange === idx}
                   onChange={() => setPriceRange(idx)}
-                  className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                  className="w-4 h-4 text-gold-500 border-gray-300 focus:ring-gold-500"
                 />
-                <span className={`text-sm ${priceRange === idx ? 'text-[#111111] font-medium' : 'text-gray-600'}`}>
+                <span className={`text-sm ${priceRange === idx ? 'text-[#0B1628] font-medium' : 'text-gray-600'}`}>
                   {range.label}
                 </span>
               </label>
@@ -193,11 +193,11 @@ export default function PublicAuctions() {
 
         {/* Brand */}
         <div className="p-5 border-b border-gray-100">
-          <h4 className="text-sm font-semibold text-[#111111] mb-3">Brand</h4>
+          <h4 className="text-sm font-semibold text-[#0B1628] mb-3">Brand</h4>
           <select
             value={brandFilter}
             onChange={(e) => setBrandFilter(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-[#111111] focus:ring-1 focus:ring-[#111111]/10 outline-none"
+            className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-[#0B1628] focus:ring-1 focus:ring-[#0B1628]/10 outline-none"
           >
             {BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
           </select>
@@ -205,11 +205,11 @@ export default function PublicAuctions() {
 
         {/* Location */}
         <div className="p-5 border-b border-gray-100">
-          <h4 className="text-sm font-semibold text-[#111111] mb-3">Location</h4>
+          <h4 className="text-sm font-semibold text-[#0B1628] mb-3">Location</h4>
           <select
             value={stateFilter}
             onChange={(e) => setStateFilter(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-[#111111] focus:ring-1 focus:ring-[#111111]/10 outline-none"
+            className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-[#0B1628] focus:ring-1 focus:ring-[#0B1628]/10 outline-none"
           >
             {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
@@ -217,7 +217,7 @@ export default function PublicAuctions() {
 
         {/* Fuel Type */}
         <div className="p-5">
-          <h4 className="text-sm font-semibold text-[#111111] mb-3">Fuel Type</h4>
+          <h4 className="text-sm font-semibold text-[#0B1628] mb-3">Fuel Type</h4>
           <div className="flex flex-wrap gap-2">
             {FUEL_TYPES.map(fuel => (
               <button
@@ -225,7 +225,7 @@ export default function PublicAuctions() {
                 onClick={() => setFuelFilter(fuel)}
                 className={`px-3 py-1.5 text-sm rounded-lg border transition-all ${
                   fuelFilter === fuel
-                    ? 'bg-[#111111] text-white border-[#111111]'
+                    ? 'bg-[#0B1628] text-white border-[#0B1628]'
                     : 'border-gray-200 text-gray-600 hover:border-gray-300'
                 }`}
               >
@@ -250,20 +250,20 @@ export default function PublicAuctions() {
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#111111] mb-2">Vehicle Auctions</h1>
+              <h1 className="text-2xl sm:text-4xl font-bold text-[#0B1628] mb-2">Vehicle Auctions</h1>
               <p className="text-gray-500">Browse and bid on verified vehicles from top finance companies</p>
             </div>
             
             {/* Stats Pills */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
               {[
                 { label: 'Live', val: stats.live_auctions, color: 'bg-red-500' },
-                { label: 'Upcoming', val: stats.pending_auctions, color: 'bg-orange-400' },
+                { label: 'Upcoming', val: stats.pending_auctions, color: 'bg-gold-400' },
                 { label: 'Closed', val: stats.closed_auctions, color: 'bg-gray-400' },
               ].map(st => (
-                <div key={st.label} className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg">
+                <div key={st.label} className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-gray-50 rounded-lg">
                   <span className={`w-2 h-2 ${st.color} rounded-full ${st.label === 'Live' ? 'animate-pulse' : ''}`}></span>
-                  <span className="text-lg font-bold text-[#111111]">{(st.val || 0).toLocaleString('en-IN')}</span>
+                  <span className="text-sm sm:text-lg font-bold text-[#0B1628]">{(st.val || 0).toLocaleString('en-IN')}</span>
                   <span className="text-sm text-gray-500">{st.label}</span>
                 </div>
               ))}
@@ -283,7 +283,7 @@ export default function PublicAuctions() {
               placeholder="Search by vehicle name, model, or location..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-12 bg-white border border-gray-200 text-[#111111] text-sm rounded-lg focus:border-[#111111] focus:ring-1 focus:ring-[#111111]/10 pl-11 pr-4 outline-none transition-all"
+              className="w-full h-12 bg-white border border-gray-200 text-[#0B1628] text-sm rounded-lg focus:border-[#0B1628] focus:ring-1 focus:ring-[#0B1628]/10 pl-11 pr-4 outline-none transition-all"
             />
           </div>
           
@@ -299,7 +299,7 @@ export default function PublicAuctions() {
                 onClick={() => setFilter(tab.k)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-all ${
                   filter === tab.k
-                    ? 'bg-[#111111] text-white'
+                    ? 'bg-[#0B1628] text-white'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
@@ -317,7 +317,7 @@ export default function PublicAuctions() {
             <i className="fas fa-sliders"></i>
             Filters
             {activeFilterCount > 0 && (
-              <span className="w-5 h-5 bg-orange-500 text-white text-xs rounded-full flex items-center justify-center">
+              <span className="w-5 h-5 bg-gold-500 text-white text-xs rounded-full flex items-center justify-center">
                 {activeFilterCount}
               </span>
             )}
@@ -336,10 +336,10 @@ export default function PublicAuctions() {
             {/* Results Count */}
             <div className="flex items-center justify-between mb-6">
               <p className="text-sm text-gray-500">
-                Showing <span className="font-semibold text-[#111111]">{displayed.length}</span> vehicles
+                Showing <span className="font-semibold text-[#0B1628]">{displayed.length}</span> vehicles
               </p>
               {activeFilterCount > 0 && (
-                <button onClick={clearFilters} className="text-sm text-orange-600 hover:text-orange-700 font-medium lg:hidden">
+                <button onClick={clearFilters} className="text-sm text-gold-600 hover:text-gold-700 font-medium lg:hidden">
                   Clear filters ({activeFilterCount})
                 </button>
               )}
@@ -362,13 +362,13 @@ export default function PublicAuctions() {
                 <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-5">
                   <i className="fas fa-car text-3xl text-gray-300"></i>
                 </div>
-                <h3 className="text-xl font-semibold text-[#111111] mb-2">No Vehicles Found</h3>
+                <h3 className="text-xl font-semibold text-[#0B1628] mb-2">No Vehicles Found</h3>
                 <p className="text-gray-500 max-w-sm mx-auto mb-6">
                   We couldn't find vehicles matching your filters. Try adjusting your search criteria.
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#111111] hover:bg-[#222] text-white text-sm font-semibold rounded-lg transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1628] hover:bg-[#222] text-white text-sm font-semibold rounded-lg transition-all"
                 >
                   <i className="fas fa-rotate-left text-xs"></i> Clear All Filters
                 </button>
@@ -419,7 +419,7 @@ export default function PublicAuctions() {
                           
                           {/* Timer */}
                           <div className="absolute top-3 right-3">
-                            <span className="px-2.5 py-1 bg-[#111111]/80 backdrop-blur-sm text-white text-xs rounded-full">
+                            <span className="px-2.5 py-1 bg-[#0B1628]/80 backdrop-blur-sm text-white text-xs rounded-full">
                               <i className="far fa-clock mr-1"></i>
                               <Countdown hours={2 + (idx % 5)} />
                             </span>
@@ -427,15 +427,15 @@ export default function PublicAuctions() {
 
                           {/* Category Badge */}
                           <div className="absolute bottom-3 left-3">
-                            <span className="px-2.5 py-1 bg-white/90 backdrop-blur-sm text-[#111111] text-xs font-semibold rounded-full">
+                            <span className="px-2.5 py-1 bg-white/90 backdrop-blur-sm text-[#0B1628] text-xs font-semibold rounded-full">
                               {catLabel}
                             </span>
                           </div>
                         </div>
 
                         {/* Content */}
-                        <div className="p-5">
-                          <h3 className="font-semibold text-[#111111] text-lg mb-1 line-clamp-1 group-hover:text-orange-600 transition-colors">
+                        <div className="p-3 sm:p-5">
+                          <h3 className="font-semibold text-[#0B1628] text-base sm:text-lg mb-1 line-clamp-1 group-hover:text-gold-600 transition-colors">
                             {a.name || 'Vehicle'}
                           </h3>
                           <p className="text-sm text-gray-500 mb-4 flex items-center gap-1.5">
@@ -446,11 +446,11 @@ export default function PublicAuctions() {
                           <div className="flex items-end justify-between pt-4 border-t border-gray-100">
                             <div>
                               <p className="text-xs text-gray-400 mb-1">Current Bid</p>
-                              <p className="text-xl font-bold text-[#111111]">
+                              <p className="text-lg sm:text-xl font-bold text-[#0B1628]">
                                 {formatPrice((a.current_bid || 0) > 0 ? a.current_bid : a.starting_price)}
                               </p>
                             </div>
-                            <span className="text-sm font-medium text-orange-600 flex items-center gap-1.5 group-hover:gap-2 transition-all">
+                            <span className="text-sm font-medium text-gold-600 flex items-center gap-1.5 group-hover:gap-2 transition-all">
                               Bid Now <i className="fas fa-arrow-right text-xs"></i>
                             </span>
                           </div>
@@ -471,8 +471,8 @@ export default function PublicAuctions() {
                       <i className="fas fa-chevron-left text-xs"></i> Previous
                     </button>
                     <span className="text-sm font-medium text-gray-500 bg-white px-4 py-2.5 rounded-lg border border-gray-200">
-                      Page <span className="font-bold text-[#111111]">{page}</span> of{' '}
-                      <span className="font-bold text-[#111111]">{Math.ceil(total / 20)}</span>
+                      Page <span className="font-bold text-[#0B1628]">{page}</span> of{' '}
+                      <span className="font-bold text-[#0B1628]">{Math.ceil(total / 20)}</span>
                     </span>
                     <button
                       disabled={page >= Math.ceil(total / 20)}
@@ -495,7 +495,7 @@ export default function PublicAuctions() {
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowMobileFilters(false)} />
           <div className="absolute right-0 top-0 bottom-0 w-80 max-w-[85%] bg-gray-50 overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-5 py-4 flex items-center justify-between">
-              <h3 className="font-semibold text-[#111111]">Filters</h3>
+              <h3 className="font-semibold text-[#0B1628]">Filters</h3>
               <button onClick={() => setShowMobileFilters(false)} className="p-2 hover:bg-gray-100 rounded-lg">
                 <i className="fas fa-times text-gray-500"></i>
               </button>
@@ -506,7 +506,7 @@ export default function PublicAuctions() {
             <div className="sticky bottom-0 bg-white border-t border-gray-200 p-5">
               <button
                 onClick={() => setShowMobileFilters(false)}
-                className="w-full py-3 bg-[#111111] text-white font-semibold rounded-lg"
+                className="w-full py-3 bg-[#0B1628] text-white font-semibold rounded-lg"
               >
                 Show {displayed.length} Results
               </button>

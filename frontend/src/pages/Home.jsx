@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { publicService } from '@/services';
@@ -59,7 +59,7 @@ export default function Home() {
       </Helmet>
 
       {/* HERO - Clean, High-Contrast Design */}
-      <section className="relative min-h-[85vh] flex items-center bg-[#0a0a0a] overflow-hidden">
+      <section className="relative min-h-[65vh] sm:min-h-[75vh] md:min-h-[85vh] flex items-center bg-[#04080F] overflow-hidden">
         {/* Dynamic Background Image */}
         <div className="absolute inset-0">
           {heroVehicles.map((vehicle, idx) => (
@@ -72,7 +72,7 @@ export default function Home() {
               <img 
                 src={vehicle.image} 
                 alt={vehicle.label}
-                className="w-full h-full object-cover opacity-80"
+                className="w-full h-full object-cover opacity-60 sm:opacity-80"
               />
             </div>
           ))}
@@ -81,74 +81,70 @@ export default function Home() {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20 pb-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full pt-16 sm:pt-20 pb-12 sm:pb-20">
           <div className="max-w-2xl">
             
             {/* Top Left Progress Bars */}
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
               {heroVehicles.map((vehicle, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveHero(idx)}
-                  className="group relative h-1.5 w-16 rounded-full overflow-hidden bg-white/20 hover:bg-white/30 transition-all"
+                  className="group relative h-1 sm:h-1.5 w-10 sm:w-16 rounded-full overflow-hidden bg-white/20 hover:bg-white/30 transition-all"
                   aria-label={vehicle.label}
                 >
                   <span 
-                    className={`absolute inset-0 bg-orange-500 transition-all duration-500 ${
+                    className={`absolute inset-0 bg-gold-500 transition-all duration-500 ${
                       idx === activeHero ? 'w-full' : 'w-0'
                     }`}
                   ></span>
-                  {/* Tooltip on hover */}
-                  <span className="absolute -bottom-6 left-0 text-[10px] text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    {vehicle.label}
-                  </span>
                 </button>
               ))}
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-tight mb-6 tracking-tight drop-shadow-2xl">
-              <span className="block text-4xl sm:text-5xl font-bold text-orange-500 mb-2">{heroVehicles[activeHero].label}</span>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-3 sm:mb-6 tracking-tight drop-shadow-2xl">
+              <span className="block text-lg sm:text-3xl md:text-4xl font-bold text-gold-500 mb-1 sm:mb-2">{heroVehicles[activeHero].label}</span>
               Premium Vehicle Auctions
             </h1>
             
             {/* Description */}
-            <p className="text-gray-300 text-lg md:text-xl font-medium mb-10 leading-relaxed max-w-xl drop-shadow-md">
+            <p className="text-gray-300 text-sm sm:text-lg md:text-xl font-medium mb-6 sm:mb-10 leading-relaxed max-w-xl drop-shadow-md">
               Bank-verified repossessed vehicles. Transparent process.<br/>
-              Save up to <span className="text-orange-400 font-bold">40%</span> below market value.
+              Save up to <span className="text-gold-400 font-bold">40%</span> below market value.
             </p>
             
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 mb-16">
+            <div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-16">
               <Link 
                 to="/auctions"
-                className="group px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-full transition-all hover:shadow-xl hover:shadow-orange-600/20 flex items-center gap-2 transform hover:-translate-y-0.5"
+                className="group px-5 sm:px-8 py-3 sm:py-4 bg-gold-600 hover:bg-gold-700 text-white text-sm sm:text-base font-bold rounded-full transition-all hover:shadow-xl hover:shadow-gold-600/20 flex items-center gap-2 transform hover:-translate-y-0.5"
               >
                 <span>Browse Live Auctions</span>
-                <i className="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                <i className="fas fa-arrow-right text-xs sm:text-sm group-hover:translate-x-1 transition-transform"></i>
               </Link>
 
               <Link 
                 to="/register"
-                className="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold rounded-full transition-all backdrop-blur-md"
+                className="px-5 sm:px-8 py-3 sm:py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm sm:text-base font-bold rounded-full transition-all backdrop-blur-md"
               >
                 Register Free
               </Link>
             </div>
 
             {/* Quick Stats - Minimalist */}
-            <div className="flex items-center gap-12 border-t border-white/10 pt-8">
+            <div className="flex items-center gap-6 sm:gap-12 border-t border-white/10 pt-5 sm:pt-8">
               <div>
-                <div className="text-3xl font-extrabold text-white">{s.total_users || '5000'}+</div>
-                <div className="text-sm text-gray-400 font-medium uppercase tracking-wide mt-1">Buyers</div>
+                <div className="text-xl sm:text-3xl font-extrabold text-white">{s.total_users || '5000'}+</div>
+                <div className="text-[10px] sm:text-sm text-gray-400 font-medium uppercase tracking-wide mt-0.5 sm:mt-1">Buyers</div>
               </div>
               <div>
-                <div className="text-3xl font-extrabold text-white">{s.live_auctions || '150'}+</div>
-                <div className="text-sm text-gray-400 font-medium uppercase tracking-wide mt-1">Auctions</div>
+                <div className="text-xl sm:text-3xl font-extrabold text-white">{s.live_auctions || '150'}+</div>
+                <div className="text-[10px] sm:text-sm text-gray-400 font-medium uppercase tracking-wide mt-0.5 sm:mt-1">Auctions</div>
               </div>
               <div>
-                <div className="text-3xl font-extrabold text-white">100%</div>
-                <div className="text-sm text-gray-400 font-medium uppercase tracking-wide mt-1">Verified</div>
+                <div className="text-xl sm:text-3xl font-extrabold text-white">100%</div>
+                <div className="text-[10px] sm:text-sm text-gray-400 font-medium uppercase tracking-wide mt-0.5 sm:mt-1">Verified</div>
               </div>
             </div>
           </div>
@@ -178,7 +174,7 @@ export default function Home() {
                   <span className="text-white/80 text-sm">{s.two_wheeler || 0} vehicles</span>
                 </div>
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">2 Wheelers</h3>
+              <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">2 Wheelers</h3>
             </Link>
             
             <Link to="/auctions" className="group">
@@ -193,7 +189,7 @@ export default function Home() {
                   <span className="text-white/80 text-sm">{s.three_wheeler || 0} vehicles</span>
                 </div>
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">3 Wheelers</h3>
+              <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">3 Wheelers</h3>
             </Link>
             
             <Link to="/auctions" className="group">
@@ -208,7 +204,7 @@ export default function Home() {
                   <span className="text-white/80 text-sm">{s.four_wheeler || 0} vehicles</span>
                 </div>
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">4 Wheelers</h3>
+              <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">4 Wheelers</h3>
             </Link>
             
             <Link to="/auctions" className="group">
@@ -223,7 +219,7 @@ export default function Home() {
                   <span className="text-white/80 text-sm">{s.commercial || 0} vehicles</span>
                 </div>
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Commercial</h3>
+              <h3 className="font-semibold text-gray-900 group-hover:text-gold-600 transition-colors">Commercial</h3>
             </Link>
           </div>
         </div>
@@ -237,7 +233,7 @@ export default function Home() {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Live Auctions</h2>
               <p className="text-gray-500">Bid on verified vehicles from trusted sources</p>
             </div>
-            <Link to="/auctions" className="text-orange-600 font-medium hover:text-orange-700 hidden sm:flex items-center gap-2">
+            <Link to="/auctions" className="text-gold-600 font-medium hover:text-gold-700 hidden sm:flex items-center gap-2">
               View All <i className="fas fa-arrow-right text-sm"></i>
             </Link>
           </div>
@@ -296,7 +292,7 @@ export default function Home() {
                           {fmt((p.current_bid || 0) > 0 ? p.current_bid : p.starting_price)}
                         </p>
                       </div>
-                      <span className="text-orange-600 font-medium text-sm">Bid Now →</span>
+                      <span className="text-gold-600 font-medium text-sm">Bid Now →</span>
                     </div>
                   </div>
                 </Link>
@@ -305,7 +301,7 @@ export default function Home() {
           )}
           
           <div className="sm:hidden text-center mt-8">
-            <Link to="/auctions" className="text-orange-600 font-medium">View All Auctions →</Link>
+            <Link to="/auctions" className="text-gold-600 font-medium">View All Auctions →</Link>
           </div>
         </div>
       </section>
@@ -326,7 +322,7 @@ export default function Home() {
               { num: '4', title: 'Win', desc: 'Complete payment and collect your vehicle' },
             ].map((step) => (
               <div key={step.num} className="text-center">
-                <div className="w-12 h-12 mx-auto mb-4 bg-orange-500 text-white rounded-full flex items-center justify-center text-lg font-bold">
+                <div className="w-12 h-12 mx-auto mb-4 bg-gold-500 text-white rounded-full flex items-center justify-center text-lg font-bold">
                   {step.num}
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
@@ -373,8 +369,8 @@ export default function Home() {
               { icon: 'fa-headset', title: 'Dedicated Support', desc: '24/7 customer support for all queries' },
               { icon: 'fa-lock', title: 'Secure Payments', desc: 'End-to-end encrypted payment processing' },
             ].map((item) => (
-              <div key={item.title} className="p-6 border border-gray-200 rounded-xl hover:border-orange-200 transition-colors">
-                <i className={`fas ${item.icon} text-2xl text-orange-500 mb-4`}></i>
+              <div key={item.title} className="p-6 border border-gray-200 rounded-xl hover:border-gold-200 transition-colors">
+                <i className={`fas ${item.icon} text-2xl text-gold-500 mb-4`}></i>
                 <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
               </div>
@@ -395,7 +391,7 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link 
               to="/auctions" 
-              className="px-8 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+              className="px-8 py-3.5 bg-gold-500 hover:bg-gold-600 text-white font-medium rounded-lg transition-colors"
             >
               Explore Auctions
             </Link>

@@ -1,4 +1,4 @@
-﻿import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 export default function About() {
@@ -9,20 +9,20 @@ export default function About() {
         <meta name="description" content="Learn about AutoRevive's mission, vision, and values. India's most trusted online vehicle auction platform connecting buyers with quality pre-owned vehicles." />
       </Helmet>
 
-      {/* ═══════ HERO ═══════ */}
-      <section className="relative bg-[#111111] text-white py-20 lg:py-28">
+      {/* ------- HERO ------- */}
+      <section className="relative bg-[#0B1628] text-white py-20 lg:py-28">
         <div className="absolute inset-0">
           <img src="/images/banner-car2.webp" alt="Premium vehicle" className="w-full h-full object-cover opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#111111] via-[#111111]/90 to-[#111111]/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1628] via-[#0B1628]/90 to-[#0B1628]/70"></div>
         </div>
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-medium rounded-full mb-6">
+            <span className="inline-block px-4 py-1.5 bg-gold-500/10 border border-gold-500/20 text-gold-400 text-sm font-medium rounded-full mb-6">
               About AutoRevive
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
               Redefining Vehicle<br />
-              <span className="text-orange-500">Auctions</span> in India
+              <span className="text-gold-500">Auctions</span> in India
             </h1>
             <p className="text-lg text-gray-400 leading-relaxed">
               We connect buyers with quality pre-owned vehicles through transparent, 
@@ -32,7 +32,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════ STATS BAR ═══════ */}
+      {/* ------- STATS BAR ------- */}
       <section className="bg-white py-12 border-b border-gray-100">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
@@ -43,7 +43,7 @@ export default function About() {
               { value: '50+', label: 'Banking Partners' },
             ].map((stat) => (
               <div key={stat.label}>
-                <p className="text-3xl sm:text-4xl font-bold text-[#111111] mb-1">{stat.value}</p>
+                <p className="text-3xl sm:text-4xl font-bold text-[#0B1628] mb-1">{stat.value}</p>
                 <p className="text-gray-500 text-sm">{stat.label}</p>
               </div>
             ))}
@@ -51,13 +51,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════ OUR STORY ═══════ */}
+      {/* ------- OUR STORY ------- */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
-              <span className="text-orange-500 font-semibold text-sm uppercase tracking-wide">Our Story</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#111111] mt-3 mb-6">
+              <span className="text-gold-500 font-semibold text-sm uppercase tracking-wide">Our Story</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#0B1628] mt-3 mb-6">
                 Building Trust in the Pre-Owned Vehicle Market
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
@@ -86,23 +86,23 @@ export default function About() {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
                 />
               </div>
-              <div className="absolute -bottom-6 -left-0 lg:-left-6 bg-orange-500 text-white p-6 rounded-xl shadow-xl">
+              <div className="absolute -bottom-6 -left-0 lg:-left-6 bg-gold-500 text-white p-6 rounded-xl shadow-xl">
                 <p className="text-4xl font-bold mb-1">15+</p>
                 <p className="text-sm text-white/80">Years of Experience</p>
               </div>
               <div className="absolute -top-4 -right-4 hidden lg:block">
-                <div className="w-24 h-24 border-4 border-orange-500/30 rounded-xl"></div>
+                <div className="w-24 h-24 border-4 border-gold-500/30 rounded-xl"></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══════ MISSION / VISION / VALUES ═══════ */}
+      {/* ------- MISSION / VISION / VALUES ------- */}
       <section className="py-20 lg:py-28 bg-gray-50">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#111111] mb-4">Our Core Principles</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#0B1628] mb-4">Our Core Principles</h2>
             <p className="text-gray-500 max-w-lg mx-auto">The foundation that guides everything we do</p>
           </div>
           
@@ -112,26 +112,26 @@ export default function About() {
                 icon: 'fa-bullseye', 
                 title: 'Mission', 
                 desc: 'Making the buying and selling of pre-owned vehicles seamless, transparent, and accessible to all across India.',
-                color: 'bg-orange-500'
+                color: 'bg-gold-500'
               },
               { 
                 icon: 'fa-binoculars', 
                 title: 'Vision', 
                 desc: "Building India's most trusted digital marketplace for automotive transactions with cutting-edge technology.",
-                color: 'bg-[#111111]'
+                color: 'bg-[#0B1628]'
               },
               { 
                 icon: 'fa-heart', 
                 title: 'Values', 
                 desc: 'Trust, transparency, and customer focus are at the heart of everything we do at AutoRevive.',
-                color: 'bg-orange-500'
+                color: 'bg-gold-500'
               },
             ].map((item) => (
               <div key={item.title} className="bg-white rounded-xl p-8 border border-gray-200 hover:shadow-lg transition-all">
                 <div className={`w-14 h-14 ${item.color} rounded-xl flex items-center justify-center mb-6`}>
                   <i className={`fas ${item.icon} text-xl text-white`}></i>
                 </div>
-                <h3 className="text-xl font-bold text-[#111111] mb-3">{item.title}</h3>
+                <h3 className="text-xl font-bold text-[#0B1628] mb-3">{item.title}</h3>
                 <p className="text-gray-500 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -139,11 +139,11 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════ WHY CHOOSE US ═══════ */}
+      {/* ------- WHY CHOOSE US ------- */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#111111] mb-4">What Sets Us Apart</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#0B1628] mb-4">What Sets Us Apart</h2>
             <p className="text-gray-500 max-w-lg mx-auto">The AutoRevive difference that makes us your trusted choice</p>
           </div>
           
@@ -155,10 +155,10 @@ export default function About() {
               { icon: 'fa-headset', title: '24/7 Support', desc: 'Dedicated support team available round the clock' },
             ].map((feature) => (
               <div key={feature.title} className="text-center p-6">
-                <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                  <i className={`fas ${feature.icon} text-2xl text-orange-500`}></i>
+                <div className="w-16 h-16 bg-gold-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                  <i className={`fas ${feature.icon} text-2xl text-gold-500`}></i>
                 </div>
-                <h3 className="font-semibold text-[#111111] text-lg mb-2">{feature.title}</h3>
+                <h3 className="font-semibold text-[#0B1628] text-lg mb-2">{feature.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{feature.desc}</p>
               </div>
             ))}
@@ -166,13 +166,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════ LEADERSHIP ═══════ */}
+      {/* ------- LEADERSHIP ------- */}
       <section className="py-20 lg:py-28 bg-gray-50">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
-              <span className="text-orange-500 font-semibold text-sm uppercase tracking-wide">Leadership</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#111111] mt-3 mb-6">
+              <span className="text-gold-500 font-semibold text-sm uppercase tracking-wide">Leadership</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#0B1628] mt-3 mb-6">
                 Meet Our Founder
               </h2>
               <p className="text-gray-600 leading-relaxed mb-6">
@@ -187,14 +187,14 @@ export default function About() {
                   { label: 'Customer Rating', value: '4.8/5' },
                 ].map((stat) => (
                   <div key={stat.label} className="px-5 py-3 bg-white rounded-xl border border-gray-200">
-                    <p className="text-lg font-bold text-[#111111]">{stat.value}</p>
+                    <p className="text-lg font-bold text-[#0B1628]">{stat.value}</p>
                     <p className="text-xs text-gray-400">{stat.label}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <div className="aspect-square bg-[#111111] rounded-2xl flex items-center justify-center">
+              <div className="aspect-square bg-[#0B1628] rounded-2xl flex items-center justify-center">
                 <i className="fas fa-user text-8xl text-white/20"></i>
               </div>
             </div>
@@ -202,13 +202,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════ CTA ═══════ */}
+      {/* ------- CTA ------- */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden">
             <div className="absolute inset-0">
               <img src="/images/banner-car1.webp" alt="Premium vehicle" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/95 to-[#111111]/70"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0B1628]/95 to-[#0B1628]/70"></div>
             </div>
             <div className="relative z-10 py-16 px-8 lg:px-16 text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -221,7 +221,7 @@ export default function About() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link 
                   to="/register" 
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 hover:bg-gold-600 text-white font-semibold rounded-lg transition-all hover:-translate-y-0.5"
                 >
                   Get Started <i className="fas fa-arrow-right text-sm"></i>
                 </Link>

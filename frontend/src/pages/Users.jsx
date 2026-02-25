@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   DataTable,
@@ -90,7 +90,7 @@ export default function UsersPage() {
       label: 'User',
       render: (_, row) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4285F4]/20 to-[#4285F4]/5 flex items-center justify-center text-[#4285F4] text-sm font-bold flex-shrink-0 border border-[#4285F4]/10">
+          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold flex-shrink-0">
             {row.username?.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -126,7 +126,7 @@ export default function UsersPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={(e) => { e.stopPropagation(); navigate(`/users/${row.id}`); }}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-[#4285F4] hover:bg-blue-50 transition-colors"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-[#D4A017] hover:bg-gold-50 transition-colors"
             title="View details"
           >
             <i className="fas fa-eye text-sm"></i>
@@ -163,10 +163,10 @@ export default function UsersPage() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Users</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900">Users</h1>
           <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} total users</p>
         </div>
       </div>

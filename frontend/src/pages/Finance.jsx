@@ -88,8 +88,8 @@ export default function Finance() {
       label: 'Finance Name',
       render: (_, row) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 flex-shrink-0 border border-orange-200">
-            <i className="fas fa-building-columns text-sm"></i>
+          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 flex-shrink-0">
+            <span className="text-xs font-bold">{(row.finance_name || row.username)?.charAt(0)?.toUpperCase() || 'F'}</span>
           </div>
           <div>
             <p className="font-bold text-slate-900">{row.finance_name || row.username}</p>
@@ -116,7 +116,7 @@ export default function Finance() {
     {
       key: 'completed',
       label: 'Completed',
-      render: (val) => <span className="font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">{val || 0}</span>,
+      render: (val) => <span className="font-semibold text-gold-600 bg-gold-50 px-2.5 py-1 rounded-lg">{val || 0}</span>,
     },
     {
       key: 'actions',
@@ -124,7 +124,7 @@ export default function Finance() {
       render: (_, row) => (
         <button
           onClick={(e) => { e.stopPropagation(); loadOfficeDetail(row); }}
-          className="text-sm font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1"
+          className="text-sm font-semibold text-gold-600 hover:text-gold-700 flex items-center gap-1"
         >
           View <i className="fas fa-arrow-right text-xs"></i>
         </button>
@@ -137,7 +137,7 @@ export default function Finance() {
   // Detail view
   if (selectedOffice) {
     return (
-      <div className="space-y-6 animate-fade-in">
+      <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <button
           onClick={() => { setSelectedOffice(null); setOfficeDetail(null); }}
           className="btn-ghost text-sm -ml-2"
@@ -146,18 +146,16 @@ export default function Finance() {
         </button>
 
         {/* Office Header */}
-        <div className="card p-6">
+        <div className="card p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600 border border-orange-200">
-                <i className="fas fa-building-columns text-xl"></i>
-              </div>
+              <i className="fas fa-building-columns text-xl text-slate-400"></i>
               <div>
-                <h1 className="text-xl font-bold text-slate-900">{selectedOffice.finance_name || selectedOffice.username}</h1>
+                <h1 className="text-lg sm:text-xl font-bold text-slate-900">{selectedOffice.finance_name || selectedOffice.username}</h1>
                 <p className="text-sm text-slate-500">{selectedOffice.owner_name} &bull; {selectedOffice.state}</p>
               </div>
             </div>
-            <div className="flex gap-3 text-sm">
+            <div className="flex flex-wrap gap-2 sm:gap-3 text-sm">
               <span className="px-3 py-1.5 bg-slate-100 rounded-lg font-semibold text-slate-700">
                 Total: {selectedOffice.total_products || 0}
               </span>
@@ -179,14 +177,14 @@ export default function Finance() {
             {officeDetail.categories?.length > 0 && (
               <div className="card p-5">
                 <h3 className="text-sm font-bold text-slate-700 mb-3">
-                  <i className="fas fa-filter text-orange-500 mr-1.5"></i> Filter by Category
+                  <i className="fas fa-filter text-gold-500 mr-1.5"></i> Filter by Category
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => loadFilteredProducts('')}
                     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                       !categoryFilter
-                        ? 'bg-orange-500 text-white shadow-sm'
+                        ? 'bg-gold-500 text-white shadow-sm'
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`}
                   >
@@ -198,7 +196,7 @@ export default function Finance() {
                       onClick={() => loadFilteredProducts(cat.category)}
                       className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                         categoryFilter === cat.category
-                          ? 'bg-orange-500 text-white shadow-sm'
+                          ? 'bg-gold-500 text-white shadow-sm'
                           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                       }`}
                     >
@@ -213,7 +211,7 @@ export default function Finance() {
             <div className="card overflow-hidden">
               <div className="px-6 py-4 border-b border-slate-100">
                 <h3 className="font-bold text-slate-900">
-                  Products {categoryFilter && <span className="text-orange-500 font-semibold">— {categoryFilter}</span>}
+                  Products {categoryFilter && <span className="text-gold-500 font-semibold">— {categoryFilter}</span>}
                 </h3>
               </div>
               {officeDetail.products?.length > 0 ? (
@@ -243,7 +241,7 @@ export default function Finance() {
                           </td>
                           <td className="py-3 px-4 font-semibold text-slate-900">{formatCurrency(p.starting_price)}</td>
                           <td className="py-3 px-4">
-                            <span className="font-semibold text-orange-600">{p.bid_count || 0}</span>
+                            <span className="font-semibold text-gold-600">{p.bid_count || 0}</span>
                             {p.current_bid > 0 && (
                               <span className="text-xs text-slate-400 ml-1">({formatCurrency(p.current_bid)})</span>
                             )}
@@ -269,10 +267,10 @@ export default function Finance() {
 
   // Main Finance list view
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Finance</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-slate-900">Finance</h1>
           <p className="text-sm font-medium text-slate-500 mt-1">{filtered.length} finance offices</p>
         </div>
       </div>

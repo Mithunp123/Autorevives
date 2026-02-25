@@ -1,4 +1,4 @@
-﻿import { cn } from '@/utils';
+import { cn } from '@/utils';
 
 export default function Pagination({ currentPage, totalPages, onPageChange, className }) {
   if (totalPages <= 1) return null;
