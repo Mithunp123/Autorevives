@@ -179,7 +179,7 @@ export default function VehicleForm() {
       if (data.owner_name) formData.append('owner_name', data.owner_name);
       if (data.registration_number) formData.append('registration_number', data.registration_number);
       formData.append('starting_price', data.starting_price);
-      if (data.quoted_price) formData.append('quoted_price', data.quoted_price);
+      formData.append('quoted_price', data.quoted_price);
       if (data.bid_end_date) formData.append('bid_end_date', data.bid_end_date);
       if (data.description) formData.append('description', data.description);
       if (isAdmin && data.status) formData.append('status', data.status);
@@ -268,7 +268,7 @@ export default function VehicleForm() {
             <div>
               <label className="label">Manufacturing Year</label>
               <input
-                {...register('vehicle_year', { min: { value: 1980, message: 'Min 1980' }, max: { value: new Date().getFullYear(), message: 'Invalid year' } })}
+                {...register('vehicle_year', { required: 'Manufacturing year is required', min: { value: 1980, message: 'Min 1980' }, max: { value: new Date().getFullYear(), message: 'Invalid year' } })}
                 type="number"
                 className="input-field"
                 placeholder="2022"
@@ -278,7 +278,7 @@ export default function VehicleForm() {
             <div>
               <label className="label">Mileage (KM)</label>
               <input
-                {...register('mileage', { min: { value: 0, message: 'Must be positive' } })}
+                {...register('mileage', { required: 'Mileage is required', min: { value: 0, message: 'Must be positive' } })}
                 type="number"
                 className="input-field"
                 placeholder="45000"
@@ -290,7 +290,7 @@ export default function VehicleForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Fuel Type</label>
-              <select {...register('fuel_type')} className="select-field">
+              <select {...register('fuel_type', { required: 'Fuel type is required' })} className="select-field">
                 <option value="">Select fuel type</option>
                 <option value="Petrol">Petrol</option>
                 <option value="Diesel">Diesel</option>
@@ -298,16 +298,18 @@ export default function VehicleForm() {
                 <option value="Electric">Electric</option>
                 <option value="Hybrid">Hybrid</option>
               </select>
+              {errors.fuel_type && <p className="text-xs text-danger mt-1.5 font-medium">{errors.fuel_type.message}</p>}
             </div>
             <div>
               <label className="label">Transmission</label>
-              <select {...register('transmission')} className="select-field">
+              <select {...register('transmission', { required: 'Transmission is required' })} className="select-field">
                 <option value="">Select transmission</option>
                 <option value="Manual">Manual</option>
                 <option value="Automatic">Automatic</option>
                 <option value="AMT">AMT</option>
                 <option value="CVT">CVT</option>
               </select>
+              {errors.transmission && <p className="text-xs text-danger mt-1.5 font-medium">{errors.transmission.message}</p>}
             </div>
           </div>
 
@@ -363,20 +365,21 @@ export default function VehicleForm() {
               <p className="text-xs text-slate-400 mt-1">The price at which bidding will start</p>
             </div>
             <div>
-              <label className="label">Quoted Amount (₹) <span className="text-slate-400 font-normal">— optional</span></label>
+              <label className="label">Bid Increase Amount (₹)</label>
               <div className="relative">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
                   <span className="text-slate-400 text-sm font-bold">₹</span>
                 </div>
                 <input
-                  {...register('quoted_price', { min: { value: 0, message: 'Must be positive' } })}
+                  {...register('quoted_price', { required: 'Bid increase amount is required', min: { value: 100, message: 'Min ₹100' } })}
                   type="number"
                   step="1"
                   className="input-field pl-14"
-                  placeholder="350000"
+                  placeholder="1000"
                 />
               </div>
-              <p className="text-xs text-slate-400 mt-1">Your expected/quoted price for this vehicle</p>
+              {errors.quoted_price && <p className="text-xs text-danger mt-1.5 font-medium">{errors.quoted_price.message}</p>}
+              <p className="text-xs text-slate-400 mt-1">Users can only increase bids by this amount (e.g., ₹1000 increments)</p>
             </div>
           </div>
 

@@ -3,6 +3,7 @@ import time
 import json
 from flask import Blueprint, request, jsonify, current_app, send_from_directory
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 from ..utils import login_required, role_required, allowed_file, serialize_row, serialize_rows
 
@@ -12,6 +13,28 @@ vehicles_bp = Blueprint("vehicles", __name__)
 def _get_db():
     from .. import db
     return db.get_db()
+
+
+def _convert_to_webp(file_path):
+    """Convert an image file to WebP format for smaller file size.
+    Returns the new file path (with .webp extension)."""
+    try:
+        img = Image.open(file_path)
+        # Convert RGBA to RGB if needed (WebP supports RGBA but some modes cause issues)
+        if img.mode in ('RGBA', 'LA', 'P'):
+            img = img.convert('RGBA')
+        else:
+            img = img.convert('RGB')
+        webp_path = os.path.splitext(file_path)[0] + '.webp'
+        img.save(webp_path, 'WEBP', quality=85, optimize=True)
+        img.close()
+        # Remove the original file if conversion succeeded and it's a different file
+        if webp_path != file_path and os.path.exists(webp_path):
+            os.remove(file_path)
+        return webp_path
+    except Exception as e:
+        current_app.logger.warning(f"WebP conversion failed for {file_path}: {e}")
+        return file_path  # Return original if conversion fails
 
 
 @vehicles_bp.route("/", methods=["GET"])
@@ -147,7 +170,14 @@ def upload_single_image():
     name_part, ext = os.path.splitext(original)
     prefix = {"rc": "rc_", "insurance": "ins_"}.get(image_type, "")
     filename = f"{prefix}{name_part}_{int(time.time())}{ext}"
-    file.save(os.path.join(upload_path, filename))
+    saved_file_path = os.path.join(upload_path, filename)
+    file.save(saved_file_path)
+
+    # Convert to WebP for smaller file size
+    if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+        converted_path = _convert_to_webp(saved_file_path)
+        filename = os.path.basename(converted_path)
+
     saved_path = f"uploads/{upload_subfolder}/{filename}".replace("\\", "/")
 
     return jsonify({"path": saved_path}), 201
@@ -219,7 +249,12 @@ def create_vehicle():
             original = secure_filename(file.filename)
             name_part, ext = os.path.splitext(original)
             filename = f"{name_part}_{int(time.time())}_{len(image_paths)}{ext}"
-            file.save(os.path.join(upload_path, filename))
+            saved_file_path = os.path.join(upload_path, filename)
+            file.save(saved_file_path)
+            # Convert to WebP
+            if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+                converted_path = _convert_to_webp(saved_file_path)
+                filename = os.path.basename(converted_path)
             image_paths.append(f"uploads/{upload_subfolder}/{filename}".replace("\\", "/"))
 
     image_path = json.dumps(image_paths) if image_paths else None
@@ -232,7 +267,11 @@ def create_vehicle():
             original = secure_filename(rc_file.filename)
             name_part, ext = os.path.splitext(original)
             rc_filename = f"rc_{name_part}_{int(time.time())}{ext}"
-            rc_file.save(os.path.join(upload_path, rc_filename))
+            saved_file_path = os.path.join(upload_path, rc_filename)
+            rc_file.save(saved_file_path)
+            if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+                converted_path = _convert_to_webp(saved_file_path)
+                rc_filename = os.path.basename(converted_path)
             rc_image_path = f"uploads/{upload_subfolder}/{rc_filename}".replace("\\", "/")
 
     # ── Insurance image (pre-uploaded path or legacy file) ──
@@ -243,7 +282,11 @@ def create_vehicle():
             original = secure_filename(ins_file.filename)
             name_part, ext = os.path.splitext(original)
             ins_filename = f"ins_{name_part}_{int(time.time())}{ext}"
-            ins_file.save(os.path.join(upload_path, ins_filename))
+            saved_file_path = os.path.join(upload_path, ins_filename)
+            ins_file.save(saved_file_path)
+            if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+                converted_path = _convert_to_webp(saved_file_path)
+                ins_filename = os.path.basename(converted_path)
             insurance_image_path = f"uploads/{upload_subfolder}/{ins_filename}".replace("\\", "/")
 
     try:
@@ -347,7 +390,11 @@ def update_vehicle(vehicle_id):
                         original = secure_filename(file.filename)
                         name_part, ext = os.path.splitext(original)
                         filename = f"{name_part}_{int(time.time())}_{len(new_paths)}{ext}"
-                        file.save(os.path.join(upload_path, filename))
+                        saved_file_path = os.path.join(upload_path, filename)
+                        file.save(saved_file_path)
+                        if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+                            converted_path = _convert_to_webp(saved_file_path)
+                            filename = os.path.basename(converted_path)
                         new_paths.append(f"uploads/{upload_subfolder}/{filename}".replace("\\", "/"))
                 if new_paths:
                     image_path = json.dumps(new_paths)
@@ -362,7 +409,11 @@ def update_vehicle(vehicle_id):
                 original = secure_filename(rc_file.filename)
                 name_part, ext = os.path.splitext(original)
                 rc_filename = f"rc_{name_part}_{int(time.time())}{ext}"
-                rc_file.save(os.path.join(upload_path, rc_filename))
+                saved_file_path = os.path.join(upload_path, rc_filename)
+                rc_file.save(saved_file_path)
+                if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+                    converted_path = _convert_to_webp(saved_file_path)
+                    rc_filename = os.path.basename(converted_path)
                 rc_image_path = f"uploads/{upload_subfolder}/{rc_filename}".replace("\\", "/")
         else:
             rc_image_path = None
@@ -377,7 +428,11 @@ def update_vehicle(vehicle_id):
                 original = secure_filename(ins_file.filename)
                 name_part, ext = os.path.splitext(original)
                 ins_filename = f"ins_{name_part}_{int(time.time())}{ext}"
-                ins_file.save(os.path.join(upload_path, ins_filename))
+                saved_file_path = os.path.join(upload_path, ins_filename)
+                ins_file.save(saved_file_path)
+                if ext.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff'):
+                    converted_path = _convert_to_webp(saved_file_path)
+                    ins_filename = os.path.basename(converted_path)
                 insurance_image_path = f"uploads/{upload_subfolder}/{ins_filename}".replace("\\", "/")
         else:
             insurance_image_path = None
@@ -477,6 +532,16 @@ def place_bid(vehicle_id):
 
         if bid_amount <= current_max:
             return jsonify({"error": f"Bid must be higher than current price: ₹{current_max:,.2f}"}), 400
+
+        # Enforce bid increment if set (quoted_price is used as bid increment)
+        bid_increment = float(product["quoted_price"]) if product.get("quoted_price") else 0
+        if bid_increment > 0:
+            diff = bid_amount - current_max
+            if diff % bid_increment != 0:
+                return jsonify({
+                    "error": f"Bid must increase in multiples of ₹{bid_increment:,.2f}. "
+                             f"Valid bids: ₹{current_max + bid_increment:,.2f}, ₹{current_max + bid_increment * 2:,.2f}, etc."
+                }), 400
 
         cursor.execute(
             "INSERT INTO bids (product_id, user_id, amount) VALUES (%s, %s, %s)",

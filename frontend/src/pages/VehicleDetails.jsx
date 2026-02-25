@@ -2,12 +2,15 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { StatusBadge, Button, PageLoader, ConfirmDialog } from '@/components/ui';
 import { vehicleService, approvalService } from '@/services';
+import { useAuth } from '@/context/AuthContext';
 import { formatCurrency, formatDate, formatDateTime, timeAgo, getImageUrl, getImageUrls } from '@/utils';
 import toast from 'react-hot-toast';
 
 export default function VehicleDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [vehicle, setVehicle] = useState(null);
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,7 +69,7 @@ export default function VehicleDetails() {
               <p className="text-sm text-slate-400 mt-1 font-medium">#{vehicle.id}  {vehicle.category}</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              {vehicle.status === 'pending' && (<><Button variant="success" icon="fa-shield-halved" size="sm" onClick={handleApprove}>Approve</Button><Button variant="danger" icon="fa-circle-xmark" size="sm" onClick={handleReject}>Reject</Button></>)}
+              {vehicle.status === 'pending' && isAdmin && (<><Button variant="success" icon="fa-shield-halved" size="sm" onClick={handleApprove}>Approve</Button><Button variant="danger" icon="fa-circle-xmark" size="sm" onClick={handleReject}>Reject</Button></>)}
               <Button variant="secondary" icon="fa-pen-to-square" size="sm" onClick={() => navigate(`/vehicles/${vehicle.id}/edit`)}>Edit</Button>
               <Button variant="danger" icon="fa-trash" size="sm" onClick={() => setShowDelete(true)}>Delete</Button>
             </div>
@@ -78,7 +81,7 @@ export default function VehicleDetails() {
         <InfoCard icon="fa-indian-rupee-sign" label="Starting Price" value={formatCurrency(vehicle.starting_price)} />
         <InfoCard icon="fa-gavel" label="Current Bid" value={vehicle.current_bid ? formatCurrency(vehicle.current_bid) : 'No bids'} highlight />
         {vehicle.quoted_price && Number(vehicle.quoted_price) > 0 && (
-          <InfoCard icon="fa-file-invoice-dollar" label="Quoted Amount" value={formatCurrency(vehicle.quoted_price)} />
+          <InfoCard icon="fa-arrow-up-right-dots" label="Bid Increase Amount" value={formatCurrency(vehicle.quoted_price)} />
         )}
         <InfoCard icon="fa-building" label="Office" value={vehicle.office_name} />
         {vehicle.bid_end_date && (

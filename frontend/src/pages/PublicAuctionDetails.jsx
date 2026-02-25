@@ -357,7 +357,7 @@ export default function PublicAuctionDetails() {
                   </div>
                   {auction.quoted_price && Number(auction.quoted_price) > 0 && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-500 text-sm">Quoted Price</span>
+                      <span className="text-gray-500 text-sm">Bid Increment</span>
                       <span className="font-semibold text-orange-600">{formatPrice(auction.quoted_price)}</span>
                     </div>
                   )}
@@ -373,29 +373,61 @@ export default function PublicAuctionDetails() {
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Your Bid Amount</label>
-                        <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">₹</span>
-                          <input
-                            type="number"
-                            step="1"
-                            placeholder="Enter amount"
-                            className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-[#111111] font-medium focus:ring-2 outline-none transition-all ${
-                              errors.amount
-                                ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
-                                : 'border-gray-200 focus:border-orange-500 focus:ring-orange-500/20'
-                            }`}
-                            {...register('amount', {
-                              required: 'Bid amount is required',
-                              valueAsNumber: true,
-                              validate: (val) => {
-                                if (!val || isNaN(val)) return 'Enter a valid number';
-                                if (val <= Number(auction.current_bid || auction.starting_price))
-                                  return `Bid must be more than ${formatPrice(auction.current_bid || auction.starting_price)}`;
-                                return true;
-                              },
-                            })}
-                          />
-                        </div>
+                        {(() => {
+                          const currentPrice = Number(auction.current_bid || auction.starting_price);
+                          const increment = Number(auction.quoted_price) || 0;
+                          const suggestedBids = increment > 0 ? [
+                            currentPrice + increment,
+                            currentPrice + increment * 2,
+                            currentPrice + increment * 3,
+                          ] : [];
+                          return (
+                            <>
+                              {suggestedBids.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-3">
+                                  {suggestedBids.map((amt) => (
+                                    <button
+                                      key={amt}
+                                      type="button"
+                                      onClick={() => reset({ amount: amt })}
+                                      className="px-3 py-2 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-semibold rounded-lg hover:bg-orange-100 transition-colors"
+                                    >
+                                      {formatPrice(amt)}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                              <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">₹</span>
+                                <input
+                                  type="number"
+                                  step="1"
+                                  placeholder="Enter amount"
+                                  className={`w-full pl-10 pr-4 py-3.5 border rounded-lg text-[#111111] font-medium focus:ring-2 outline-none transition-all ${
+                                    errors.amount
+                                      ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                                      : 'border-gray-200 focus:border-orange-500 focus:ring-orange-500/20'
+                                  }`}
+                                  {...register('amount', {
+                                    required: 'Bid amount is required',
+                                    valueAsNumber: true,
+                                    validate: (val) => {
+                                      if (!val || isNaN(val)) return 'Enter a valid number';
+                                      if (val <= currentPrice)
+                                        return `Bid must be more than ${formatPrice(currentPrice)}`;
+                                      if (increment > 0 && (val - currentPrice) % increment !== 0)
+                                        return `Bid must increase in multiples of ${formatPrice(increment)}`;
+                                      return true;
+                                    },
+                                  })}
+                                />
+                              </div>
+                              {increment > 0 && (
+                                <p className="text-xs text-gray-400 mt-1">Bid increases in multiples of {formatPrice(increment)}</p>
+                              )}
+                            </>
+                          );
+                        })()}
                         {errors.amount && (
                           <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
                             <i className="fas fa-exclamation-circle"></i> {errors.amount.message}
