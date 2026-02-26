@@ -106,3 +106,11 @@ ALTER TABLE error_logs
     ADD COLUMN IF NOT EXISTS occurred_at     DATETIME      DEFAULT CURRENT_TIMESTAMP AFTER app_version,
     MODIFY COLUMN IF EXISTS page_url         VARCHAR(1000) DEFAULT NULL;
 
+-- ─────────────────────────────────────────────────────────────────────────────
+-- MIGRATION: Add bidding close/winner columns to products table
+-- ─────────────────────────────────────────────────────────────────────────────
+ALTER TABLE products
+    ADD COLUMN IF NOT EXISTS is_active       BOOLEAN   DEFAULT TRUE    AFTER status,
+    ADD COLUMN IF NOT EXISTS winner_user_id  INT       DEFAULT NULL    AFTER is_active,
+    ADD COLUMN IF NOT EXISTS closed_at       TIMESTAMP NULL DEFAULT NULL AFTER winner_user_id;
+

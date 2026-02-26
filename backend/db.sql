@@ -40,8 +40,12 @@ CREATE TABLE IF NOT EXISTS products (
     insurance_available BOOLEAN DEFAULT FALSE,
     insurance_image VARCHAR(500) DEFAULT NULL,
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    is_active BOOLEAN DEFAULT TRUE,
+    winner_user_id INT DEFAULT NULL,
+    closed_at TIMESTAMP NULL DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (office_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (office_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (winner_user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- Bids Table

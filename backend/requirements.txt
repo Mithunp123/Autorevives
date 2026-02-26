@@ -7,3 +7,5 @@ python-dotenv==1.0.*
 waitress==3.0.*
 gunicorn==22.0.*
 Pillow==11.1.*
+flask-socketio==5.4.*
+eventlet==0.37.*

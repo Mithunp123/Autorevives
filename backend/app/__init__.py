@@ -49,6 +49,10 @@ def create_app(config_class=Config):
     # Ensure upload directory exists
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
+    # Initialize SocketIO for live bidding
+    from .socket_events import init_socketio
+    init_socketio(app)
+
     # Initialize database
     global db
     db = Database(app)

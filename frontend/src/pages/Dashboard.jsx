@@ -143,7 +143,7 @@ export default function Dashboard() {
           <Link to="/vehicles" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:text-gold-600 hover:border-gold-500 rounded-xl text-sm font-semibold transition-all shadow-sm">
             <i className="fas fa-car"></i> Vehicles
           </Link>
-          <Link to="/auctions" className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold-500 hover:bg-gold-600 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-gold-500/20">
+          <Link to="/manage/auctions" className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold-500 hover:bg-gold-600 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-gold-500/20">
             <i className="fas fa-gavel"></i> Auctions
           </Link>
         </div>
@@ -160,7 +160,7 @@ export default function Dashboard() {
         <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
             <h3 className="font-bold text-[#0B1628]">Recent Activity</h3>
-            <Link to="/auctions" className="text-xs font-semibold text-gold-600 hover:text-gold-700 flex items-center gap-1">
+            <Link to="/manage/auctions" className="text-xs font-semibold text-gold-600 hover:text-gold-700 flex items-center gap-1">
               View all <i className="fas fa-arrow-right"></i>
             </Link>
           </div>

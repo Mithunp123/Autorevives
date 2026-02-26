@@ -8,7 +8,7 @@ const adminNav = [
   { to: '/vehicles', label: 'Vehicles', icon: 'fa-car-side', section: 'Overview' },
   { to: '/users', label: 'Users', icon: 'fa-user-group', section: 'Overview' },
   { to: '/offices', label: 'Offices', icon: 'fa-building', section: 'Management' },
-  { to: '/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Management' },
+  { to: '/manage/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Management' },
   { to: '/approvals', label: 'Approvals', icon: 'fa-clipboard-check', section: 'Management' },
   { to: '/reports', label: 'Reports', icon: 'fa-chart-pie', section: 'Management' },
   { to: '/settings', label: 'Settings', icon: 'fa-sliders', section: 'System' },
@@ -18,7 +18,7 @@ const officeNav = [
   { to: '/dashboard', label: 'Dashboard', icon: 'fa-gauge-high', section: 'Main' },
   { to: '/vehicles/add', label: 'Add Product', icon: 'fa-circle-plus', section: 'Main' },
   { to: '/vehicles', label: 'My Vehicles', icon: 'fa-car-side', section: 'Main' },
-  { to: '/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Browse' },
+  { to: '/manage/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Browse' },
   { to: '/office-profile', label: 'Office Profile', icon: 'fa-building-circle-check', section: 'Settings' },
 ];
 

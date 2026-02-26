@@ -526,6 +526,10 @@ def place_bid(vehicle_id):
         if not product:
             return jsonify({"error": "Vehicle not found or not available for bidding"}), 404
 
+        # Check if auction is still open
+        if product.get("is_active") is not None and not product["is_active"]:
+            return jsonify({"error": "This auction has been closed. Bidding is no longer allowed."}), 400
+
         cursor.execute("SELECT MAX(amount) as max_bid FROM bids WHERE product_id = %s", (vehicle_id,))
         result = cursor.fetchone()
         current_max = float(result["max_bid"]) if result["max_bid"] else float(product["starting_price"])
@@ -548,7 +552,139 @@ def place_bid(vehicle_id):
             (vehicle_id, request.current_user["user_id"], bid_amount),
         )
         conn.commit()
+
+        # ── WebSocket: broadcast live bid update to all watchers of this auction ──
+        import datetime
+        bidder_raw = request.current_user.get("username", "User")
+        # Mask the middle of the bidder name for privacy (e.g. "Ramesh" → "Ra***sh")
+        if len(bidder_raw) > 3:
+            masked = bidder_raw[:2] + "***" + bidder_raw[-1]
+        else:
+            masked = bidder_raw[0] + "***"
+
+        # Fetch updated total bid count
+        cursor.execute("SELECT COUNT(*) as cnt FROM bids WHERE product_id = %s", (vehicle_id,))
+        total_bids = cursor.fetchone()["cnt"]
+
+        from ..socket_events import broadcast_bid_update
+        broadcast_bid_update(vehicle_id, {
+            "auction_id":   vehicle_id,
+            "current_bid":  bid_amount,
+            "total_bids":   total_bids,
+            "bidder_name":  masked,
+            "amount":       bid_amount,
+            "bid_time":     datetime.datetime.utcnow().isoformat(),
+        })
+
         return jsonify({"message": "Bid placed successfully!", "bid_amount": bid_amount, "amount": bid_amount}), 201
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@vehicles_bp.route("/<int:vehicle_id>/close", methods=["PATCH"])
+@role_required("office", "admin")
+def close_auction(vehicle_id):
+    """
+    Close an auction — marks is_active=FALSE, determines the winner
+    (highest bidder), creates a transaction record, and broadcasts
+    an 'auction_closed' event via WebSocket.
+    """
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM products WHERE id = %s", (vehicle_id,))
+        product = cursor.fetchone()
+        if not product:
+            return jsonify({"error": "Vehicle not found"}), 404
+
+        # Only the owning office or an admin can close
+        if request.current_user["role"] == "office" and product["office_id"] != request.current_user["user_id"]:
+            return jsonify({"error": "You can only close your own auctions"}), 403
+
+        if product.get("is_active") is not None and not product["is_active"]:
+            return jsonify({"error": "Auction is already closed"}), 400
+
+        # Find the highest bid → that user wins
+        cursor.execute(
+            """SELECT b.user_id, b.amount, u.username as winner_name
+               FROM bids b JOIN users u ON b.user_id = u.id
+               WHERE b.product_id = %s
+               ORDER BY b.amount DESC LIMIT 1""",
+            (vehicle_id,),
+        )
+        top_bid = cursor.fetchone()
+
+        winner_user_id = top_bid["user_id"] if top_bid else None
+        winning_amount = float(top_bid["amount"]) if top_bid else 0
+        winner_name = top_bid["winner_name"] if top_bid else None
+
+        import datetime
+        now = datetime.datetime.utcnow()
+
+        # Close the auction
+        cursor.execute(
+            """UPDATE products
+               SET is_active = FALSE, winner_user_id = %s, closed_at = %s
+               WHERE id = %s""",
+            (winner_user_id, now, vehicle_id),
+        )
+
+        # Create a transaction record for the winner
+        if winner_user_id:
+            cursor.execute(
+                """INSERT INTO transactions (user_id, product_id, amount, status)
+                   VALUES (%s, %s, %s, 'won')""",
+                (winner_user_id, vehicle_id, winning_amount),
+            )
+
+        conn.commit()
+
+        # Broadcast auction closed via WebSocket
+        try:
+            from ..socket_events import socketio
+            room = f"auction_{vehicle_id}"
+            socketio.emit("auction_closed", {
+                "auction_id":   vehicle_id,
+                "winner_name":  winner_name,
+                "winning_bid":  winning_amount,
+                "closed_at":    now.isoformat(),
+            }, room=room)
+        except Exception:
+            pass  # Don't fail the request if WS broadcast fails
+
+        result = {
+            "message": "Auction closed successfully",
+            "winner": winner_name,
+            "winning_bid": winning_amount,
+        }
+        if not winner_user_id:
+            result["message"] = "Auction closed — no bids were placed"
+            result["winner"] = None
+
+        return jsonify(result)
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@vehicles_bp.route("/<int:vehicle_id>/reopen", methods=["PATCH"])
+@role_required("admin")
+def reopen_auction(vehicle_id):
+    """Admin-only: reopen a closed auction."""
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            """UPDATE products
+               SET is_active = TRUE, winner_user_id = NULL, closed_at = NULL
+               WHERE id = %s""",
+            (vehicle_id,),
+        )
+        conn.commit()
+        if cursor.rowcount == 0:
+            return jsonify({"error": "Vehicle not found"}), 404
+        return jsonify({"message": "Auction reopened"})
     finally:
         cursor.close()
         conn.close()

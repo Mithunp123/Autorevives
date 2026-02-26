@@ -31,6 +31,12 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
       },
+      // WebSocket proxy — routes socket.io handshake + frames to the Flask backend
+      '/socket.io': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        ws: true,               // enable WebSocket proxying
+      },
     },
   },
   build: {

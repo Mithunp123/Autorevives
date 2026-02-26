@@ -7,6 +7,7 @@ import { auctionService, publicService } from '@/services';
 import { useAuth } from '@/context/AuthContext';
 import { getImageUrl, getImageUrls } from '@/utils';
 import api from '@/services/api';
+import { useBidSocket } from '@/hooks/useBidSocket';
 
 /* Countdown Timer Component */
 function Countdown({ hours }) {
@@ -35,13 +36,37 @@ function Countdown({ hours }) {
 export default function PublicAuctionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin, isOffice, user } = useAuth();
   const [auction, setAuction] = useState(null);
-  const [bids, setBids] = useState([]);
+  const [initialBids, setInitialBids] = useState([]);
   const [loading, setLoading] = useState(true);
   const [similarVehicles, setSimilarVehicles] = useState([]);
   const [selectedImage, setSelectedImage] = useState(0);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
+  // ── Live bidding via WebSocket ──
+  const { currentBid, totalBids, bids, isConnected, auctionClosed } = useBidSocket(
+    auction ? Number(id) : null,
+    auction?.current_bid || auction?.starting_price || 0,
+    initialBids,
+  );
+
+  // Auction closed state — from REST data or live WS event
+  const isClosed = auctionClosed || (auction?.is_active === 0) || (auction?.is_active === false);
+  const canManage = isAdmin || (isOffice && auction?.office_id === user?.id);
+
+  const handleCloseAuction = async () => {
+    if (!window.confirm('Are you sure you want to close this auction? The highest bidder will be declared the winner.')) return;
+    try {
+      const res = await api.patch(`/vehicles/${id}/close`);
+      toast.success(res.data.message || 'Auction closed!', { id: 'close-auction' });
+      // Refresh auction data
+      const { data } = await auctionService.getById(id);
+      setAuction(data);
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to close auction', { id: 'close-error' });
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -49,7 +74,7 @@ export default function PublicAuctionDetails() {
       try {
         const { data } = await auctionService.getById(id);
         setAuction(data);
-        setBids(data.bids || []);
+        setInitialBids(data.bids || []);
 
         // Fetch similar vehicles
         const homeData = await publicService.getHomeData();
@@ -79,11 +104,9 @@ export default function PublicAuctionDetails() {
 
     try {
       await api.post(`/vehicles/${id}/bid`, { amount: numericAmount });
-      toast.success('Bid placed successfully!', { id: 'bid-success' });
+      toast.success('Bid placed! Live update incoming ⚡', { id: 'bid-success' });
       reset();
-      const { data } = await auctionService.getById(id);
-      setAuction(data);
-      setBids(data.bids || []);
+      // No need to re-fetch — WebSocket will push the update to all watchers
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to place bid', { id: 'bid-error' });
     }
@@ -150,12 +173,27 @@ export default function PublicAuctionDetails() {
                   </div>
                 )}
 
-                {/* Status Badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 bg-red-500 text-white text-sm font-semibold rounded-lg flex items-center gap-2">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    LIVE AUCTION
-                  </span>
+                {/* Status Badge + Live Indicator */}
+                <div className="absolute top-4 left-4 flex items-center gap-2">
+                  {isClosed ? (
+                    <span className="px-3 py-1.5 bg-gray-600 text-white text-sm font-semibold rounded-lg flex items-center gap-2">
+                      <i className="fas fa-lock text-xs"></i>
+                      CLOSED
+                    </span>
+                  ) : (
+                    <>
+                      <span className="px-3 py-1.5 bg-red-500 text-white text-sm font-semibold rounded-lg flex items-center gap-2">
+                        <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                        LIVE AUCTION
+                      </span>
+                      <span
+                        title={isConnected ? 'Live updates connected' : 'Reconnecting...'}
+                        className={`w-3 h-3 rounded-full border-2 border-white transition-colors ${
+                          isConnected ? 'bg-green-400 animate-pulse' : 'bg-yellow-400'
+                        }`}
+                      />
+                    </>
+                  )}
                 </div>
 
                 {/* Image Navigation */}
@@ -221,7 +259,7 @@ export default function PublicAuctionDetails() {
                 {[
                   { icon: 'fa-building', label: 'Seller', value: auction.office_name || 'Bank Partner' },
                   { icon: 'fa-calendar', label: 'Listed', value: new Date(auction.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) },
-                  { icon: 'fa-gavel', label: 'Total Bids', value: auction.total_bids || bids.length || 0 },
+                  { icon: 'fa-gavel', label: 'Total Bids', value: totalBids },
                   { icon: 'fa-eye', label: 'Views', value: Math.floor(Math.random() * 500) + 100 },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center p-4 bg-gray-50 rounded-xl">
@@ -273,16 +311,25 @@ export default function PublicAuctionDetails() {
               </p>
             </div>
 
-            {/* BID HISTORY */}
+            {/* BID HISTORY — Only visible to admin/office, hidden from regular users */}
+            {(isAdmin || isOffice) && (
             <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-[#0B1628] flex items-center gap-2">
                   <i className="fas fa-history text-gold-500"></i>
                   Bid History
                 </h2>
-                <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg">
-                  {bids.length} Bids
-                </span>
+                <div className="flex items-center gap-2">
+                  {isConnected && !isClosed && (
+                    <span className="flex items-center gap-1 text-xs text-green-600 font-medium">
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                      Live
+                    </span>
+                  )}
+                  <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg">
+                    {totalBids} Bids
+                  </span>
+                </div>
               </div>
 
               {bids.length === 0 ? (
@@ -326,6 +373,7 @@ export default function PublicAuctionDetails() {
                 </div>
               )}
             </div>
+            )}
           </div>
 
           {/* ------- RIGHT COLUMN — Bid Form ------- */}
@@ -337,7 +385,7 @@ export default function PublicAuctionDetails() {
                 {/* Header */}
                 <div className="bg-[#0B1628] text-white p-5">
                   <p className="text-sm text-gray-400 mb-1">Current Highest Bid</p>
-                  <p className="text-2xl sm:text-3xl font-bold">{formatPrice(auction.current_bid || auction.starting_price)}</p>
+                  <p className="text-2xl sm:text-3xl font-bold transition-all">{formatPrice(currentBid || auction.current_bid || auction.starting_price)}</p>
                 </div>
 
                 {/* Timer */}
@@ -360,18 +408,38 @@ export default function PublicAuctionDetails() {
                   )}
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 text-sm">Total Bids</span>
-                    <span className="font-semibold text-[#0B1628]">{auction.total_bids || bids.length || 0}</span>
+                    <span className="font-semibold text-[#0B1628]">{totalBids}</span>
                   </div>
                 </div>
 
-                {/* Bid Form */}
+                {/* Bid Form / Closed state */}
                 <div className="p-5">
-                  {isAuthenticated ? (
+                  {isClosed ? (
+                    /* ── AUCTION CLOSED ── */
+                    <div className="text-center py-6">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i className="fas fa-flag-checkered text-2xl text-gray-500"></i>
+                      </div>
+                      <p className="font-bold text-[#0B1628] text-lg mb-1">Auction Closed</p>
+                      {(auctionClosed?.winner_name || auction?.winner_user_id) ? (
+                        <>
+                          <p className="text-gray-500 text-sm mb-2">Winner declared</p>
+                          <div className="bg-gold-50 border border-gold-200 rounded-xl p-4 mt-3">
+                            <p className="text-xs text-gold-600 font-semibold mb-1">WINNING BID</p>
+                            <p className="text-2xl font-bold text-gold-700">{formatPrice(auctionClosed?.winning_bid || currentBid)}</p>
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-gray-400 text-sm">No bids were placed</p>
+                      )}
+                    </div>
+                  ) : isAuthenticated ? (
+                    /* ── BID FORM (only for regular users) ── */
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Your Bid Amount</label>
                         {(() => {
-                          const currentPrice = Number(auction.current_bid || auction.starting_price);
+                          const currentPrice = Number(currentBid || auction.current_bid || auction.starting_price);
                           const increment = Number(auction.quoted_price) || 0;
                           const suggestedBids = increment > 0 ? [
                             currentPrice + increment,
@@ -456,6 +524,17 @@ export default function PublicAuctionDetails() {
                         Login Now
                       </button>
                     </div>
+                  )}
+
+                  {/* Close Auction button — only for owning office / admin */}
+                  {canManage && !isClosed && (
+                    <button
+                      onClick={handleCloseAuction}
+                      className="w-full mt-3 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-lg flex items-center justify-center gap-2 transition-all border border-red-200"
+                    >
+                      <i className="fas fa-ban"></i>
+                      Close Auction
+                    </button>
                   )}
                 </div>
               </div>

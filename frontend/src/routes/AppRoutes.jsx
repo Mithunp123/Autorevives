@@ -71,7 +71,7 @@ export default function AppRoutes() {
           <Route path="/vehicles/:id/edit" element={<VehicleForm />} />
 
           {/* Auctions — accessible by admin + office */}
-          <Route path="/auctions" element={<Auctions />} />
+          <Route path="/manage/auctions" element={<Auctions />} />
 
           {/* Office profile */}
           <Route path="/office-profile" element={<OfficeProfile />} />
