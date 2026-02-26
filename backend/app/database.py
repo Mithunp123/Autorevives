@@ -107,6 +107,9 @@ class Database:
             ('category', 'VARCHAR(50) DEFAULT NULL AFTER description'),
             ('state', 'VARCHAR(100) DEFAULT NULL AFTER category'),
             ('quoted_price', 'DECIMAL(12, 2) DEFAULT NULL AFTER starting_price'),
+            ('is_active', 'BOOLEAN DEFAULT TRUE AFTER status'),
+            ('winner_user_id', 'INT DEFAULT NULL AFTER is_active'),
+            ('closed_at', 'TIMESTAMP NULL DEFAULT NULL AFTER winner_user_id'),
         ]:
             try:
                 cursor.execute(f"ALTER TABLE products ADD COLUMN {col} {definition}")
@@ -224,6 +227,19 @@ class Database:
                 FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
             )
         """)
+
+        # Add payment-related columns to transactions if missing
+        for col, definition in [
+            ('payment_status', "ENUM('pending','verifying','verified','invalid') DEFAULT 'pending' AFTER status"),
+            ('payment_screenshot', 'VARCHAR(500) DEFAULT NULL AFTER payment_status'),
+            ('upi_transaction_id', 'VARCHAR(100) DEFAULT NULL AFTER payment_screenshot'),
+            ('verified_by', 'INT DEFAULT NULL AFTER upi_transaction_id'),
+            ('verified_at', 'TIMESTAMP NULL DEFAULT NULL AFTER verified_by'),
+        ]:
+            try:
+                cursor.execute(f"ALTER TABLE transactions ADD COLUMN {col} {definition}")
+            except Exception:
+                pass  # Column already exists
 
         # Password Resets table
         cursor.execute("""

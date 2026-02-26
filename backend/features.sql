@@ -25,9 +25,15 @@ CREATE TABLE IF NOT EXISTS transactions (
     product_id INT NOT NULL,
     amount DECIMAL(12, 2) NOT NULL,
     status ENUM('won', 'completed', 'cancelled') DEFAULT 'won',
+    payment_status ENUM('pending', 'verifying', 'verified', 'invalid') DEFAULT 'pending',
+    payment_screenshot VARCHAR(500) DEFAULT NULL,
+    upi_transaction_id VARCHAR(100) DEFAULT NULL,
+    verified_by INT DEFAULT NULL,
+    verified_at TIMESTAMP NULL DEFAULT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- ─────────────────────────────────────────────────────────────────────────────
@@ -113,4 +119,13 @@ ALTER TABLE products
     ADD COLUMN IF NOT EXISTS is_active       BOOLEAN   DEFAULT TRUE    AFTER status,
     ADD COLUMN IF NOT EXISTS winner_user_id  INT       DEFAULT NULL    AFTER is_active,
     ADD COLUMN IF NOT EXISTS closed_at       TIMESTAMP NULL DEFAULT NULL AFTER winner_user_id;
+
+-- MIGRATION: Add payment columns to transactions table
+ALTER TABLE transactions
+    MODIFY COLUMN status ENUM('won', 'completed', 'cancelled') DEFAULT 'won',
+    ADD COLUMN IF NOT EXISTS payment_status ENUM('pending', 'verifying', 'verified', 'invalid') DEFAULT 'pending' AFTER status,
+    ADD COLUMN IF NOT EXISTS payment_screenshot VARCHAR(500) DEFAULT NULL AFTER payment_status,
+    ADD COLUMN IF NOT EXISTS upi_transaction_id VARCHAR(100) DEFAULT NULL AFTER payment_screenshot,
+    ADD COLUMN IF NOT EXISTS verified_by INT DEFAULT NULL AFTER upi_transaction_id,
+    ADD COLUMN IF NOT EXISTS verified_at TIMESTAMP NULL DEFAULT NULL AFTER verified_by;
 

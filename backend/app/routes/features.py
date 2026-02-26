@@ -91,6 +91,182 @@ def get_transactions():
         conn.close()
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Winnings — officer sees winners for their products, admin sees all
+# ─────────────────────────────────────────────────────────────────────────────
+@features_bp.route("/winnings", methods=["GET"])
+@login_required
+def get_winnings():
+    role = request.current_user.get("role")
+    if role not in ("admin", "office"):
+        return jsonify({"error": "Forbidden"}), 403
+
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        office_filter = request.args.get("office_id", "")
+
+        query = """
+            SELECT t.*, p.name as product_name, p.image_path as product_image,
+                   p.starting_price, p.office_id,
+                   u.username as winner_name, u.email as winner_email, u.mobile_number as winner_mobile,
+                   o.username as office_name
+            FROM transactions t
+            JOIN products p ON t.product_id = p.id
+            JOIN users u ON t.user_id = u.id
+            JOIN users o ON p.office_id = o.id
+            WHERE 1=1
+        """
+        params = []
+
+        if role == "office":
+            query += " AND p.office_id = %s"
+            params.append(request.current_user["user_id"])
+        elif office_filter:
+            query += " AND p.office_id = %s"
+            params.append(int(office_filter))
+
+        query += " ORDER BY t.transaction_date DESC"
+        cursor.execute(query, params)
+        winnings = serialize_rows(cursor.fetchall())
+
+        offices = []
+        if role == "admin":
+            cursor.execute("SELECT id, username, finance_name FROM users WHERE role = 'office' AND status = 'active' ORDER BY username")
+            offices = serialize_rows(cursor.fetchall())
+
+        return jsonify({"winnings": winnings, "offices": offices}), 200
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Payment — user submits UPI screenshot + transaction ID
+# ─────────────────────────────────────────────────────────────────────────────
+@features_bp.route("/transactions/<int:txn_id>/pay", methods=["POST"])
+@login_required
+def submit_payment(txn_id):
+    import os
+    from werkzeug.utils import secure_filename
+    from PIL import Image
+    from flask import current_app
+
+    user_id = request.current_user["user_id"]
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM transactions WHERE id = %s AND user_id = %s", (txn_id, user_id))
+        txn = cursor.fetchone()
+        if not txn:
+            return jsonify({"error": "Transaction not found"}), 404
+
+        if txn.get("payment_status") not in (None, "pending", "invalid"):
+            return jsonify({"error": "Payment already submitted or verified"}), 400
+
+        upi_txn_id = request.form.get("upi_transaction_id", "").strip() or None
+
+        screenshot = request.files.get("screenshot")
+        if not screenshot:
+            return jsonify({"error": "Payment screenshot is required"}), 400
+
+        upload_dir = os.path.join(current_app.config["UPLOAD_FOLDER"], "payments")
+        os.makedirs(upload_dir, exist_ok=True)
+
+        filename = secure_filename(f"pay_{txn_id}_{user_id}.webp")
+        filepath = os.path.join(upload_dir, filename)
+
+        try:
+            img = Image.open(screenshot)
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+            img.save(filepath, "WEBP", quality=80)
+        except Exception as e:
+            return jsonify({"error": f"Invalid image file: {str(e)}"}), 400
+
+        screenshot_path = f"payments/{filename}"
+
+        cursor.execute(
+            """UPDATE transactions
+               SET payment_status = 'verifying', payment_screenshot = %s, upi_transaction_id = %s
+               WHERE id = %s""",
+            (screenshot_path, upi_txn_id, txn_id),
+        )
+        conn.commit()
+        return jsonify({"message": "Payment submitted for verification", "payment_status": "verifying"}), 200
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Admin — get all payments pending verification
+# ─────────────────────────────────────────────────────────────────────────────
+@features_bp.route("/transactions/pending-payments", methods=["GET"])
+@login_required
+def get_pending_payments():
+    if request.current_user.get("role") != "admin":
+        return jsonify({"error": "Forbidden"}), 403
+
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        status_filter = request.args.get("status", "verifying")
+        cursor.execute("""
+            SELECT t.*, p.name as product_name, p.image_path as product_image,
+                   u.username as winner_name, u.email as winner_email, u.mobile_number as winner_mobile,
+                   o.username as office_name
+            FROM transactions t
+            JOIN products p ON t.product_id = p.id
+            JOIN users u ON t.user_id = u.id
+            JOIN users o ON p.office_id = o.id
+            WHERE t.payment_status = %s
+            ORDER BY t.transaction_date DESC
+        """, (status_filter,))
+        payments = serialize_rows(cursor.fetchall())
+        return jsonify({"payments": payments}), 200
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Admin — verify or reject a payment
+# ─────────────────────────────────────────────────────────────────────────────
+@features_bp.route("/transactions/<int:txn_id>/verify", methods=["PATCH"])
+@login_required
+def verify_payment(txn_id):
+    if request.current_user.get("role") != "admin":
+        return jsonify({"error": "Forbidden"}), 403
+
+    data = request.get_json() or {}
+    new_status = data.get("payment_status")
+    if new_status not in ("verified", "invalid"):
+        return jsonify({"error": "Status must be 'verified' or 'invalid'"}), 400
+
+    conn = _get_db()
+    cursor = conn.cursor()
+    try:
+        import datetime
+        cursor.execute(
+            """UPDATE transactions
+               SET payment_status = %s, verified_by = %s, verified_at = %s
+               WHERE id = %s""",
+            (new_status, request.current_user["user_id"], datetime.datetime.utcnow(), txn_id),
+        )
+        if cursor.rowcount == 0:
+            return jsonify({"error": "Transaction not found"}), 404
+
+        if new_status == "verified":
+            cursor.execute("UPDATE transactions SET status = 'completed' WHERE id = %s", (txn_id,))
+
+        conn.commit()
+        return jsonify({"message": f"Payment marked as {new_status}"}), 200
+    finally:
+        cursor.close()
+        conn.close()
+
+
 @features_bp.route("/log-error", methods=["POST"])
 def log_error():
     """

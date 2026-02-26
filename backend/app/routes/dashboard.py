@@ -70,6 +70,10 @@ def get_stats():
         cursor.execute("SELECT COUNT(*) as count FROM users WHERE role = 'office' AND status = 'pending'")
         pending_offices = cursor.fetchone()["count"]
 
+        # Pending payments
+        cursor.execute("SELECT COUNT(*) as count FROM transactions WHERE payment_status = 'verifying'")
+        pending_payments = cursor.fetchone()["count"]
+
         # Recent activity
         cursor.execute("""
             SELECT p.name, b.amount, u.username, b.bid_time
@@ -94,6 +98,7 @@ def get_stats():
                 "three_wheeler": vehicle_counts["three_wheeler"],
                 "four_wheeler": vehicle_counts["four_wheeler"],
                 "pending_offices": pending_offices,
+                "pending_payments": pending_payments,
             },
             "recent_activity": recent_activity,
         })

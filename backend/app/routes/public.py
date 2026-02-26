@@ -32,7 +32,7 @@ def home_data():
                 SELECT product_id, MAX(amount) as current_bid, COUNT(*) as total_bids
                 FROM bids GROUP BY product_id
             ) bi ON p.id = bi.product_id
-            WHERE p.status = 'approved'
+            WHERE p.status = 'approved' AND p.is_active = TRUE
             ORDER BY p.created_at DESC LIMIT 20
         """)
         products = serialize_rows(cursor.fetchall())

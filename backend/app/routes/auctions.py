@@ -47,9 +47,14 @@ def get_auctions():
         params = []
 
         if status and status != "approved":
-            # Override to allow filtering by other statuses if needed
-            query = query.replace("WHERE p.status = 'approved'", "WHERE p.status = %s")
-            params = [status]
+            if status == "live":
+                query += " AND p.is_active = TRUE"
+            elif status == "closed":
+                query += " AND p.is_active = FALSE"
+            elif status != "all" and status != "upcoming":
+                # Override to allow filtering by other statuses if needed
+                query = query.replace("WHERE p.status = 'approved'", "WHERE p.status = %s")
+                params = [status]
 
         if search:
             query += " AND (p.name LIKE %s OR p.description LIKE %s)"
