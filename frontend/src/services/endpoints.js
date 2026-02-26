@@ -109,3 +109,13 @@ export const planService = {
   update: (id, data) => api.put(`/plans/${id}`, data),
   delete: (id) => api.delete(`/plans/${id}`),
 };
+
+export const featureService = {
+  getTransactions: () => api.get('/features/transactions'),
+  getWinnings: (params) => api.get('/features/winnings', { params }),
+  submitPayment: (txnId, formData) => api.post(`/features/transactions/${txnId}/pay`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
+  getPendingPayments: (params) => api.get('/features/transactions/pending-payments', { params }),
+  verifyPayment: (txnId, data) => api.patch(`/features/transactions/${txnId}/verify`, data),
+};

@@ -35,6 +35,8 @@ const PublicAuctionDetails = lazy(() => import('@/pages/PublicAuctionDetails'));
 const SellVehicle = lazy(() => import('@/pages/SellVehicle'));
 const Wishlist = lazy(() => import('@/pages/Wishlist'));
 const Transactions = lazy(() => import('@/pages/Transactions'));
+const Winnings = lazy(() => import('@/pages/Winnings'));
+const PaymentVerification = lazy(() => import('@/pages/PaymentVerification'));
 const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 
@@ -75,6 +77,19 @@ export default function AppRoutes() {
 
           {/* Office profile */}
           <Route path="/office-profile" element={<OfficeProfile />} />
+
+          {/* Winnings — admin + office */}
+          <Route path="/winnings" element={<Winnings />} />
+
+          {/* Payment verification — admin only */}
+          <Route
+            path="/payments"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <PaymentVerification />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin-only routes */}
           <Route

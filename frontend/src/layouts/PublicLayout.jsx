@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { publicService } from '@/services';
+import MobileNav from './MobileNav';
 import toast from 'react-hot-toast';
 
 const navLinks = [
@@ -285,6 +286,8 @@ export default function PublicLayout() {
       >
         <i className="fab fa-whatsapp text-2xl"></i>
       </a>
+      {/* Mobile Bottom Navigation */}
+      {isAuthenticated && <MobileNav />}
     </div>
   );
 }

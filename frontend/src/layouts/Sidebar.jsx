@@ -9,6 +9,8 @@ const adminNav = [
   { to: '/users', label: 'Users', icon: 'fa-user-group', section: 'Overview' },
   { to: '/offices', label: 'Offices', icon: 'fa-building', section: 'Management' },
   { to: '/manage/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Management' },
+  { to: '/winnings', label: 'Winners', icon: 'fa-trophy', section: 'Management' },
+  { to: '/payments', label: 'Payments', icon: 'fa-credit-card', section: 'Management' },
   { to: '/approvals', label: 'Approvals', icon: 'fa-clipboard-check', section: 'Management' },
   { to: '/reports', label: 'Reports', icon: 'fa-chart-pie', section: 'Management' },
   { to: '/settings', label: 'Settings', icon: 'fa-sliders', section: 'System' },
@@ -19,6 +21,7 @@ const officeNav = [
   { to: '/vehicles/add', label: 'Add Product', icon: 'fa-circle-plus', section: 'Main' },
   { to: '/vehicles', label: 'My Vehicles', icon: 'fa-car-side', section: 'Main' },
   { to: '/manage/auctions', label: 'Auctions', icon: 'fa-gavel', section: 'Browse' },
+  { to: '/winnings', label: 'Winners', icon: 'fa-trophy', section: 'Browse' },
   { to: '/office-profile', label: 'Office Profile', icon: 'fa-building-circle-check', section: 'Settings' },
 ];
 

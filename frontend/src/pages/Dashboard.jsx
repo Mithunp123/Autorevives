@@ -21,6 +21,7 @@ export default function Dashboard() {
   const [stats, setStats] = useState({
     totalVehicles: 0, activeAuctions: 0, totalUsers: 0,
     totalManagers: 0, pendingApprovals: 0, totalVolume: 0,
+    pendingPayments: 0,
   });
   const [activity, setActivity] = useState([]);
   const [chartData] = useState(placeholderChartData);
@@ -47,7 +48,7 @@ export default function Dashboard() {
             pendingApprovals: raw.pending_products ?? 0,
             totalVolume: raw.total_volume ?? 0,
           });
-        } else {
+        } else if (isAdmin) {
           // Admin gets full platform stats
           const [statsRes, activityRes] = await Promise.all([
             dashboardService.getStats(),
@@ -61,6 +62,7 @@ export default function Dashboard() {
             totalUsers: raw.total_users ?? 0,
             totalManagers: raw.total_offices ?? 0,
             pendingApprovals: (raw.pending_auctions ?? 0) + (raw.pending_offices ?? 0),
+            pendingPayments: raw.pending_payments ?? 0,
             totalVolume: raw.total_volume ?? 0,
           });
 
@@ -115,7 +117,7 @@ export default function Dashboard() {
     { icon: 'fa-gavel', label: 'Active Auctions', value: stats.activeAuctions || '0', color: 'success' },
     { icon: 'fa-users', label: 'Total Users', value: stats.totalUsers?.toLocaleString('en-IN') || '0', color: 'purple' },
     { icon: 'fa-building', label: 'Office Partners', value: stats.totalManagers || '0', color: 'warning' },
-    { icon: 'fa-clock', label: 'Pending', value: stats.pendingApprovals || '0', color: 'danger' },
+    { icon: 'fa-money-bill-transfer', label: 'Pending Payments', value: stats.pendingPayments || '0', color: 'danger' },
     { icon: 'fa-indian-rupee-sign', label: 'Total Volume', value: formatCurrency(stats.totalVolume), color: 'navy' },
   ];
 

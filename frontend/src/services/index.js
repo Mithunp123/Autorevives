@@ -13,4 +13,5 @@ export {
   officeDetailsService,
   publicService,
   planService,
+  featureService,
 } from './endpoints';
