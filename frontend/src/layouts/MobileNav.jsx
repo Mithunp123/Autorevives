@@ -6,14 +6,14 @@ const adminItems = [
   { to: '/dashboard', label: 'Home', icon: 'fa-house' },
   { to: '/vehicles', label: 'Vehicles', icon: 'fa-car' },
   { to: '/auctions', label: 'Auctions', icon: 'fa-gavel' },
-  { to: '/settings', label: 'More', icon: 'fa-bars' },
+  { to: '/profile', label: 'Profile', icon: 'fa-circle-user' },
 ];
 
 const officeItems = [
   { to: '/dashboard', label: 'Home', icon: 'fa-house' },
   { to: '/vehicles', label: 'Vehicles', icon: 'fa-car' },
   { to: '/auctions', label: 'Auctions', icon: 'fa-gavel' },
-  { to: '/settings', label: 'More', icon: 'fa-bars' },
+  { to: '/office-profile', label: 'Profile', icon: 'fa-circle-user' },
 ];
 
 const userItems = [

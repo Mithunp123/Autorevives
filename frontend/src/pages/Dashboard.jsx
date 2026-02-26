@@ -87,20 +87,21 @@ export default function Dashboard() {
     fetchData();
   }, [isAdmin, isOffice]);
 
-  // Fetch state list on mount
+  // Fetch state list on mount — admin only
   useEffect(() => {
+    if (!isAdmin) return;
     dashboardService.getVehiclesByState('')
       .then(({ data }) => { if (data?.states) setStateList(data.states); })
       .catch(() => { });
-  }, []);
+  }, [isAdmin]);
 
-  // Fetch vehicles when state changes
+  // Fetch vehicles when state changes — admin only
   useEffect(() => {
-    if (!selectedState) { setStateVehicles([]); return; }
+    if (!isAdmin || !selectedState) { setStateVehicles([]); return; }
     dashboardService.getVehiclesByState(selectedState)
       .then(({ data }) => { if (data?.vehicles) setStateVehicles(data.vehicles); })
       .catch(() => { });
-  }, [selectedState]);
+  }, [isAdmin, selectedState]);
 
   if (loading) return <PageLoader />;
 
@@ -217,8 +218,8 @@ export default function Dashboard() {
                 key={s.state}
                 onClick={() => setSelectedState(s.state === selectedState ? '' : s.state)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${selectedState === s.state
-                    ? 'bg-gold-500 text-white shadow-sm'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                  ? 'bg-gold-500 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                   }`}
               >
                 {s.state} <span className="ml-1 opacity-70">{s.vehicle_count}</span>
